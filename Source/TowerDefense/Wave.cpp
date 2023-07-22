@@ -1,44 +1,58 @@
-﻿#include "CoreMinimal.h"
-#include "Wave.h"
+﻿#include "Wave.h"
 
 FWave::FWave()
 {
 	startTime = -1;
 }
 
-void FWave::Start(int index, float time, AEnemySpawnerV2* spawner)
+void FWave::Start(int index, float time, AEnemySpawner* _spawner)
 {
 	this->waveIndex = index;
-	this->spawner = spawner;
+	spawner = _spawner;
+	currentTime = time;
+	
 	subwaveIndex = 0;
 	startTime = time + startDelay;
 }
 
-void FWave::Tick(float time)
+bool FWave::Tick(float time)
 {
 	if (isFinished)
-		return;
+		return true;
 	
+	currentTime = time;
 	if (!hasStarted && time > startTime)
 	{
 		hasStarted = true;
 		SubWaves[0].Start(0, time, spawner);
 	}
 	
-	for (int i = 0; i < SubWaves.Num(); i++)
+	for (int i = subwaveIndex; i < SubWaves.Num(); i++)
 	{
-		SubWaves[i].Tick(time);    
+		if (SubWaves[i].Tick(time))
+		{
+			subwaveIndex++;
+			if (subwaveIndex == SubWaves.Num())
+			{
+				isFinished = true;
+				return true;
+			}
+			SubWaves[subwaveIndex].Start(subwaveIndex, time, spawner);
+		}
 	}
+
+	return false;
 }
 
 void FWave::OnEndSubwave(int index)
 {
 	subwaveIndex = index + 1;
+	
 	if (subwaveIndex >= SubWaves.Num())
 	{
-		spawner->OnEndWave(waveIndex);
+		isFinished = true;
 		return;
 	}
-	SubWaves[subwaveIndex].Start(index, spawner->GetTime(), spawner);
+	SubWaves[subwaveIndex].Start(index, currentTime, spawner);
 }
 

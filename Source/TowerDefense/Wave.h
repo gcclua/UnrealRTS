@@ -1,11 +1,8 @@
 ﻿#pragma once
 
 #include "SubWave.h"
-#include "EnemySpawnerV2.h"
+#include "CoreMinimal.h"
 #include "Wave.generated.h"
-
-class AEnemySpawnerV2;
-struct FSubwave;
 
 USTRUCT()
 struct FWave
@@ -13,19 +10,20 @@ struct FWave
 	GENERATED_USTRUCT_BODY()
 
 private:
-	UPROPERTY() AEnemySpawnerV2* spawner;
+	UPROPERTY() AEnemySpawner* spawner;
 	float startTime;
 	bool hasStarted;
 	bool isFinished;
 	int subwaveIndex;
 	int waveIndex;
+	float currentTime;
 	
 public:
 	FWave();
 
-	void Start(int index, float time, AEnemySpawnerV2* spawner);
+	void Start(int index, float time, AEnemySpawner* _spawner);
 	
-	void Tick(float time);
+	bool Tick(float time);
 
 	void OnEndSubwave(int index);
 

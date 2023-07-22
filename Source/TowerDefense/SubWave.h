@@ -1,10 +1,8 @@
 ﻿#pragma once
 
-//#include "EnemySpawnerV2.h"
+#include "EnemySpawner.h"
 #include "EnemyTypes.h"
 #include "SubWave.generated.h"
-
-//class AEnemySpawnerV2;
 
 USTRUCT()
 struct FSubWave
@@ -12,7 +10,7 @@ struct FSubWave
 	GENERATED_USTRUCT_BODY()
 
 private:
-	//UPROPERTY() AEnemySpawnerV2* spawner;
+	AEnemySpawner* spawner;
 	float startTime;
 	float nextSpawnTime;
 	bool hasStarted;
@@ -24,11 +22,9 @@ private:
 public:
 	FSubWave();
 
-	void Start(int index, float time/*, AEnemySpawnerV2* spawner*/);
+	void Start(int ind, float time, AEnemySpawner* _spawner);
 
 	bool Tick(float time);
-
-	float GetTotalTime();
 	
 	UPROPERTY(EditAnywhere)
 	EnemyType enemyType = EnemyType::Default;

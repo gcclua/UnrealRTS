@@ -3,15 +3,14 @@
 #pragma once
 
 #include "Wave.h"
+
+#include "EnemySpawner.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "EnemyStruct.h"
-#include "EnemySpawnerV2.generated.h"
-
-struct FWave;
+#include "WaveManager.generated.h"
 
 UCLASS()
-class TOWERDEFENSE_API AEnemySpawnerV2 : public AActor
+class TOWERDEFENSE_API AWaveManager : public AActor
 {
 	GENERATED_BODY()
 
@@ -21,24 +20,20 @@ protected:
 public:
 	// properties
 	UPROPERTY(EditAnywhere)
+	AEnemySpawner* EnemySpawner;
+	
+	UPROPERTY(EditAnywhere)
 	TArray<FWave> Waves;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FEnemyStruct> EnemyPrefabs;
-
 	// mono
-	AEnemySpawnerV2();
+	AWaveManager();
 	virtual void Tick(float DeltaTime) override;
-	
-	// wave stuff
-	void StartSpawning();
-	float GetTime() const;
-	void OnEndWave(int index);
 
-	// spawning stuff
-	void SpawnEnemy(EnemyType enemyType);
+	void StartSpawning();
 
 private:
+	int waveIndex;
+	bool isDone;
 	float currentTime;
 	bool hasStarted;
 };

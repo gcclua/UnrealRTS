@@ -11,10 +11,10 @@ FSubWave::FSubWave()
 	index = -1;
 }
 
-void FSubWave::Start(int index, float time/*, AEnemySpawnerV2* spawner*/)
+void FSubWave::Start(int ind, float time, AEnemySpawner* _spawner)
 {
-	this->index = index;
-	//this->spawner = spawner;
+	this->index = ind;
+	spawner = _spawner;
 	
 	startTime = time;
 	hasStarted = true;
@@ -31,7 +31,7 @@ bool FSubWave::Tick(float time)
 	
 	if (normalisedTime >= nextSpawnTime)
 	{
-		//spawner->SpawnEnemy(enemyType);
+		spawner->SpawnEnemy(enemyType);
 
 		spawnIndex++;
 		
