@@ -2,28 +2,43 @@
 
 #pragma once
 
+#include "Wave.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Wave.h"
+#include "EnemyStruct.h"
 #include "EnemySpawnerV2.generated.h"
+
+struct FWave;
 
 UCLASS()
 class TOWERDEFENSE_API AEnemySpawnerV2 : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AEnemySpawnerV2();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
+	// properties
 	UPROPERTY(EditAnywhere)
 	TArray<FWave> Waves;
+
+	UPROPERTY(EditAnywhere)
+	TArray<FEnemyStruct> EnemyPrefabs;
+
+	// mono
+	AEnemySpawnerV2();
+	virtual void Tick(float DeltaTime) override;
+	
+	// wave stuff
+	void StartSpawning();
+	float GetTime() const;
+	void OnEndWave(int index);
+
+	// spawning stuff
+	void SpawnEnemy(EnemyType enemyType);
+
+private:
+	float currentTime;
+	bool hasStarted;
 };
