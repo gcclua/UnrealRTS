@@ -25,6 +25,11 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;SolutionBuilderGeneralOptionsPage&quot;
   }
 }</component>
+  <component name="RiderProblemsViewState">
+    <hideBySeverity>
+      <option value="20" />
+    </hideBySeverity>
+  </component>
   <component name="RunManager">
     <configuration name="TowerDefense" type="Uproject" factoryName="rider.uproject">
       <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/TowerDefense.uproject" />
@@ -80,6 +85,12 @@
       <workItem from="1689677482209" duration="3073000" />
       <workItem from="1689758887312" duration="2613000" />
       <workItem from="1689850840691" duration="1013000" />
+      <workItem from="1689932935050" duration="2241000" />
+      <workItem from="1689936310404" duration="5759000" />
+      <workItem from="1689996541355" duration="309000" />
+      <workItem from="1690018151448" duration="10375000" />
+      <workItem from="1690028675306" duration="86000" />
+      <workItem from="1690029078969" duration="1034000" />
     </task>
     <servers />
   </component>
