@@ -19,5 +19,10 @@ void ABaseEntity::Tick(float DeltaTime)
 	OnUpdate();
 }
 
+void ABaseEntity::OnDestroy()
+{
+	
+}
+
 void ABaseEntity::OnUpdate_Implementation() { }
 void ABaseEntity::OnInit_Implementation() { }
