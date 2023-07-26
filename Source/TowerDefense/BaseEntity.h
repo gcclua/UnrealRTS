@@ -20,6 +20,9 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnUpdate();
+
+	UFUNCTION(BlueprintCallable, BlueprintCallable)
+	void OnDestroy();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Health;
