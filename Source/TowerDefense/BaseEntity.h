@@ -2,19 +2,22 @@
 
 #pragma once
 
+#include "Kismet/GameplayStatics.h"
+#include "IEntity.h"
 #include "CoreMinimal.h"
+#include "MiniMap.h"
 #include "GameFramework/Actor.h"
 #include "BaseEntity.generated.h"
 
 UCLASS()
-class TOWERDEFENSE_API ABaseEntity : public AActor
+class TOWERDEFENSE_API ABaseEntity : public AActor, public IEntity
 {
 	GENERATED_BODY()
 	
 public:	
 	ABaseEntity();
 	virtual void Tick(float DeltaTime) override;
-
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnInit();
 	

@@ -10,6 +10,10 @@ ABaseEntity::ABaseEntity()
 void ABaseEntity::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto minimap = Cast<UMiniMap>(UGameplayStatics::GetActorOfClass(GetWorld(), UMiniMap::StaticClass()));
+	minimap->RegisterEntity(this);
+	
 	OnInit();
 }
 
@@ -21,7 +25,13 @@ void ABaseEntity::Tick(float DeltaTime)
 
 void ABaseEntity::OnDestroy()
 {
-	
+	auto minimap = Cast<UMiniMap>(UGameplayStatics::GetActorOfClass(GetWorld(), UMiniMap::StaticClass()));
+	minimap->UnRegisterEntity(this);
+}
+
+AActor* IEntity::GetActor()
+{
+	return dynamic_cast<AActor*>(this);
 }
 
 void ABaseEntity::OnUpdate_Implementation() { }
