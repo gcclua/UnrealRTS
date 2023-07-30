@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "IEntity.h"
+#include "WidgetSlot.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/CanvasPanel.h"
@@ -35,7 +36,7 @@ public: // variables/properties
 	TSubclassOf<UUserWidget> markerClass;
 	
 	UPROPERTY() TArray<AActor*> actors;
-	UPROPERTY()	TMap<AActor*, UCanvasPanelSlot*> markers;
+	UPROPERTY()	TMap<AActor*, FWidgetSlot> markers;
 	UPROPERTY() APlayerController* playerController;
 	
 public: // methods

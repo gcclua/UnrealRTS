@@ -15,7 +15,7 @@ void UMiniMap::OnUpdate()
 	for (int i = 0; i < actors.Num(); i++)
 	{
 		AActor* actor = actors[i];
-		UCanvasPanelSlot* iconSlot = markers[actor];
+		UCanvasPanelSlot* iconSlot = markers[actor].slot;
 
 		FVector actorPos = actor->GetActorLocation();
 		actorPos.SetComponentForAxis(EAxis::Z, 0);
@@ -50,13 +50,19 @@ void UMiniMap::RegisterActor(AActor* actor)
 	iconSlot->SetPosition(center);
 
 	actors.Add(actor);
-	markers.Add(actor, iconSlot);
+	markers.Add(actor, FWidgetSlot(iconWidget, iconSlot));
 
 	LOG_WARNING("RegisterActor");
 }
 
 void UMiniMap::UnRegisterActor(AActor* actor)
 {
+	auto widgetSlot = markers[actor];
+	widgetSlot.widget->RemoveFromParent();
+
+	markers.Remove(actor);	
+	actors.Remove(actor);
+	
 	LOG_WARNING("Minimap Unregister");
 }
 
