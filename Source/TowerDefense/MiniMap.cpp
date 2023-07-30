@@ -19,7 +19,7 @@ void UMiniMap::OnUpdate()
 	{
 		AActor* actor = actors[i];
 		if (!actor || !markers[actor].slot)
-			return;
+			continue;
 		
 		UCanvasPanelSlot* iconSlot = markers[actor].slot;
 
