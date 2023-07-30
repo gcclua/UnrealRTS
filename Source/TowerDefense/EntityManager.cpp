@@ -17,13 +17,14 @@ void AEntityManager::BeginPlay()
 	if (widgets.Num() > 0)
 	{
 		minimap = Cast<UMiniMap>(widgets[0]);
-		minimap->Setup(GetWorld()->GetFirstPlayerController());
+		//minimap->Setup(GetWorld()->GetFirstPlayerController());
 	}
 }
 
 void AEntityManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	minimap->OnUpdate();
 }
 
 void AEntityManager::RegisterEntity(IEntity* entity)

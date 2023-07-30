@@ -3,15 +3,15 @@
 #include "BaseEntity.h"
 #include "Logger.h"
 
+ABaseEntity::ABaseEntity()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
+
 void ABaseEntity::Register()
 {
 	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
 	entityManager->RegisterEntity(this);
-}
-
-ABaseEntity::ABaseEntity()
-{
-	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ABaseEntity::BeginPlay()
@@ -33,7 +33,7 @@ void ABaseEntity::Tick(float DeltaTime)
 void ABaseEntity::OnDestroy()
 {
 	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
-	entityManager->RegisterEntity(this);
+	entityManager->UnRegisterEntity(this);
 }
 
 AActor* IEntity::GetActor()

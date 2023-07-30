@@ -7,9 +7,10 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/CanvasPanel.h"
-#include "Components/VerticalBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "MiniMap.generated.h"
 
 /**
@@ -20,31 +21,31 @@ class TOWERDEFENSE_API UMiniMap : public UUserWidget
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY() AActor* centerActor;
+
 public: // variables/properties
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UImage* minimapContainer;
+	
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UCanvasPanel* MinimapCanvas;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> markerClass;
 	
 	UPROPERTY() TArray<AActor*> actors;
-	UPROPERTY()	TMap<AActor*, UUserWidget*> markers;
+	UPROPERTY()	TMap<AActor*, UCanvasPanelSlot*> markers;
 	UPROPERTY() APlayerController* playerController;
 	
 public: // methods
-	UFUNCTION(BlueprintCallable)
 	void OnUpdate();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SpawnMarker(AActor* actor);
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void DoShit(int input);
 	
 	void RegisterActor(AActor* actor);
 	void UnRegisterActor(AActor* actor);
-	
-	virtual void Setup(APlayerController* player);
+
+	UFUNCTION(BlueprintCallable)
+	void Setup(APlayerController* player, AActor* _centerActor);
 	
 	virtual bool Initialize() override;
 };

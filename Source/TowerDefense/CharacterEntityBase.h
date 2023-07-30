@@ -22,7 +22,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnInit();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnUpdate();
+
+	UFUNCTION(BlueprintCallable, BlueprintCallable)
+	void OnDestroy();
+	
 	ACharacterEntityBase();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
