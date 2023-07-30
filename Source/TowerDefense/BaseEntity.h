@@ -6,6 +6,7 @@
 #include "IEntity.h"
 #include "CoreMinimal.h"
 #include "MiniMap.h"
+#include "EntityManager.h"
 #include "GameFramework/Actor.h"
 #include "BaseEntity.generated.h"
 
@@ -13,7 +14,9 @@ UCLASS()
 class TOWERDEFENSE_API ABaseEntity : public AActor, public IEntity
 {
 	GENERATED_BODY()
-	
+
+private:
+	void Register();
 public:	
 	ABaseEntity();
 	virtual void Tick(float DeltaTime) override;

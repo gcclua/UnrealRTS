@@ -11,8 +11,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/BaseEntity.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/BaseEntity.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/CharacterEntityBase.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/CharacterEntityBase.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/IEntity.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/MiniMap.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/MiniMap.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TowerDefense/TowerDefense.Build.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -96,7 +102,16 @@
       <workItem from="1690028675306" duration="86000" />
       <workItem from="1690029078969" duration="1034000" />
       <workItem from="1690094757911" duration="496000" />
-      <workItem from="1690367104000" duration="3439000" />
+      <workItem from="1690367104000" duration="4083000" />
+      <workItem from="1690447121697" duration="6599000" />
+      <workItem from="1690454539214" duration="4789000" />
+      <workItem from="1690535473598" duration="5500000" />
+      <workItem from="1690543240665" duration="4925000" />
+      <workItem from="1690630804257" duration="368000" />
+      <workItem from="1690670972678" duration="6015000" />
+      <workItem from="1690678303514" duration="821000" />
+      <workItem from="1690679174120" duration="1764000" />
+      <workItem from="1690680979203" duration="1064000" />
     </task>
     <servers />
   </component>

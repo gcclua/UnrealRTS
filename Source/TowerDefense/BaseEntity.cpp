@@ -1,6 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BaseEntity.h"
+#include "Logger.h"
+
+void ABaseEntity::Register()
+{
+	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	entityManager->RegisterEntity(this);
+}
 
 ABaseEntity::ABaseEntity()
 {
@@ -11,8 +18,8 @@ void ABaseEntity::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto minimap = Cast<UMiniMap>(UGameplayStatics::GetActorOfClass(GetWorld(), UMiniMap::StaticClass()));
-	minimap->RegisterEntity(this);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ABaseEntity::Register, 0.5f, false);
 	
 	OnInit();
 }
@@ -25,8 +32,8 @@ void ABaseEntity::Tick(float DeltaTime)
 
 void ABaseEntity::OnDestroy()
 {
-	auto minimap = Cast<UMiniMap>(UGameplayStatics::GetActorOfClass(GetWorld(), UMiniMap::StaticClass()));
-	minimap->UnRegisterEntity(this);
+	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	entityManager->RegisterEntity(this);
 }
 
 AActor* IEntity::GetActor()
