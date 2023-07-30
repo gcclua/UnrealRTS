@@ -5,7 +5,7 @@
 
 void UMiniMap::OnUpdate()
 {
-	if (!centerActor)
+	if (!hasSetup || !centerActor)
 		return;
 	
 	const double halfWidth = 200;
@@ -76,6 +76,7 @@ void UMiniMap::Setup(APlayerController* player, AActor* _centerActor)
 {
 	playerController = player;
 	centerActor = _centerActor;
+	hasSetup = true;
 	LOG_WARNING("Minimap Setup %s", *player->GetName());
 }
 
@@ -84,6 +85,7 @@ bool UMiniMap::Initialize()
 	Super::Initialize();
 
 	LOG_WARNING("MINIMAP INIT");
+	hasSetup = false;
 
 	return true;
 }

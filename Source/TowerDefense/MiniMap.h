@@ -34,6 +34,8 @@ public: // variables/properties
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> markerClass;
+
+	bool hasSetup = false;
 	
 	UPROPERTY() TArray<AActor*> actors;
 	UPROPERTY()	TMap<AActor*, FWidgetSlot> markers;
