@@ -5,6 +5,9 @@
 
 void UMiniMap::OnUpdate()
 {
+	if (!centerActor)
+		return;
+	
 	const double halfWidth = 200;
 	const FVector2d center = FVector2d(-halfWidth, -halfWidth);
 	double maxDist = 2000;
@@ -15,7 +18,7 @@ void UMiniMap::OnUpdate()
 	for (int i = 0; i < actors.Num(); i++)
 	{
 		AActor* actor = actors[i];
-		if (!markers[actor].slot)
+		if (!actor || !markers[actor].slot)
 			return;
 		
 		UCanvasPanelSlot* iconSlot = markers[actor].slot;
