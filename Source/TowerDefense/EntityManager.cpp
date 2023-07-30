@@ -11,14 +11,6 @@ AEntityManager::AEntityManager()
 void AEntityManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	TArray<UUserWidget*> widgets;
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), widgets, UMiniMap::StaticClass());
-	if (widgets.Num() > 0)
-	{
-		minimap = Cast<UMiniMap>(widgets[0]);
-		//minimap->Setup(GetWorld()->GetFirstPlayerController());
-	}
 }
 
 void AEntityManager::Tick(float DeltaTime)

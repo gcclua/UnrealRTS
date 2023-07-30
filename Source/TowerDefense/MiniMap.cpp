@@ -15,6 +15,9 @@ void UMiniMap::OnUpdate()
 	for (int i = 0; i < actors.Num(); i++)
 	{
 		AActor* actor = actors[i];
+		if (!markers[actor].slot)
+			return;
+		
 		UCanvasPanelSlot* iconSlot = markers[actor].slot;
 
 		FVector actorPos = actor->GetActorLocation();
