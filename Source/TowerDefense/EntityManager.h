@@ -16,8 +16,7 @@ class TOWERDEFENSE_API AEntityManager : public AActor
 	
 private: // vars
 	TArray<IEntity*> entities;
-	UPROPERTY()
-	class UMiniMap* minimap;
+	UPROPERTY() UMiniMap* minimap;
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,4 +27,7 @@ public: // methods
 	
 	virtual void RegisterEntity(IEntity* entity);
 	virtual void UnRegisterEntity(IEntity* entity);
+
+	UFUNCTION(BlueprintCallable)
+	void Setup(UMiniMap* _minimap);
 };

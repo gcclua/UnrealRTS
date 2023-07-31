@@ -36,3 +36,8 @@ void AEntityManager::UnRegisterEntity(IEntity* entity)
 		minimap->UnRegisterActor(entity->GetActor());
 	}
 }
+
+void AEntityManager::Setup(UMiniMap* _minimap)
+{
+	minimap = _minimap;
+}
