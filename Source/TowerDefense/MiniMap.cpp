@@ -10,31 +10,37 @@ void UMiniMap::OnUpdate()
 	
 	const double halfWidth = 200;
 	const FVector2d center = FVector2d(-halfWidth, -halfWidth);
-	double maxDist = 2000;
 	
 	FVector centerActorLocation = centerActor->GetActorLocation();
 	centerActorLocation.SetComponentForAxis(EAxis::Z, 0);
 	
 	for (int i = 0; i < actors.Num(); i++)
 	{
-		AActor* actor = actors[i];
+		const AActor* actor = actors[i];
 		if (!actor || !markers[actor].slot)
 			continue;
-		
-		UCanvasPanelSlot* iconSlot = markers[actor].slot;
+
+		const FWidgetSlot marker = markers[actor];
+		UCanvasPanelSlot* iconSlot = marker.slot;
+		UUserWidget* iconWidget = marker.widget;
 
 		FVector actorPos = actor->GetActorLocation();
 		actorPos.SetComponentForAxis(EAxis::Z, 0);
+
+		const double distance = FVector::Distance(centerActorLocation, actorPos);
+		if (distance > MinimapRadius)
+		{
+			iconWidget->SetVisibility(ESlateVisibility::Hidden);
+			continue;
+		}
 		
+		iconWidget->SetVisibility(ESlateVisibility::Visible);
+		const double distance01 = UKismetMathLibrary::NormalizeToRange(distance, 0, MinimapRadius);
 		FVector delta = actorPos - centerActorLocation;
 		delta.Normalize();
-
-		double distance = FVector::Distance(centerActorLocation, actorPos);
-		double distance01 = UKismetMathLibrary::NormalizeToRange(distance, 0, maxDist);
-
-		FVector2d posDelta = (FVector2d(delta.X, delta.Y) * distance01 * halfWidth);
-
-		FVector2d pos = center + posDelta;
+		
+		const FVector2d posDelta = (FVector2d(-delta.X, -delta.Y) * distance01 * halfWidth);
+		const FVector2d pos = center + posDelta;
 		iconSlot->SetPosition(pos);
 	}
 }
@@ -47,29 +53,23 @@ void UMiniMap::RegisterActor(AActor* actor)
 
 	UCanvasPanelSlot* iconSlot = MinimapCanvas->AddChildToCanvas(iconWidget);
 	
-	auto anchors = iconSlot->GetAnchors();
+	FAnchors anchors = iconSlot->GetAnchors();
 	anchors.Maximum = FVector2d(0, 0);
 	anchors.Minimum = FVector2d(1, 1);
 	iconSlot->SetAnchors(anchors);
-
-	FVector2d center = FVector2d(-200, -200);
-	iconSlot->SetPosition(center);
+	iconWidget->SetVisibility(ESlateVisibility::Hidden);
 
 	actors.Add(actor);
 	markers.Add(actor, FWidgetSlot(iconWidget, iconSlot));
-
-	LOG_WARNING("RegisterActor");
 }
 
 void UMiniMap::UnRegisterActor(AActor* actor)
 {
-	auto widgetSlot = markers[actor];
+	const FWidgetSlot widgetSlot = markers[actor];
 	widgetSlot.widget->RemoveFromParent();
 
 	markers.Remove(actor);	
 	actors.Remove(actor);
-	
-	LOG_WARNING("Minimap Unregister");
 }
 
 void UMiniMap::Setup(APlayerController* player, AActor* _centerActor)
@@ -77,14 +77,12 @@ void UMiniMap::Setup(APlayerController* player, AActor* _centerActor)
 	playerController = player;
 	centerActor = _centerActor;
 	hasSetup = true;
-	LOG_WARNING("Minimap Setup %s", *player->GetName());
 }
 
 bool UMiniMap::Initialize()
 {
 	Super::Initialize();
-
-	LOG_WARNING("MINIMAP INIT");
+	
 	hasSetup = false;
 
 	return true;

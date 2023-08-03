@@ -27,13 +27,13 @@ private:
 
 public: // variables/properties
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UImage* minimapContainer;
-	
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UCanvasPanel* MinimapCanvas;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> markerClass;
+
+	UPROPERTY(EditAnywhere)
+	float MinimapRadius;
 
 	bool hasSetup = false;
 	
