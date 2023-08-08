@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "IEntity.h"
-#include "MiniMap.h"
+#include "../Interfaces/IEntity.h"
+#include "../UI/MiniMap.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "EntityManager.generated.h"

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "EnemyStruct.h"
+#include "../Entities/EnemyStruct.h"
 #include "EnemySpawner.generated.h"
 
 struct FWave;

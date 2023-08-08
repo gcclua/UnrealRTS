@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "IEntity.h"
+#include "../Interfaces/IEntity.h"
 #include "WidgetSlot.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"

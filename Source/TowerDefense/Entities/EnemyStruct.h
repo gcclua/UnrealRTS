@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "EnemyTypes.h"
+#include "../Enums/EnemyTypes.h"
 #include "EnemyStruct.generated.h"
 
 USTRUCT()

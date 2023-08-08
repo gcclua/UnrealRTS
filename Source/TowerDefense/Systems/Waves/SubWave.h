@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "EnemySpawner.h"
-#include "EnemyTypes.h"
+#include "../EnemySpawner.h"
+#include "../../Enums/EnemyTypes.h"
 #include "SubWave.generated.h"
 
 USTRUCT()

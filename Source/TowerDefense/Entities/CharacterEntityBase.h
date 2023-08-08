@@ -4,10 +4,10 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "CoreMinimal.h"
-#include "IEntity.h"
-#include "MiniMap.h"
+#include "../Interfaces/IEntity.h"
+#include "../UI/MiniMap.h"
 #include "GameFramework/Character.h"
-#include "EntityManager.h"
+#include "../Systems/EntityManager.h"
 #include "CharacterEntityBase.generated.h"
 
 UCLASS()
