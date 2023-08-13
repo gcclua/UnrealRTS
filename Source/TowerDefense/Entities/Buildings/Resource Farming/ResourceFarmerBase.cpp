@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResourceFarmerBase.h"
-#include "../Utils/Logger.h"
+#include "TowerDefense/Utils/Logger.h"
 
 AResourceFarmerBase::AResourceFarmerBase()
 {
+	state = ResourceFarmerState::Idle;
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -26,13 +27,6 @@ void AResourceFarmerBase::Tick(float DeltaTime)
 		playerVitals->OnGatherResource(ResourceType, 1);
 		nextFarmTime = time + GenerateTime;
 	}
-}
-
-void AResourceFarmerBase::OnPlace()
-{
-	LOG_WARNING("OnPlace");
-	state = ResourceFarmerState::Idle;
-	StartFarming();
 }
 
 void AResourceFarmerBase::StartFarming()

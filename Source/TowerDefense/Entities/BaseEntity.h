@@ -3,10 +3,10 @@
 #pragma once
 
 #include "Kismet/GameplayStatics.h"
-#include "../Interfaces/IEntity.h"
+#include "TowerDefense/Interfaces/IEntity.h"
 #include "CoreMinimal.h"
-#include "../UI/MiniMap.h"
-#include "../Systems/EntityManager.h"
+#include "TowerDefense/UI/MiniMap.h"
+#include "TowerDefense/Systems/EntityManager.h"
 #include "GameFramework/Actor.h"
 #include "BaseEntity.generated.h"
 

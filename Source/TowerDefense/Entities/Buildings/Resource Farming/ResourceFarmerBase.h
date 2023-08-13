@@ -3,16 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Interfaces/IEntity.h"
-#include "../Enums/ResourceType.h"
+#include "TowerDefense/Interfaces/IEntity.h"
+#include "TowerDefense/Enums/ResourceType.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "ResourceFarmerState.h"
-#include "../Core/PlayerVitalsBase.h"
+#include "TowerDefense/Core/PlayerVitalsBase.h"
+#include "TowerDefense/Entities/Buildings/BuildingBase.h"
 #include "ResourceFarmerBase.generated.h"
 
-UCLASS(Abstract)
-class TOWERDEFENSE_API AResourceFarmerBase : public AActor
+UCLASS()
+class TOWERDEFENSE_API AResourceFarmerBase : public ABuildingBase
 {
 	GENERATED_BODY()
 	
@@ -34,9 +35,6 @@ public:
 public:
 	AResourceFarmerBase();
 	virtual void Tick(float DeltaTime) override;
-	
-	UFUNCTION(BlueprintCallable)
-	void OnPlace();
 
 	UFUNCTION(BlueprintCallable)
 	void StartFarming();

@@ -11,6 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/args.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/Entities/CharacterEntityBase.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -123,6 +124,8 @@
       <workItem from="1691484856091" duration="3438000" />
       <workItem from="1691581449654" duration="3987000" />
       <workItem from="1691664574273" duration="595000" />
+      <workItem from="1691916234090" duration="751000" />
+      <workItem from="1691927091479" duration="4739000" />
     </task>
     <servers />
   </component>
