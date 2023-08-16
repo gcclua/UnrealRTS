@@ -9,18 +9,18 @@ ABaseEntity::ABaseEntity()
 
 void ABaseEntity::Register()
 {
-	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	const auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
 	entityManager->RegisterEntity(this);
 }
 
 void ABaseEntity::BeginPlay()
 {
-	Super::BeginPlay();
-
 	FTimerHandle UnusedHandle;
 	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ABaseEntity::Register, 0.5f, false);
 	
 	OnInit();
+	
+	Super::BeginPlay();
 }
 
 void ABaseEntity::Tick(float DeltaTime)
@@ -31,7 +31,7 @@ void ABaseEntity::Tick(float DeltaTime)
 
 void ABaseEntity::OnDestroy()
 {
-	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	const auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
 	entityManager->UnRegisterEntity(this);
 }
 

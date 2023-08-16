@@ -19,9 +19,9 @@ void AEnemySpawner::SpawnEnemy(EnemyType enemyType)
 		if (EnemyPrefabs[i].Type == enemyType)
 		{
 			const FTransform trans = GetActorTransform();
-			TSubclassOf<AActor> type = EnemyPrefabs[i].Blueprint;
+			const TSubclassOf<AActor> type = EnemyPrefabs[i].Blueprint;
 
-			FActorSpawnParameters spawnParams;
+			const FActorSpawnParameters spawnParams;
 			GetWorld()->SpawnActor<AActor>(type, trans.GetLocation(), trans.GetRotation().Rotator(), spawnParams);
 
 			break;

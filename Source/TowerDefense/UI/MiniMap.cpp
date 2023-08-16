@@ -46,7 +46,7 @@ void UMiniMap::OnUpdate()
 
 void UMiniMap::RegisterActor(AActor* actor)
 {
-	auto iconWidget = CreateWidget<UUserWidget>(playerController, markerClass);
+	const auto iconWidget = CreateWidget<UUserWidget>(playerController, markerClass);
 	if (!iconWidget)
 		return;
 
