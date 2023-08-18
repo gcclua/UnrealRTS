@@ -33,9 +33,7 @@ void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 	EnemiesInRange.Remove(guid);
 	if (EnemiesInRange.Num() == 0 || CurrentTarget->GetActorGuid() == guid)
-	{
 		hasTarget = false;
-	}
 }
 
 void ATowerBase::BeginPlay()
@@ -45,6 +43,9 @@ void ATowerBase::BeginPlay()
 	CollisionObject->SetHiddenInGame(true);
 	CollisionObject->OnComponentBeginOverlap.AddDynamic(this, &ATowerBase::OnOverlapBegin);
 	CollisionObject->OnComponentEndOverlap.AddDynamic(this, &ATowerBase::OnOverlapEnd);
+
+	//UKismetSystemLibrary::SphereOverlapActors(CollisionObject, CollisionObject->GetComponentLocation(), Range, )
+	CollisionObject->UpdateOverlaps();
 
 	Super::BeginPlay();
 }
