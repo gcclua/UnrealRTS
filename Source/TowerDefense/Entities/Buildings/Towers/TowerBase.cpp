@@ -8,7 +8,8 @@ ATowerBase::ATowerBase()
 void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherActor->GetName());
+	if (IsConstruction) return;
+	
 	AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
 	if (enemy == nullptr)
 		return;
@@ -23,6 +24,8 @@ void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (IsConstruction) return;
+	
 	const AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
 	if (enemy == nullptr)
 		return;
@@ -32,7 +35,7 @@ void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* 
 		return;
 
 	EnemiesInRange.Remove(guid);
-	if (EnemiesInRange.Num() == 0 || CurrentTarget->GetActorGuid() == guid)
+	if (EnemiesInRange.Num() == 0 || (CurrentTarget != nullptr && CurrentTarget->GetActorGuid() == guid))
 		hasTarget = false;
 }
 

@@ -4,8 +4,6 @@ bool ABuilderManager::TrySendOutBuilder()
 {
 	if (buildingQueue.IsEmpty())
 		return false;
-
-	UE_LOG(LogTemp, Warning, TEXT("A"));
 	
 	ABuilderBase* builder = nullptr;
 	for (ABuilderBase* _builder : Builders)
@@ -20,8 +18,6 @@ bool ABuilderManager::TrySendOutBuilder()
 	if (builder == nullptr)
 		return false;
 
-	UE_LOG(LogTemp, Warning, TEXT("B"));
-
 	ABuildingBase* building = nullptr;
 	buildingQueue.Dequeue(building);
 	
@@ -32,7 +28,6 @@ bool ABuilderManager::TrySendOutBuilder()
 
 bool ABuilderManager::RequestBuilder(ABuildingBase* building)
 {
-	UE_LOG(LogTemp, Warning, TEXT("REQUEST BUILDER"));
 	buildingQueue.Enqueue(building);
 	return TrySendOutBuilder();
 }
