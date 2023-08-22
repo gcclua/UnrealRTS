@@ -10,7 +10,7 @@
 #include "../Systems/EntityManager.h"
 #include "CharacterEntityBase.generated.h"
 
-UCLASS()
+UCLASS(ABSTRACT)
 class TOWERDEFENSE_API ACharacterEntityBase : public ACharacter, public IEntity
 {
 	GENERATED_BODY()

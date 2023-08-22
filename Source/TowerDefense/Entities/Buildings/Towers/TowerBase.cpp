@@ -38,14 +38,17 @@ void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* 
 
 void ATowerBase::BeginPlay()
 {
-	CollisionObject->SetSphereRadius(Range);
-	CollisionObject->SetGenerateOverlapEvents(true);
-	CollisionObject->SetHiddenInGame(true);
-	CollisionObject->OnComponentBeginOverlap.AddDynamic(this, &ATowerBase::OnOverlapBegin);
-	CollisionObject->OnComponentEndOverlap.AddDynamic(this, &ATowerBase::OnOverlapEnd);
+	if (!IsConstruction)
+	{
+		CollisionObject->SetSphereRadius(Range);
+		CollisionObject->SetGenerateOverlapEvents(true);
+		CollisionObject->SetHiddenInGame(true);
+		CollisionObject->OnComponentBeginOverlap.AddDynamic(this, &ATowerBase::OnOverlapBegin);
+		CollisionObject->OnComponentEndOverlap.AddDynamic(this, &ATowerBase::OnOverlapEnd);
 
-	//UKismetSystemLibrary::SphereOverlapActors(CollisionObject, CollisionObject->GetComponentLocation(), Range, )
-	CollisionObject->UpdateOverlaps();
+		//UKismetSystemLibrary::SphereOverlapActors(CollisionObject, CollisionObject->GetComponentLocation(), Range, )
+		CollisionObject->UpdateOverlaps();
+	}
 
 	Super::BeginPlay();
 }

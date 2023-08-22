@@ -23,7 +23,7 @@ protected:
 private:
 	ResourceFarmerState state;
 	double nextFarmTime;
-	APlayerVitalsBase* playerVitals;
+	UPROPERTY() APlayerVitalsBase* playerVitals;
 
 public:	
 	UPROPERTY(EditAnywhere)

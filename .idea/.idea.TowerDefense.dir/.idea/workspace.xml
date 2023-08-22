@@ -11,6 +11,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../UE_5.1/Engine/Source/Runtime/Engine/Private/UnrealEngine.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/TowerDefense/UHT/BuildingBase.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Plugins/Developer/RiderLink/Source/RD/thirdparty/spdlog/include/spdlog/fmt/bundled/args.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.h" root0="FORCE_HIGHLIGHTING" />
@@ -131,6 +133,9 @@
       <workItem from="1692082780385" duration="3078000" />
       <workItem from="1692146887532" duration="5828000" />
       <workItem from="1692326784680" duration="1473000" />
+      <workItem from="1692611497085" duration="1226000" />
+      <workItem from="1692612774011" duration="4481000" />
+      <workItem from="1692673527423" duration="16367000" />
     </task>
     <servers />
   </component>

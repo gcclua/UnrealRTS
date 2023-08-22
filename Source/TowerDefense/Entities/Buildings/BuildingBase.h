@@ -7,7 +7,23 @@ UCLASS(ABSTRACT)
 class ABuildingBase : public ABaseEntity
 {
 	GENERATED_BODY()
+	
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BuildTime = 3;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsConstruction = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ABuildingBase> RealBuildingClass;
+	
+	UFUNCTION(BlueprintCallable)
+	void OnSpawn();
+
+	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlace();
+
+	UFUNCTION(BlueprintCallable)
+	void OnDoneConstructing();
 };
