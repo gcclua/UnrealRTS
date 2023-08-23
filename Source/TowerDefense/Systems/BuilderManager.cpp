@@ -22,19 +22,21 @@ bool ABuilderManager::TrySendOutBuilder()
 	buildingQueue.Dequeue(building);
 	
 	builder->OnStartJob(building);
-	
+
 	return true;
 }
 
 bool ABuilderManager::RequestBuilder(ABuildingBase* building)
 {
 	buildingQueue.Enqueue(building);
-	return TrySendOutBuilder();
+	bool res = TrySendOutBuilder();
+	
+	return res;
 }
 
 void ABuilderManager::OnCompleteBuild(ABuilderBase* builder)
 {
-	TrySendOutBuilder();
+	bool res = TrySendOutBuilder();
 }
 
 void ABuilderManager::BeginPlay()
@@ -42,9 +44,11 @@ void ABuilderManager::BeginPlay()
 	for (int i = 0; i < NumBuilders; i++)
 	{
 		const FActorSpawnParameters spawnParams;
-		const auto actor = GetWorld()->SpawnActor<AActor>(BuilderClass, SpawnTransform->GetActorLocation(), SpawnTransform->GetActorRotation(), spawnParams);
-		ABuilderBase* builder = Cast<ABuilderBase>(actor);
+		FVector spawnPos = SpawnTransform->GetActorLocation() + (BuilderSpawnOffset * i);
 		
+		const auto actor = GetWorld()->SpawnActor<AActor>(BuilderClass, spawnPos, SpawnTransform->GetActorRotation(), spawnParams);
+		ABuilderBase* builder = Cast<ABuilderBase>(actor);
+
 		Builders.Add(builder);
 	}
 	

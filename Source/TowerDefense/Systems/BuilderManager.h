@@ -19,6 +19,9 @@ private:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int NumBuilders;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector BuilderSpawnOffset;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<ABuilderBase> BuilderClass;
