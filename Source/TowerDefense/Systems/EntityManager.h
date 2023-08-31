@@ -7,6 +7,7 @@
 #include "../UI/MiniMap.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
+#include "TowerDefense/UI/MouseInteractionBase.h"
 #include "EntityManager.generated.h"
 
 UCLASS()
@@ -17,6 +18,7 @@ class TOWERDEFENSE_API AEntityManager : public AActor
 private: // vars
 	TArray<IEntity*> entities;
 	UPROPERTY() UMiniMap* minimap;
+	UPROPERTY() UMouseInteractionBase* mouseInteraction;
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,5 +31,5 @@ public: // methods
 	virtual void UnRegisterEntity(IEntity* entity);
 
 	UFUNCTION(BlueprintCallable)
-	void Setup(UMiniMap* _minimap);
+	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction);
 };

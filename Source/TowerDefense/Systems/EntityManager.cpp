@@ -16,6 +16,7 @@ void AEntityManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	minimap->OnUpdate();
+	mouseInteraction->OnUpdate();
 }
 
 void AEntityManager::RegisterEntity(IEntity* entity)
@@ -36,7 +37,8 @@ void AEntityManager::UnRegisterEntity(IEntity* entity)
 	}
 }
 
-void AEntityManager::Setup(UMiniMap* _minimap)
+void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction)
 {
 	minimap = _minimap;
+	mouseInteraction = _mouseInteraction;
 }
