@@ -4,17 +4,20 @@
 
 #include "Blueprint/WidgetLayoutLibrary.h"
 
-void UMouseInteractionBase::Setup(APlayerController* _playerController)
+void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager)
 {
 	playerController = _playerController;
+	entityManager = _entityManager;
+
 	selectionBoxSlot = Cast<UCanvasPanelSlot>(SelectionBox->Slot);
 }
 
 void UMouseInteractionBase::OnUpdate()
 {
+	UWorld* world = GetWorld();
 	const bool isLeftClickDown = playerController->IsInputKeyDown(EKeys::LeftMouseButton);
-	const FVector2d mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld());
-
+	const FVector2d mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(world);
+	
 	if (isDragging)
 	{
 		if (!isLeftClickDown)
@@ -22,10 +25,12 @@ void UMouseInteractionBase::OnUpdate()
 			isDragging = false;
 			SelectionBox->SetVisibility(ESlateVisibility::Hidden);
 
-			// deselect everything
+			entityManager->DeselectAllEntities();
+
 			return;
 		}
 
+		// get the top left and pos delta values to draw the rectangle
 		FVector2d topLeft = mousePos;
 		if (startDragPos.X < topLeft.X)
 			topLeft.X = startDragPos.X;
@@ -38,8 +43,25 @@ void UMouseInteractionBase::OnUpdate()
 
 		selectionBoxSlot->SetPosition(topLeft);
 		selectionBoxSlot->SetSize(posDelta);
-		
-		// update whats selected
+
+		// get bottom right for selection
+		FVector2d bottomRight = startDragPos;
+		if (mousePos.X > bottomRight.X)
+			bottomRight.X = mousePos.X;
+		if (mousePos.Y > bottomRight.Y)
+			bottomRight.Y = mousePos.Y;
+
+		// calculate viewport scale factor
+		const FGeometry viewportGeometry = UWidgetLayoutLibrary::GetViewportWidgetGeometry(world);
+		const FVector2d localViewportSize = viewportGeometry.GetLocalSize();
+		const FVector2d absoluteViewportSize = viewportGeometry.GetAbsoluteSize();
+		const FVector2d scaleFactor = FVector2d(absoluteViewportSize.X / localViewportSize.X, absoluteViewportSize.Y / localViewportSize.Y);
+
+		// convert from screen to world space and then do selection
+		const FVector topLeftWorldPos = GetWorldPos(topLeft, scaleFactor);
+		const FVector bottomRightWorldPos = GetWorldPos(bottomRight, scaleFactor);
+
+		entityManager->UpdateSelectedEntitiesInRange(topLeftWorldPos, bottomRightWorldPos);
 	}
 	else if (isLeftClickDown)
 	{
@@ -53,4 +75,18 @@ void UMouseInteractionBase::OnUpdate()
 
 		isDragging = true;
 	}
+}
+
+FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos, FVector2d scaleFactor)
+{
+	const FVector2d absoluteScreenPos = FVector2d(screenPos.X * scaleFactor.X, screenPos.Y * scaleFactor.Y);
+	
+	FHitResult hit;
+	playerController->GetHitResultAtScreenPosition(
+		absoluteScreenPos,
+		GroundCollision,
+		true,
+		hit);
+
+	return hit.Location;
 }

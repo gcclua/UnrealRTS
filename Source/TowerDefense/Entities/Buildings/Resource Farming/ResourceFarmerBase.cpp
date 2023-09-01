@@ -31,8 +31,12 @@ void AResourceFarmerBase::Tick(float DeltaTime)
 
 void AResourceFarmerBase::StartFarming()
 {
-	LOG_WARNING("StartFarming");
 	playerVitals = Cast<APlayerVitalsBase>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerVitalsBase::StaticClass()));
 	state = ResourceFarmerState::Farming;
 	nextFarmTime = GetWorld()->GetTimeSeconds() + GenerateTime;
+}
+
+bool AResourceFarmerBase::IsSelectable()
+{
+	return true;
 }

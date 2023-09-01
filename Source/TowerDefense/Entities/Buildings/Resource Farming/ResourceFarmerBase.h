@@ -38,4 +38,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StartFarming();
+
+	virtual bool IsSelectable() override;
 };

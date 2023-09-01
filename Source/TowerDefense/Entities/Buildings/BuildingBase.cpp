@@ -27,3 +27,8 @@ void ABuildingBase::OnDoneConstructing()
 	
 	GetWorld()->DestroyActor(this);
 }
+
+bool ABuildingBase::IsSelectable()
+{
+	return true;
+}

@@ -16,4 +16,13 @@ public:
 
 	UFUNCTION()
 	virtual AActor* GetActor();
+
+	UFUNCTION()
+	virtual bool IsSelectable()
+	{
+		return false;
+	}
+
+	UFUNCTION(BlueprintImplementableEvent)
+	UStaticMeshComponent* GetSelectionMesh();
 };

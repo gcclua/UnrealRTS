@@ -7,8 +7,9 @@
 #include "../UI/MiniMap.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
-#include "TowerDefense/UI/MouseInteractionBase.h"
 #include "EntityManager.generated.h"
+
+class UMouseInteractionBase;
 
 UCLASS()
 class TOWERDEFENSE_API AEntityManager : public AActor
@@ -32,4 +33,7 @@ public: // methods
 
 	UFUNCTION(BlueprintCallable)
 	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction);
+
+	void UpdateSelectedEntitiesInRange(FVector topLeft, FVector bottomRight);
+	void DeselectAllEntities();
 };

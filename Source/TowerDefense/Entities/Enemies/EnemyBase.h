@@ -14,4 +14,6 @@ private:
 public:
 	UPROPERTY(BlueprintReadOnly)
 	USceneComponent* SceneComponent;
+
+	virtual bool IsSelectable() override;
 };

@@ -26,4 +26,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnDoneConstructing();
+
+	virtual bool IsSelectable() override;
 };
