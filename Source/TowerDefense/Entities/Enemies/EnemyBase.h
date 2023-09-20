@@ -28,6 +28,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	USceneComponent* SceneComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EnemyType enemyType;
+
 	void OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)

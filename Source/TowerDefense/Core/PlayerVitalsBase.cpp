@@ -22,4 +22,5 @@ void APlayerVitalsBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+void APlayerVitalsBase::OnEnemyReachEnd_Implementation(AActor* enemyActor, EnemyType enemyType, double damage) { }
 void APlayerVitalsBase::OnGatherResource_Implementation(ResourceType resource, int amount) { }

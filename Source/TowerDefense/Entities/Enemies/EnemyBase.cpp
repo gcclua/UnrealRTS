@@ -1,5 +1,7 @@
 ﻿#include "EnemyBase.h"
 
+#include "TowerDefense/Core/PlayerVitalsBase.h"
+
 AEnemyBase::AEnemyBase()
 {
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Component"));
@@ -7,14 +9,18 @@ AEnemyBase::AEnemyBase()
 
 void AEnemyBase::OnReachTarget(bool success)
 {
-	AActor* nextTarget = nullptr;
-	
-	if (!spawner->GetNextSpawn(nextTarget, rowIndex, innerRowIndex))
+	rowIndex++;
+
+	AActor* nextTarget = spawner->GetSpawn(rowIndex, innerRowIndex);
+	if (nextTarget == nullptr)
 	{
 		// do damage to player
+		const auto playerVitals = Cast<APlayerVitalsBase>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerVitalsBase::StaticClass()));
+		playerVitals->OnEnemyReachEnd(this, enemyType, 5);
+
 		return;
 	}
-
+	
 	MoveToTarget(nextTarget);
 }
 

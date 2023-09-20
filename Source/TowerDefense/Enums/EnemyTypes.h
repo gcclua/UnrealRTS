@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-UENUM()
-enum class EnemyType : int32
+UENUM(BlueprintType)
+enum class EnemyType : uint8
 {
 	Default = 0,
 	Speedy,

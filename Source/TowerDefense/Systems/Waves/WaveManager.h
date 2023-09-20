@@ -19,7 +19,7 @@ protected:
 
 public:
 	// properties
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AEnemySpawner* EnemySpawner;
 	
 	UPROPERTY(EditAnywhere)

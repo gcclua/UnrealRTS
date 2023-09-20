@@ -18,12 +18,13 @@ class TOWERDEFENSE_API AEnemySpawner : public AActor
 	GENERATED_BODY()
 
 private:
+	UPROPERTY()
 	TMap<EnemyType, FEnemyContainer> enemyPrefabMap;
 	
 protected:
 	virtual void BeginPlay() override;
 
-	AActor* GetSpawn(int index, int& innerIndex);
+
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -38,5 +39,7 @@ public:
 	// spawning stuff
 	void SpawnEnemy(EnemyType enemyType);
 
-	bool GetNextSpawn(AActor* spawn, int index, int& innerIndex);
+	AActor* GetSpawn(int index, int& innerIndex);
+
+	void Fuck();
 };

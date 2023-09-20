@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "../Enums/ResourceType.h"
 #include "GameFramework/Pawn.h"
+#include "TowerDefense/Enums/EnemyTypes.h"
 #include "PlayerVitalsBase.generated.h"
 
 UCLASS()
@@ -22,4 +23,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnGatherResource(ResourceType resource, int amount = 1);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnEnemyReachEnd(AActor* enemyActor, EnemyType enemyType, double damage);
 };
