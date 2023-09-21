@@ -6,11 +6,9 @@
 #include "EnemyPathRow.h"
 #include "GameFramework/Actor.h"
 #include "../Entities/EnemyStruct.h"
-//#include "TowerDefense/Entities/Enemies/EnemyBase.h"
 #include "EnemySpawner.generated.h"
 
 struct FWave;
-//class AEnemyBase;
 
 UCLASS()
 class TOWERDEFENSE_API AEnemySpawner : public AActor
@@ -23,8 +21,6 @@ private:
 	
 protected:
 	virtual void BeginPlay() override;
-
-
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -40,6 +36,4 @@ public:
 	void SpawnEnemy(EnemyType enemyType);
 
 	AActor* GetSpawn(int index, int& innerIndex);
-
-	void Fuck();
 };

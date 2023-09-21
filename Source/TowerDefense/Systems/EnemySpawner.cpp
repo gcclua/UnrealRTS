@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EnemySpawner.h"
-
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
 
 AEnemySpawner::AEnemySpawner()
@@ -15,9 +14,6 @@ void AEnemySpawner::BeginPlay()
 
 	for (auto prefab : EnemyPrefabs)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Add: %d"), static_cast<int>(prefab.Type));
-
-		
 		auto type = prefab.Type;
 		auto value = prefab.Blueprint;
 		enemyPrefabMap.Add(type, value);
@@ -33,25 +29,48 @@ AActor* AEnemySpawner::GetSpawn(int index, int& innerIndex)
 		return nullptr;
 	
 	TArray<AActor*> row = EnemySpawns[index].Points;
-	innerIndex = FMath::RandRange(0, row.Num() - 1);
-
-	if (index != 0)
-		UE_LOG(LogTemp, Warning, TEXT("GetSpawn: %d: %d"), index, innerIndex);
+	const int rowLen = row.Num();
 	
+	// pick a row either in front or to the left/right by 1
+	if (index == 0)
+		innerIndex = FMath::RandRange(0, rowLen - 1);
+	else
+	{
+		const bool coinFlip = FMath::RandBool();
+
+		// on the left side
+		if (innerIndex == 0)
+		{
+			if (rowLen > 1 && coinFlip)
+				innerIndex = 1;
+		}
+		else if (innerIndex >= rowLen - 1) // at the far right or further
+		{
+			if (coinFlip)
+				innerIndex--;
+		}
+		else
+		{
+			if (coinFlip)
+			{
+				if (FMath::RandBool())
+					innerIndex++;
+				else
+					innerIndex--;
+			}
+		}
+	}
+
+	if (innerIndex < 0)
+		innerIndex = 0;
+	else if (innerIndex >= rowLen)
+		innerIndex = rowLen - 1;
 
 	return row[innerIndex];
 }
 
-void AEnemySpawner::Fuck()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Fuck"));
-}
-
-
 void AEnemySpawner::SpawnEnemy(EnemyType enemyType)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Spawn: %d"), static_cast<int>(enemyType));
-
 	if (!enemyPrefabMap.Contains(enemyType))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Failed to spawn due to no prefab found"));
@@ -59,7 +78,7 @@ void AEnemySpawner::SpawnEnemy(EnemyType enemyType)
 	}
 	
 	int innerIndex = 0;
-	AActor* spawn = GetSpawn(0, innerIndex);
+	const AActor* spawn = GetSpawn(0, innerIndex);
 	
 	if (spawn == nullptr)
 	{
@@ -71,10 +90,11 @@ void AEnemySpawner::SpawnEnemy(EnemyType enemyType)
 	const FVector spawnPos = spawn->GetActorLocation();
 	const FRotator spawnRotation = spawn->GetActorRotation();
 	const FActorSpawnParameters spawnParams;
-	
-	UE_LOG(LogTemp, Warning, TEXT("Spawning %s"), *type->GetName());
-	
-	AActor* enemyActor = GetWorld()->SpawnActor<AActor>(type, spawnPos, spawnRotation, spawnParams);
+
+	const AActor* enemyActor = GetWorld()->SpawnActor<AActor>(type, spawnPos, spawnRotation, spawnParams);
 	AEnemyBase* enemy = Cast<AEnemyBase>(enemyActor);
-	enemy->OnSpawn(this, innerIndex);
+	if (enemy != nullptr)
+		enemy->OnSpawn(this, innerIndex);
+	else
+		UE_LOG(LogTemp, Warning, TEXT("[EnemySpawner] Enemy is null for some reason"));
 }
