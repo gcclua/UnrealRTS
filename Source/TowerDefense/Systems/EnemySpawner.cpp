@@ -91,7 +91,7 @@ void AEnemySpawner::SpawnEnemy(EnemyType enemyType)
 	const FRotator spawnRotation = spawn->GetActorRotation();
 	const FActorSpawnParameters spawnParams;
 
-	const AActor* enemyActor = GetWorld()->SpawnActor<AActor>(type, spawnPos, spawnRotation, spawnParams);
+	AActor* enemyActor = GetWorld()->SpawnActor<AActor>(type, spawnPos, spawnRotation, spawnParams);
 	AEnemyBase* enemy = Cast<AEnemyBase>(enemyActor);
 	if (enemy != nullptr)
 		enemy->OnSpawn(this, innerIndex);

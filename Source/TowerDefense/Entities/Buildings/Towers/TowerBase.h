@@ -48,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* CollisionObject;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* RootObject;
+
 private:
 	UPROPERTY()
 	TMap<FGuid, AEnemyBase*> EnemiesInRange;
