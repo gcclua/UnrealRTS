@@ -10,11 +10,11 @@ void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityM
 	entityManager = _entityManager;
 
 	selectionBoxSlot = Cast<UCanvasPanelSlot>(SelectionBox->Slot);
+	world = GetWorld();
 }
 
 void UMouseInteractionBase::OnUpdate()
 {
-	UWorld* world = GetWorld();
 	const bool isLeftClickDown = playerController->IsInputKeyDown(EKeys::LeftMouseButton);
 	const FVector2d mousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(world);
 	
@@ -75,6 +75,21 @@ void UMouseInteractionBase::OnUpdate()
 
 		isDragging = true;
 	}
+}
+
+FVector UMouseInteractionBase::GetMousePosInWorld()
+{
+	return GetWorldPos(UWidgetLayoutLibrary::GetMousePositionOnViewport(world));
+}
+
+FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos)
+{
+	const FGeometry viewportGeometry = UWidgetLayoutLibrary::GetViewportWidgetGeometry(world);
+	const FVector2d localViewportSize = viewportGeometry.GetLocalSize();
+	const FVector2d absoluteViewportSize = viewportGeometry.GetAbsoluteSize();
+	const FVector2d scaleFactor = FVector2d(absoluteViewportSize.X / localViewportSize.X, absoluteViewportSize.Y / localViewportSize.Y);
+
+	return GetWorldPos(screenPos, scaleFactor);
 }
 
 FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos, FVector2d scaleFactor)

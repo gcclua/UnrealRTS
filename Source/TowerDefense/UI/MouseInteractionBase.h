@@ -31,12 +31,17 @@ public:
 
 	void OnUpdate();
 
+	FVector GetMousePosInWorld();
+	FVector GetWorldPos(FVector2d screenPos);
+
 private:
 	UPROPERTY()
 	APlayerController* playerController;
 	UPROPERTY()
 	AEntityManager* entityManager;
-
+	UPROPERTY()
+	UWorld* world;
+	
 	UPROPERTY() UCanvasPanelSlot* selectionBoxSlot;
 	FVector2d startDragPos;
 	FAnchors curDragAnchors;

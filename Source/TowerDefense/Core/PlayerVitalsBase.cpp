@@ -20,6 +20,7 @@ void APlayerVitalsBase::Tick(float DeltaTime)
 void APlayerVitalsBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	myInputComponent = PlayerInputComponent;
 }
 
 void APlayerVitalsBase::OnEnemyReachEnd_Implementation(AActor* enemyActor, EnemyType enemyType, double damage) { }

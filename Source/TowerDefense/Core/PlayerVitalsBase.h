@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CameraMovement.h"
 #include "../Enums/ResourceType.h"
 #include "GameFramework/Pawn.h"
 #include "TowerDefense/Enums/EnemyTypes.h"
@@ -17,9 +18,12 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInputComponent* myInputComponent;
+	
 	APlayerVitalsBase();
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnGatherResource(ResourceType resource, int amount = 1);
