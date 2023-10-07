@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EntityManager.h"
+
+#include "GeomTools.h"
+#include "MeshUtilitiesCommon.h"
 #include "TowerDefense/UI/MouseInteractionBase.h"
 
 AEntityManager::AEntityManager()
@@ -44,7 +47,7 @@ void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInte
 	mouseInteraction = _mouseInteraction;
 }
 
-void AEntityManager::UpdateSelectedEntitiesInRange(FVector topLeft, FVector bottomRight)
+void AEntityManager::UpdateSelectedEntitiesInRange(FVector topLeft, FVector bottomRight, FVector bottomLeft, FVector topRight)
 {
 	for (int i = 0; i < entities.Num(); i++)
 	{
@@ -59,9 +62,12 @@ void AEntityManager::UpdateSelectedEntitiesInRange(FVector topLeft, FVector bott
 		
 		const FVector location = actor->GetActorLocation();
 		const FVector2d point = FVector2d(location.X, location.Y);
-
-		const bool shouldBeSelected = point.X <= topLeft.X && point.X >= bottomRight.X
-							       && point.Y <= topLeft.Y && point.Y >= bottomRight.Y;
+		
+		const bool shouldBeSelected = PointInsideQuadrilateral(point,
+										  FVector2d(topLeft.X, topLeft.Y),
+									     FVector2d(topRight.X, topRight.Y),
+								       FVector2d(bottomLeft.X, bottomLeft.Y),
+									  FVector2d(bottomRight.X, bottomRight.Y));
 
 		if (shouldBeSelected != selectionMesh->IsVisible())
 			selectionMesh->SetVisibility(shouldBeSelected);
@@ -83,3 +89,41 @@ void AEntityManager::DeselectAllEntities()
 		selectionMesh->SetVisibility(false);
 	}
 }
+
+// https://stackoverflow.com/a/16260220
+bool AEntityManager::PointInsideQuadrilateral(FVector2d point, FVector2d topLeft, FVector2d topRight,
+	FVector2d bottomLeft, FVector2d bottomRight)
+{
+	const float pointAreaA = AreaOfTriangle(point, bottomLeft, topLeft);
+	const float pointAreaB = AreaOfTriangle(point, topLeft, topRight);
+	const float pointAreaC = AreaOfTriangle(point, topRight, bottomRight);
+	const float pointAreaD = AreaOfTriangle(point, bottomRight, bottomLeft);
+	const float pointArea = pointAreaA + pointAreaB + pointAreaC + pointAreaD;
+
+	const float halfQuadA = AreaOfTriangle(bottomLeft, topLeft, bottomRight);
+	const float halfQuadB = AreaOfTriangle(topLeft, topRight, bottomRight);
+
+	const float areaQuad = halfQuadA + halfQuadB;
+
+	if (areaQuad <= 0.01f)
+		return false;
+	
+	const bool outSide = pointArea > areaQuad;
+	
+	return !outSide;
+}
+
+float AEntityManager::AreaOfTriangle(FVector2d point0, FVector2d point1, FVector2d point2)
+{
+	const float A = FVector2d::Distance(point0, point1);
+	const float B = FVector2d::Distance(point1, point2);
+	const float C = FVector2d::Distance(point2, point0);
+	
+	const float S = (A + B + C) * 0.5;
+
+	const float area = FMath::Sqrt(S * (S - A) * (S - B) * (S - C));
+
+	return area;
+}
+
+

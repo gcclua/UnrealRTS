@@ -51,6 +51,12 @@ void UMouseInteractionBase::OnUpdate()
 		if (mousePos.Y > bottomRight.Y)
 			bottomRight.Y = mousePos.Y;
 
+		FVector2d bottomLeft = bottomRight;
+		bottomLeft.X = topLeft.X;
+
+		FVector2d topRight = topLeft;
+		topLeft.X = bottomRight.X;
+
 		// calculate viewport scale factor
 		const FGeometry viewportGeometry = UWidgetLayoutLibrary::GetViewportWidgetGeometry(world);
 		const FVector2d localViewportSize = viewportGeometry.GetLocalSize();
@@ -60,8 +66,10 @@ void UMouseInteractionBase::OnUpdate()
 		// convert from screen to world space and then do selection
 		const FVector topLeftWorldPos = GetWorldPos(topLeft, scaleFactor);
 		const FVector bottomRightWorldPos = GetWorldPos(bottomRight, scaleFactor);
+		const FVector bottomLeftWorldPos = GetWorldPos(bottomLeft, scaleFactor);
+		const FVector topRightWorldPos = GetWorldPos(topRight, scaleFactor);
 
-		entityManager->UpdateSelectedEntitiesInRange(topLeftWorldPos, bottomRightWorldPos);
+		entityManager->UpdateSelectedEntitiesInRange(topLeftWorldPos, bottomRightWorldPos, bottomLeftWorldPos, topRightWorldPos);
 	}
 	else if (isLeftClickDown)
 	{
