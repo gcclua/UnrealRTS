@@ -34,6 +34,9 @@ private:
 	bool holdingRightClick;
 	bool flicking;
 	float curZoom;
+	float flickVelocity;
+	FVector2d prevMousePos;
+	FVector2d flickDirection;
 	
 	UPROPERTY()
 	UMouseInteractionBase* mouseInteraction;
@@ -43,6 +46,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float flickMaxInitialVelocity;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float flickInitialVelocityMultiplier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float flickSlowdownRate;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float minZoom;
 	

@@ -14,6 +14,11 @@ ACameraMovement::ACameraMovement()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void ACameraMovement::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 void ACameraMovement::Setup(UInputComponent* _inputComponent, UMouseInteractionBase* _mouseInteraction)
 {
 	_inputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &ACameraMovement::OnRightClick);
@@ -31,25 +36,19 @@ void ACameraMovement::Setup(UInputComponent* _inputComponent, UMouseInteractionB
 	mouseInteraction = _mouseInteraction;
 
 	curPos = GetActorLocation();
-	keyboardMovement = FVector2d(0, 0);
-}
-
-void ACameraMovement::BeginPlay()
-{
-	Super::BeginPlay();
-
 	curZoom = SpringArm->TargetArmLength;
+	keyboardMovement = FVector2d(0, 0);
 }
 
 void ACameraMovement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	const FVector worldPos = mouseInteraction->GetMousePosInWorld();
+	const FVector2d curMousePos = FVector2d(worldPos.X, worldPos.Y);
 	
 	if (holdingRightClick)
 	{
-		const FVector worldPos = mouseInteraction->GetMousePosInWorld();
-		const FVector2d curMousePos = FVector2d(worldPos.X, worldPos.Y);
-
 		FVector2d curPos2d = FVector2d(curPos.X, curPos.Y);
 		const FVector2d mouseOffsetCurFrame = curMousePos - curPos2d;
 
@@ -75,10 +74,19 @@ void ACameraMovement::Tick(float DeltaTime)
 	
 	if (flicking)
 	{
+		const float velocityCurFrame = flickVelocity * DeltaTime;
+		const FVector2d delta = FVector2d (flickDirection.X * velocityCurFrame, flickDirection.Y * velocityCurFrame);
+		const FVector nextPos = FVector(curPos.X + delta.X, curPos.Y + delta.Y, curPos.Z);
 		
+		curPos = nextPos;
+		SetActorLocation(curPos);
 
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *curMousePos.ToString());
+		flickVelocity -= flickSlowdownRate * DeltaTime;
+		if (flickVelocity <= 0)
+			flicking = false;
 	}
+
+	prevMousePos = curMousePos;
 }
 
 #pragma region input binding crap
@@ -122,7 +130,13 @@ void ACameraMovement::ReleaseRightClick()
 {
 	holdingRightClick = false;
 	flicking = true;
+	
 	// get initial speed etc
+	const FVector worldPos = mouseInteraction->GetMousePosInWorld();
+	const FVector2d curMousePos = FVector2d(worldPos.X, worldPos.Y);
+	
+	flickDirection = prevMousePos - curMousePos;
+	flickVelocity = FMath::Clamp(flickDirection.Length() * flickInitialVelocityMultiplier, 0, flickMaxInitialVelocity);
 }
 
 void ACameraMovement::ReleasePanUp()
