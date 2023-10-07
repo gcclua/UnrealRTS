@@ -94,36 +94,37 @@ void AEntityManager::DeselectAllEntities()
 bool AEntityManager::PointInsideQuadrilateral(FVector2d point, FVector2d topLeft, FVector2d topRight,
 	FVector2d bottomLeft, FVector2d bottomRight)
 {
-	const float pointAreaA = AreaOfTriangle(point, bottomLeft, topLeft);
-	const float pointAreaB = AreaOfTriangle(point, topLeft, topRight);
-	const float pointAreaC = AreaOfTriangle(point, topRight, bottomRight);
-	const float pointAreaD = AreaOfTriangle(point, bottomRight, bottomLeft);
-	const float pointArea = pointAreaA + pointAreaB + pointAreaC + pointAreaD;
+	// first get the area of the quad itself
+	const double halfQuadA = AreaOfTriangle(bottomLeft, topLeft, bottomRight);
+	const double halfQuadB = AreaOfTriangle(topLeft, topRight, bottomRight);
 
-	const float halfQuadA = AreaOfTriangle(bottomLeft, topLeft, bottomRight);
-	const float halfQuadB = AreaOfTriangle(topLeft, topRight, bottomRight);
+	const double areaQuad = halfQuadA + halfQuadB;
 
-	const float areaQuad = halfQuadA + halfQuadB;
+	// get the area of the 4 triangles from the point to all the quads corners
+	const double pointAreaA = AreaOfTriangle(point, bottomLeft, topLeft);
+	const double pointAreaB = AreaOfTriangle(point, topLeft, topRight);
+	const double pointAreaC = AreaOfTriangle(point, topRight, bottomRight);
+	const double pointAreaD = AreaOfTriangle(point, bottomRight, bottomLeft);
+	
+	const double pointArea = pointAreaA + pointAreaB + pointAreaC + pointAreaD;
 
-	if (areaQuad <= 0.01f)
+	// ignore close to 0
+	if (areaQuad <= 0.0001f)
 		return false;
-	
+
+	// is outside of the area of the 4 triangles is greater than the area of the quad
 	const bool outSide = pointArea > areaQuad;
-	
 	return !outSide;
 }
 
-float AEntityManager::AreaOfTriangle(FVector2d point0, FVector2d point1, FVector2d point2)
+double AEntityManager::AreaOfTriangle(FVector2d point0, FVector2d point1, FVector2d point2)
 {
-	const float A = FVector2d::Distance(point0, point1);
-	const float B = FVector2d::Distance(point1, point2);
-	const float C = FVector2d::Distance(point2, point0);
-	
-	const float S = (A + B + C) * 0.5;
+	const double t1 = point1.Y - point2.Y;
+	const double t2 = point1.X - point2.X;
+	const double t3 = (point1.X * point2.Y) - (point1.Y * point2.X);
+	const double determinant = (point0.X * t1) + (-point0.Y * t2) + t3;
 
-	const float area = FMath::Sqrt(S * (S - A) * (S - B) * (S - C));
-
-	return area;
+	return FMath::Abs(determinant) * 0.5;
 }
 
 
