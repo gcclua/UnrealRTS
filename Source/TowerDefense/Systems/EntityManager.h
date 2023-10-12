@@ -34,9 +34,9 @@ public: // methods
 	UFUNCTION(BlueprintCallable)
 	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction);
 
-	void UpdateSelectedEntitiesInRange(FVector topLeft, FVector bottomRight, FVector bottomLeft, FVector topRight);
+	void UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight);
 	void DeselectAllEntities();
 
-	static bool PointInsideQuadrilateral(FVector2d point, FVector2d topLeft, FVector2d topRight, FVector2d bottomLeft, FVector2d bottomRight);
-	static double AreaOfTriangle(FVector2d point0, FVector2d point1, FVector2d point2);
+	static bool PointInsideQuadrilateral(const FVector2d point, const FVector2d topLeft, const FVector2d topRight, const FVector2d bottomLeft, const FVector2d bottomRight);
+	static double AreaOfTriangle(const FVector2d point0, const FVector2d point1, const FVector2d point2);
 };

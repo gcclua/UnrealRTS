@@ -2,8 +2,6 @@
 
 #include "EntityManager.h"
 
-#include "GeomTools.h"
-#include "MeshUtilitiesCommon.h"
 #include "TowerDefense/UI/MouseInteractionBase.h"
 
 AEntityManager::AEntityManager()
@@ -47,7 +45,7 @@ void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInte
 	mouseInteraction = _mouseInteraction;
 }
 
-void AEntityManager::UpdateSelectedEntitiesInRange(FVector topLeft, FVector bottomRight, FVector bottomLeft, FVector topRight)
+void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight)
 {
 	for (int i = 0; i < entities.Num(); i++)
 	{
@@ -91,8 +89,8 @@ void AEntityManager::DeselectAllEntities()
 }
 
 // https://stackoverflow.com/a/16260220
-bool AEntityManager::PointInsideQuadrilateral(FVector2d point, FVector2d topLeft, FVector2d topRight,
-	FVector2d bottomLeft, FVector2d bottomRight)
+bool AEntityManager::PointInsideQuadrilateral(const FVector2d point, const FVector2d topLeft, const FVector2d topRight,
+	const FVector2d bottomLeft, const FVector2d bottomRight)
 {
 	// first get the area of the quad itself
 	const double halfQuadA = AreaOfTriangle(bottomLeft, topLeft, bottomRight);
@@ -117,7 +115,7 @@ bool AEntityManager::PointInsideQuadrilateral(FVector2d point, FVector2d topLeft
 	return !outSide;
 }
 
-double AEntityManager::AreaOfTriangle(FVector2d point0, FVector2d point1, FVector2d point2)
+double AEntityManager::AreaOfTriangle(const FVector2d point0, const FVector2d point1, const FVector2d point2)
 {
 	const double t1 = point1.Y - point2.Y;
 	const double t2 = point1.X - point2.X;
