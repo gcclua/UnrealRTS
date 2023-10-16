@@ -8,10 +8,11 @@ struct Cell
 public:
 	FVector worldPos;
 	FVector2i gridIndex;
-	short cost;
+	BYTE cost;
+	USHORT bestCost;
 
 	Cell();
-	Cell(FVector _worldPos, FVector2i _gridIndex);
+	void Setup(FVector _worldPos, FVector2i _gridIndex);
 	~Cell();
 
 	void IncreaseCost(int amount);

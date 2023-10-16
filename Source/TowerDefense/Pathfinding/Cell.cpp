@@ -1,13 +1,16 @@
 ﻿#include "Cell.h"
 
-Cell::Cell()
+Cell::Cell() : cost(0), bestCost(USHORT_MAX)
 {
+
 }
 
-Cell::Cell(FVector _worldPos, FVector2i _gridIndex)
+void Cell::Setup(FVector _worldPos, FVector2i _gridIndex)
 {
 	worldPos = _worldPos;
 	gridIndex = _gridIndex;
+	cost = 0;
+	bestCost = USHORT_MAX;
 }
 
 Cell::~Cell()
@@ -17,12 +20,11 @@ Cell::~Cell()
 
 void Cell::IncreaseCost(int amount)
 {
-	constexpr short MAX_VALUE = 255;
-	if (cost == MAX_VALUE)
+	if (cost == BYTE_MAX)
 		return;
 	
-	if (amount + cost >= MAX_VALUE)
-		cost = MAX_VALUE;
+	if (amount + cost >= BYTE_MAX)
+		cost = BYTE_MAX;
 	else
 		cost += amount;
 }
