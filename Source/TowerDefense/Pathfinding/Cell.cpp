@@ -28,5 +28,5 @@ void Cell::IncreaseCost(int amount)
 	if (amount + cost >= BYTE_MAX)
 		cost = BYTE_MAX;
 	else
-		cost += amount;
+		cost += static_cast<BYTE>(amount);
 }

@@ -60,7 +60,7 @@ void FlowField::CreateCostField()
 
 			if (hasHitWall)
 			{
-				cell->IncreaseCost(255);
+				cell->IncreaseCost(BYTE_MAX);
 			}
 
 			//DrawDebugCircle(world.Get(), cell->worldPos, cellRadius, 32, hasHitWall ? FColor::Red : FColor::Blue,true,
@@ -75,7 +75,7 @@ void FlowField::CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell)
 	destinationCell->cost = 0;
 	destinationCell->bestCost = 0;
 
-	UE_LOG(LogTemp, Warning, TEXT("Create integration field: (%d, %d)"), _destinationCell->gridIndex.X, _destinationCell->gridIndex.Y);
+	UE_LOG(LogTemp, Warning, TEXT("Create integration field, destination index: (%d, %d)"), _destinationCell->gridIndex.X, _destinationCell->gridIndex.Y);
 	
 	TQueue<TSharedPtr<Cell>> cellsToCheck;
 	cellsToCheck.Enqueue(destinationCell);
@@ -93,6 +93,7 @@ void FlowField::CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell)
 				if (curNeighbour->cost + curCell->bestCost < curNeighbour->bestCost)
 				{
 					curNeighbour->bestCost = static_cast<USHORT>(curNeighbour->cost + curCell->bestCost);
+					cellsToCheck.Enqueue(curNeighbour);
 				}
 			}
 		}
@@ -156,22 +157,36 @@ void FlowField::DrawDebug()
 			const FVector gridPos = cell->worldPos;
 
 			constexpr float lifeTime = 50;
-			
-			// Draw a box for the horizontal line (as a grid line)
-			FVector BoxExtent = FVector(cellRadius, cellRadius, 1.0f); // Adjust the extent as needed
-			FColor BoxColor = FColor::Black; // Set your desired color
+
+			FVector BoxExtent = FVector(cellRadius, cellRadius, 1.0f);
+			FColor BoxColor = FColor::Black;
 			DrawDebugBox(world.Get(), gridPos, BoxExtent, BoxColor, false, lifeTime, 0);
-
-			// Draw the cost value as text or labels near the cell
-			FString CostString = FString::Printf(TEXT("%d"), cell->cost);
-
-			if (debugType == FlowFieldDebugType::IntegrationField)
-				CostString = FString::Printf(TEXT("%d"), cell->bestCost);
 			
 			//FString CostString = FString::Printf(TEXT("(%d, %d)"), x, y);
-			FVector TextLocation = gridPos + FVector(cellRadius / 2.0f, cellRadius / 2.0f, 0); // Adjust the location as needed
-			FColor TextColor = FColor::White; // Set your desired text color
-			constexpr float TextScale = 2.0f; // Set your desired text scale
+			FVector TextLocation = gridPos + FVector(cellRadius / 2.0f, cellRadius / 2.0f, 0);
+			FColor TextColor = FColor::Black;
+			float TextScale = 2.0f;
+			
+			// Draw the cost value as text or labels near the cell
+			FString CostString = FString::Printf(TEXT("%d"), cell->cost);
+			if (cell->cost >= 255)
+			{
+				TextColor = FColor::Red;
+				TextScale = 1;
+			}
+
+			if (debugType == FlowFieldDebugType::IntegrationField)
+			{
+				CostString = FString::Printf(TEXT("%d"), cell->bestCost);
+				if (cell->bestCost >= 255)
+				{
+					TextColor = FColor::Red;
+					TextScale = 1;
+				}
+			}
+			
+			if (cell == destinationCell)
+				TextColor = FColor::Blue;
 			
 			DrawDebugString(world.Get(), TextLocation, CostString, nullptr, TextColor, lifeTime, false, TextScale);
 		}

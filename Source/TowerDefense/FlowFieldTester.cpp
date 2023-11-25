@@ -62,15 +62,29 @@ void AFlowFieldTester::Tick(float DeltaTime)
 
 	if (flowFieldActive)
 	{
+		const bool clearButtonDownThisFrame = playerController->IsInputKeyDown(EKeys::C);
+		if (clearButtonDownThisFrame && !clearDebugButtonDown)
+		{
+			flowField = nullptr;
+			flowFieldActive = false;
+			FlushDebugStrings(GetWorld());
+			FlushPersistentDebugLines(GetWorld());
+		}
+
+		clearDebugButtonDown = clearButtonDownThisFrame;
+		
 		const bool switchDebugModeDownThisFrame = playerController->IsInputKeyDown(EKeys::L);
 		if (switchDebugModeDownThisFrame && !switchDebugButtonDown)
 		{
-			if (flowField->debugType == FlowFieldDebugType::CostField)
-				flowField->SetDebugType(FlowFieldDebugType::IntegrationField);
-			else
-				flowField->SetDebugType(FlowFieldDebugType::CostField);
+			if (flowField != nullptr)
+			{
+				if (flowField->debugType == FlowFieldDebugType::CostField)
+					flowField->SetDebugType(FlowFieldDebugType::IntegrationField);
+				else
+					flowField->SetDebugType(FlowFieldDebugType::CostField);
 
-			flowField->DrawDebug();
+				flowField->DrawDebug();	
+			}
 		}
 
 		switchDebugButtonDown = switchDebugModeDownThisFrame;

@@ -16,7 +16,7 @@ void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 	if (enemy == nullptr)
 		return;
 
-	const FGuid guid = enemy->GetActorGuid();
+	const FGuid guid = OtherActor->GetActorGuid();
 	if (EnemiesInRange.Contains(guid))
 		return;
 

@@ -44,6 +44,8 @@ private:
 
 	bool hasSetup = false;
 	bool flowFieldActive = false;
+	
 	bool mouseButtonDown = false;
 	bool switchDebugButtonDown = false;
+	bool clearDebugButtonDown = false;
 };
