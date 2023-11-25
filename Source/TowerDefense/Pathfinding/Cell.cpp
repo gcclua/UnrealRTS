@@ -1,6 +1,6 @@
 ﻿#include "Cell.h"
 
-Cell::Cell() : cost(0), bestCost(USHORT_MAX)
+Cell::Cell() : cost(0), bestCost(USHORT_MAX), bestDirection(GridDirection::None)
 {
 
 }

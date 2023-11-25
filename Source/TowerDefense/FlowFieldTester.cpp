@@ -53,6 +53,7 @@ void AFlowFieldTester::Tick(float DeltaTime)
 		const TSharedPtr<Cell> destinationCell = flowField->GetCellFromWorldPos(mouseWorldPos);
 		
 		flowField->CreateIntegrationField(destinationCell);
+		flowField->CreateFlowField();
 
 		flowField->SetDebugType(FlowFieldDebugType::CostField);
 		flowField->DrawDebug();
@@ -80,7 +81,9 @@ void AFlowFieldTester::Tick(float DeltaTime)
 			{
 				if (flowField->debugType == FlowFieldDebugType::CostField)
 					flowField->SetDebugType(FlowFieldDebugType::IntegrationField);
-				else
+				else if (flowField->debugType == FlowFieldDebugType::IntegrationField)
+					flowField->SetDebugType(FlowFieldDebugType::BestDirection);
+				else 
 					flowField->SetDebugType(FlowFieldDebugType::CostField);
 
 				flowField->DrawDebug();	

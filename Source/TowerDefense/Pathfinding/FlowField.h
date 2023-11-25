@@ -26,6 +26,7 @@ public:
 
 	~FlowField();
 
+	void CreateFlowField();
 	void CreateCostField();
 	void CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell);
 	void DrawDebug();
@@ -34,6 +35,7 @@ public:
 	TSharedPtr<Cell> GetCellFromWorldPos(FVector worldPos) const;
 
 private:
+	TArray<TSharedPtr<Cell>> GetNeighboringCells_All(const TSharedPtr<Cell>& cell) const;
 	TArray<TSharedPtr<Cell>> GetNeighboringCells_Cardinals(const TSharedPtr<Cell>& cell) const;
 	void AddNeighbor(TArray<TSharedPtr<Cell>>& neighbors, const int x, const int y) const;
 };

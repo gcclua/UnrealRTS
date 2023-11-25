@@ -44,6 +44,29 @@ FlowField::~FlowField()
 
 }
 
+void FlowField::CreateFlowField()
+ {
+ 	for (int x = 0; x < gridSize.X; x++)
+ 	{
+ 		for (int y = 0; y < gridSize.Y; y++)
+ 		{
+ 			TSharedPtr<Cell> curCell = grid->GetElement(x, y);
+ 			TArray<TSharedPtr<Cell>> curNeighbours = GetNeighboringCells_All(curCell);
+ 
+ 			int bestCost = curCell->bestCost;
+ 			for (const TSharedPtr<Cell> curNeighbour : curNeighbours)
+ 			{
+ 				if (curNeighbour->bestCost < bestCost)
+ 				{
+ 					bestCost = curNeighbour->bestCost;
+ 					curCell->bestDirection = GridDirection::GetDirectionFromV2D(curNeighbour->gridIndex - curCell->gridIndex);
+ 				}
+ 			}
+ 			
+ 		}
+ 	}
+ }
+
 void FlowField::CreateCostField()
 {
 	for (int x = 0; x < gridSize.X; x++)
@@ -131,6 +154,32 @@ TArray<TSharedPtr<Cell>> FlowField::GetNeighboringCells_Cardinals(const TSharedP
 	return neighbors;
 }
 
+TArray<TSharedPtr<Cell>> FlowField::GetNeighboringCells_All(const TSharedPtr<Cell>& cell) const
+{
+	TArray<TSharedPtr<Cell>> neighbors;
+
+	if (cell.IsValid())
+	{
+		// Calculate the grid coordinates of the neighboring cells
+		const int x = cell->gridIndex.X;
+		const int y = cell->gridIndex.Y;
+
+		// Check and add the neighboring cells in the cardinal directions
+		AddNeighbor(neighbors, x - 1, y); // Left
+		AddNeighbor(neighbors, x + 1, y); // Right
+		AddNeighbor(neighbors, x, y - 1); // Up
+		AddNeighbor(neighbors, x, y + 1); // Down
+
+		// Diagonal neighbors
+		AddNeighbor(neighbors, x - 1, y - 1); // Top-left
+		AddNeighbor(neighbors, x - 1, y + 1); // Bottom-left
+		AddNeighbor(neighbors, x + 1, y - 1); // Top-right
+		AddNeighbor(neighbors, x + 1, y + 1); // Bottom-right
+	}
+
+	return neighbors;
+}
+
 void FlowField::AddNeighbor(TArray<TSharedPtr<Cell>>& neighbors, const int x, const int y) const
 {
 	// Ensure the coordinates are within the grid boundaries
@@ -161,12 +210,21 @@ void FlowField::DrawDebug()
 			FVector BoxExtent = FVector(cellRadius, cellRadius, 1.0f);
 			FColor BoxColor = FColor::Black;
 			DrawDebugBox(world.Get(), gridPos, BoxExtent, BoxColor, false, lifeTime, 0);
-			
-			//FString CostString = FString::Printf(TEXT("(%d, %d)"), x, y);
+
+			if (debugType == FlowFieldDebugType::BestDirection)
+			{
+				// Draw arrow for best direction
+				const FVector ArrowStart = gridPos + FVector(0, 0, 0) - FVector(cell->bestDirection.Vector.X, cell->bestDirection.Vector.Y, 0) * (cellRadius / 2);
+				const FVector ArrowEnd = ArrowStart + FVector(cell->bestDirection.Vector.X, cell->bestDirection.Vector.Y, 0) * cellRadius;
+
+				DrawDebugDirectionalArrow(world.Get(), ArrowStart, ArrowEnd, 10.0f, cell->cost >= 255 ? FColor::Red : FColor::Blue, false, lifeTime, 0, 2.0f);
+				continue;
+			}
+
 			FVector TextLocation = gridPos + FVector(cellRadius / 2.0f, cellRadius / 2.0f, 0);
 			FColor TextColor = FColor::Black;
 			float TextScale = 2.0f;
-			
+		
 			// Draw the cost value as text or labels near the cell
 			FString CostString = FString::Printf(TEXT("%d"), cell->cost);
 			if (cell->cost >= 255)
@@ -184,7 +242,7 @@ void FlowField::DrawDebug()
 					TextScale = 1;
 				}
 			}
-			
+		
 			if (cell == destinationCell)
 				TextColor = FColor::Blue;
 			
@@ -195,6 +253,6 @@ void FlowField::DrawDebug()
 
 void FlowField::SetDebugType(FlowFieldDebugType type)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set Flowfield Debug Type: %d (1=cost, 2=integration)"), type);
+	UE_LOG(LogTemp, Warning, TEXT("Set Flowfield Debug Type: %d (1=cost, 2=integration, 3=direction)"), type);
 	debugType = type;
 }
