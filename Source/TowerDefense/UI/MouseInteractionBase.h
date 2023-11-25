@@ -31,8 +31,8 @@ public:
 
 	void OnUpdate();
 
-	FVector GetMousePosInWorld();
-	FVector GetWorldPos(FVector2d screenPos);
+	FVector GetMousePosInWorld() const;
+	FVector GetWorldPos(FVector2d screenPos) const;
 
 private:
 	UPROPERTY()
@@ -47,5 +47,5 @@ private:
 	FAnchors curDragAnchors;
 	bool isDragging = false;
 
-	FVector GetWorldPos(FVector2d screenPos, FVector2d scaleFactor);
+	FVector GetWorldPos(FVector2d screenPos, FVector2d scaleFactor) const;
 };

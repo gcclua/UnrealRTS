@@ -85,12 +85,12 @@ void UMouseInteractionBase::OnUpdate()
 	}
 }
 
-FVector UMouseInteractionBase::GetMousePosInWorld()
+FVector UMouseInteractionBase::GetMousePosInWorld() const
 {
 	return GetWorldPos(UWidgetLayoutLibrary::GetMousePositionOnViewport(world));
 }
 
-FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos)
+FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos) const
 {
 	const FGeometry viewportGeometry = UWidgetLayoutLibrary::GetViewportWidgetGeometry(world);
 	const FVector2d localViewportSize = viewportGeometry.GetLocalSize();
@@ -100,7 +100,7 @@ FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos)
 	return GetWorldPos(screenPos, scaleFactor);
 }
 
-FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos, FVector2d scaleFactor)
+FVector UMouseInteractionBase::GetWorldPos(FVector2d screenPos, FVector2d scaleFactor) const
 {
 	const FVector2d absoluteScreenPos = FVector2d(screenPos.X * scaleFactor.X, screenPos.Y * scaleFactor.Y);
 	

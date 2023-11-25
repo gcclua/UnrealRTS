@@ -9,8 +9,10 @@ void Cell::Setup(FVector _worldPos, FVector2i _gridIndex)
 {
 	worldPos = _worldPos;
 	gridIndex = _gridIndex;
-	cost = 0;
+	cost = 1;
 	bestCost = USHORT_MAX;
+
+	//UE_LOG(LogTemp, Warning, TEXT("Pos init: %s"), *worldPos.ToString());
 }
 
 Cell::~Cell()

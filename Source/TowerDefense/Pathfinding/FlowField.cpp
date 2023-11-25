@@ -10,25 +10,33 @@ FlowField::FlowField() : cellRadius(0)
 void FlowField::Init(float _cellRadius, FVector2i _gridSize, UWorld* _world, const TArray<TEnumAsByte<EObjectTypeQuery>> _wallCollision)
 {
 	if (!_world) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Flowfield init"));
 	
 	cellRadius = _cellRadius;
+	cellDiameter = cellRadius * 2;
 	world = MakeWeakObjectPtr(_world);
 	gridSize = _gridSize;
 	wallCollision = _wallCollision;
 
 	grid = MakeShared<TArray2D<TSharedPtr<Cell>>>();
-	grid->Init(MakeShared<Cell>(), gridSize.X, gridSize.Y);
 
-	const float cellDiameter = cellRadius * 2;
+	TSharedPtr<Cell> initCell = MakeShared<Cell>();
+	grid->Init(initCell, gridSize.X, gridSize.Y);
+	
 	for (int x = 0; x < gridSize.X; x++)
 	{
 		for (int y = 0; y < gridSize.Y; y++)
 		{
 			const FVector worldPos = FVector(cellDiameter * x + cellRadius, cellDiameter * y + cellRadius, 100);
-			const TSharedPtr<Cell> curCell = grid->GetElement(x, y);
+			
+			TSharedPtr<Cell> curCell = MakeShared<Cell>();
 			curCell->Setup(worldPos, FVector2i(x, y));
+			grid->SetElement(x, y, curCell);
 		}
 	}
+
+	initCell = nullptr;
 }
 
 FlowField::~FlowField()
@@ -45,13 +53,18 @@ void FlowField::CreateCostField()
 			TSharedPtr<Cell> cell = grid->GetElement(x, y);
 			FHitResult outHit;
 
-			const bool hasHitWall = UKismetSystemLibrary::SphereTraceSingleForObjects(world.Get(), cell->worldPos, cell->worldPos, cellRadius * 1.5f, wallCollision,
+			const FVector worldPos = cell->worldPos;
+			
+			const bool hasHitWall = UKismetSystemLibrary::SphereTraceSingleForObjects(world.Get(), worldPos, worldPos, cellRadius * 1.5f, wallCollision,
 				false, TArray<AActor*>(), EDrawDebugTrace::None, outHit, false);
 
 			if (hasHitWall)
 			{
 				cell->IncreaseCost(255);
 			}
+
+			//DrawDebugCircle(world.Get(), cell->worldPos, cellRadius, 32, hasHitWall ? FColor::Red : FColor::Blue,true,
+			//	-1,0,2.0f,FVector(0, 1, 0),FVector(1, 0, 0));
 		}
 	}
 }
@@ -59,6 +72,10 @@ void FlowField::CreateCostField()
 void FlowField::CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell)
 {
 	destinationCell = _destinationCell;
+	destinationCell->cost = 0;
+	destinationCell->bestCost = 0;
+
+	UE_LOG(LogTemp, Warning, TEXT("Create integration field: (%d, %d)"), _destinationCell->gridIndex.X, _destinationCell->gridIndex.Y);
 	
 	TQueue<TSharedPtr<Cell>> cellsToCheck;
 	cellsToCheck.Enqueue(destinationCell);
@@ -80,6 +97,17 @@ void FlowField::CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell)
 			}
 		}
 	}
+}
+
+TSharedPtr<Cell> FlowField::GetCellFromWorldPos(FVector worldPos) const
+{
+	const double percentX = FMath::Clamp(worldPos.X / (gridSize.X * cellDiameter), 0.0, 1.0);
+	const double percentY = FMath::Clamp(worldPos.Y / (gridSize.Y * cellDiameter), 0.0, 1.0);
+
+	const int x = FMath::Clamp(FMath::FloorToInt(gridSize.X * percentX), 0, gridSize.X - 1);
+	const int y = FMath::Clamp(FMath::FloorToInt(gridSize.Y * percentY), 0, gridSize.Y - 1);
+
+	return grid->GetElement(x, y);
 }
 
 TArray<TSharedPtr<Cell>> FlowField::GetNeighboringCells_Cardinals(const TSharedPtr<Cell>& cell) const
@@ -109,4 +137,49 @@ void FlowField::AddNeighbor(TArray<TSharedPtr<Cell>>& neighbors, const int x, co
 	{
 		neighbors.Add(grid->GetElement(x, y));
 	}
+}
+
+void FlowField::DrawDebug()
+{
+	// r.DebugSafeZone.MaxDebugTextStringsPerActor 0
+	FlushDebugStrings(world.Get());
+	FlushPersistentDebugLines(world.Get());
+
+	if (debugType == FlowFieldDebugType::None)
+		return;
+	
+	for (int x = 0; x < gridSize.X; x++)
+	{
+		for (int y = 0; y < gridSize.Y; y++)
+		{
+			const TSharedPtr<Cell> cell = grid->GetElement(x, y);
+			const FVector gridPos = cell->worldPos;
+
+			constexpr float lifeTime = 50;
+			
+			// Draw a box for the horizontal line (as a grid line)
+			FVector BoxExtent = FVector(cellRadius, cellRadius, 1.0f); // Adjust the extent as needed
+			FColor BoxColor = FColor::Black; // Set your desired color
+			DrawDebugBox(world.Get(), gridPos, BoxExtent, BoxColor, false, lifeTime, 0);
+
+			// Draw the cost value as text or labels near the cell
+			FString CostString = FString::Printf(TEXT("%d"), cell->cost);
+
+			if (debugType == FlowFieldDebugType::IntegrationField)
+				CostString = FString::Printf(TEXT("%d"), cell->bestCost);
+			
+			//FString CostString = FString::Printf(TEXT("(%d, %d)"), x, y);
+			FVector TextLocation = gridPos + FVector(cellRadius / 2.0f, cellRadius / 2.0f, 0); // Adjust the location as needed
+			FColor TextColor = FColor::White; // Set your desired text color
+			constexpr float TextScale = 2.0f; // Set your desired text scale
+			
+			DrawDebugString(world.Get(), TextLocation, CostString, nullptr, TextColor, lifeTime, false, TextScale);
+		}
+	}
+}
+
+void FlowField::SetDebugType(FlowFieldDebugType type)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Set Flowfield Debug Type: %d (1=cost, 2=integration)"), type);
+	debugType = type;
 }
