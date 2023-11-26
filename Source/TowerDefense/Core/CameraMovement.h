@@ -70,11 +70,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector BoundsTopLeft;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector BoundsBottomRight;
+
 	UFUNCTION(BlueprintCallable)
 	void Setup(UInputComponent* _inputComponent, UMouseInteractionBase* _mouseInteraction);
 	
 	ACameraMovement();
 	virtual void Tick(float DeltaTime) override;
 
-
+	void ClampPosition(FVector& pos) const;
 };

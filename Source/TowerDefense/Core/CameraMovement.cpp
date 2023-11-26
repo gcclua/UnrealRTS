@@ -57,6 +57,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		curPos.X = curPos2d.X;
 		curPos.Y = curPos2d.Y;
 
+		ClampPosition(curPos);
 		SetActorLocation(curPos);
 		return;
 	}
@@ -65,6 +66,8 @@ void ACameraMovement::Tick(float DeltaTime)
 	{
 		const FVector movementDelta = FVector(keyboardMovement.X * DeltaTime, keyboardMovement.Y * DeltaTime, 0);
 		curPos += movementDelta;
+		
+		ClampPosition(curPos);
 		SetActorLocation(curPos);
 
 		if (flicking)
@@ -79,6 +82,8 @@ void ACameraMovement::Tick(float DeltaTime)
 		const FVector nextPos = FVector(curPos.X + delta.X, curPos.Y + delta.Y, curPos.Z);
 		
 		curPos = nextPos;
+
+		ClampPosition(curPos);
 		SetActorLocation(curPos);
 
 		flickVelocity -= flickSlowdownRate * DeltaTime;
@@ -87,6 +92,19 @@ void ACameraMovement::Tick(float DeltaTime)
 	}
 
 	prevMousePos = curMousePos;
+}
+
+void ACameraMovement::ClampPosition(FVector& pos) const
+{
+	if (pos.X > BoundsTopLeft.X)
+		pos.X = BoundsTopLeft.X;
+	else if (pos.X < BoundsBottomRight.X)
+		pos.X = BoundsBottomRight.X;
+
+	if (pos.Y > BoundsTopLeft.Y)
+		pos.Y = BoundsTopLeft.Y;
+	else if (pos.Y< BoundsBottomRight.Y)
+		pos.Y = BoundsBottomRight.Y;
 }
 
 #pragma region input binding crap
