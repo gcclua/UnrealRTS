@@ -40,3 +40,8 @@ bool AResourceFarmerBase::IsSelectable()
 {
 	return true;
 }
+
+EntityType AResourceFarmerBase::GetEntityType()
+{
+	return EntityType::ResourceFarmer;
+}

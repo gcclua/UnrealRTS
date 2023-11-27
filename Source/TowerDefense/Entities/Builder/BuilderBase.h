@@ -22,4 +22,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OnStartJob(ABuildingBase* building);
+
+	virtual EntityType GetEntityType() override;
 };

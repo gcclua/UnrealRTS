@@ -40,4 +40,5 @@ public:
 	void StartFarming();
 
 	virtual bool IsSelectable() override;
+	virtual EntityType GetEntityType() override;
 };

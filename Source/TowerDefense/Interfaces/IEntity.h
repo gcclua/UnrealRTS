@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "TowerDefense/Enums/EntityType.h"
 
 #include "IEntity.generated.h"
 
@@ -21,6 +22,12 @@ public:
 	virtual bool IsSelectable()
 	{
 		return false;
+	}
+
+	UFUNCTION()
+	virtual EntityType GetEntityType()
+	{
+		return EntityType::None;
 	}
 
 	UFUNCTION(BlueprintImplementableEvent)

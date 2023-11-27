@@ -37,4 +37,5 @@ public:
 	void MoveToTarget(AActor* target);
 
 	virtual bool IsSelectable() override;
+	virtual EntityType GetEntityType() override;
 };

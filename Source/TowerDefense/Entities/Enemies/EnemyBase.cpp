@@ -38,3 +38,8 @@ bool AEnemyBase::IsSelectable()
 {
 	return true;
 }
+
+EntityType AEnemyBase::GetEntityType()
+{
+	return EntityType::Enemy;
+}

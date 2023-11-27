@@ -23,6 +23,8 @@ private:
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	virtual EntityType GetEntityType() override;
+
 protected:
 	virtual void BeginPlay() override;
 	

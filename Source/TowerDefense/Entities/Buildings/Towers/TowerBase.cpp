@@ -92,3 +92,8 @@ bool ATowerBase::FindClosestEnemy()
 	
 	return true;
 }
+
+EntityType ATowerBase::GetEntityType()
+{
+	return EntityType::Tower;
+}
