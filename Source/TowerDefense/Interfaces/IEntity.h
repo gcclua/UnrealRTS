@@ -14,10 +14,6 @@ class IEntity : public IInterface
 	GENERATED_BODY()
 
 public:
-
-	UFUNCTION()
-	virtual AActor* GetActor();
-
 	UFUNCTION()
 	virtual bool IsSelectable()
 	{

@@ -4,11 +4,12 @@
 
 #include "Blueprint/WidgetLayoutLibrary.h"
 
-void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager)
+void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager, AUnitManager* _unitManager)
 {
 	playerController = _playerController;
 	entityManager = _entityManager;
-
+	unitManager = _unitManager;
+	
 	selectionBoxSlot = Cast<UCanvasPanelSlot>(SelectionBox->Slot);
 	world = GetWorld();
 }
@@ -24,9 +25,6 @@ void UMouseInteractionBase::OnUpdate()
 		{
 			isDragging = false;
 			SelectionBox->SetVisibility(ESlateVisibility::Hidden);
-
-			entityManager->DeselectAllEntities();
-
 			return;
 		}
 
@@ -80,6 +78,8 @@ void UMouseInteractionBase::OnUpdate()
 		SelectionBox->SetVisibility(ESlateVisibility::Visible);
 		selectionBoxSlot->SetSize(FVector2d(0, 0));
 		curDragAnchors = selectionBoxSlot->GetAnchors();
+
+		entityManager->DeselectAllEntities();
 
 		isDragging = true;
 	}

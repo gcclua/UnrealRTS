@@ -7,6 +7,8 @@
 #include "../UI/MiniMap.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
+#include "TowerDefense/Entities/Units/IUnit.h"
+#include "TowerDefense/Entities/Units/UnitManager.h"
 #include "EntityManager.generated.h"
 
 class UMouseInteractionBase;
@@ -20,7 +22,8 @@ private: // vars
 	TArray<IEntity*> entities;
 	UPROPERTY() UMiniMap* minimap;
 	UPROPERTY() UMouseInteractionBase* mouseInteraction;
-
+	UPROPERTY() AUnitManager* unitManager;
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -32,11 +35,11 @@ public: // methods
 	virtual void UnRegisterEntity(IEntity* entity);
 
 	UFUNCTION(BlueprintCallable)
-	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction);
+	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction, AUnitManager* _unitManager);
 
 	void UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight);
 	void DeselectAllEntities();
-
+	
 	static bool PointInsideQuadrilateral(const FVector2d point, const FVector2d topLeft, const FVector2d topRight, const FVector2d bottomLeft, const FVector2d bottomRight);
 	static double AreaOfTriangle(const FVector2d point0, const FVector2d point1, const FVector2d point2);
 };

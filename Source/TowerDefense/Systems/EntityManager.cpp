@@ -26,7 +26,7 @@ void AEntityManager::RegisterEntity(IEntity* entity)
 	if (!entities.Contains(entity))
 	{
 		entities.Add(entity);
-		minimap->RegisterActor(entity->GetActor());
+		minimap->RegisterActor(Cast<AActor>(entity));
 	}
 }
 
@@ -35,14 +35,15 @@ void AEntityManager::UnRegisterEntity(IEntity* entity)
 	if (entities.Contains(entity))
 	{
 		entities.Remove(entity);
-		minimap->UnRegisterActor(entity->GetActor());
+		minimap->UnRegisterActor(Cast<AActor>(entity));
 	}
 }
 
-void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction)
+void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction, AUnitManager* _unitManager)
 {
 	minimap = _minimap;
 	mouseInteraction = _mouseInteraction;
+	unitManager = _unitManager;
 }
 
 void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight)
@@ -50,12 +51,12 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 	for (int i = 0; i < entities.Num(); i++)
 	{
 		IEntity* entity = entities[i];
-		if (!entity || !entity->IsSelectable())
+		if (entity == nullptr || !entity->IsSelectable())
 			continue;
 
-		AActor* actor = entity->GetActor();
+		AActor* actor = Cast<AActor>(entity);
 		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(actor);
-		if (!selectionMesh)
+		if (selectionMesh == nullptr)
 		    continue;
 		
 		const FVector location = actor->GetActorLocation();
@@ -66,7 +67,17 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 									     FVector2d(topRight.X, topRight.Y),
 								       FVector2d(bottomLeft.X, bottomLeft.Y),
 									  FVector2d(bottomRight.X, bottomRight.Y));
-
+		
+		if (shouldBeSelected)
+		{
+			if (entity->GetEntityType() == EntityType::Unit)
+			{
+				IUnit* unit = Cast<IUnit>(entity);
+				if (unit != nullptr)
+					unitManager->AddCurrentlySelectedUnit(unit);
+			}
+		}
+		
 		if (shouldBeSelected != selectionMesh->IsVisible())
 			selectionMesh->SetVisibility(shouldBeSelected);
 	}
@@ -74,13 +85,14 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 
 void AEntityManager::DeselectAllEntities()
 {
+	unitManager->ClearCurrentlySelectedUnits();
 	for (int i = 0; i < entities.Num(); i++)
 	{
 		IEntity* entity = entities[i];
 		if (!entity || !entity->IsSelectable())
 			continue;
 
-		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(entity->GetActor());
+		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(Cast<AActor>(entity));
 		if (!selectionMesh)
 			continue;
 		

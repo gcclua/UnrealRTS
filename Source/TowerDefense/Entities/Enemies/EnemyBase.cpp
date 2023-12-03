@@ -36,7 +36,7 @@ void AEnemyBase::OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex)
 
 bool AEnemyBase::IsSelectable()
 {
-	return true;
+	return false;
 }
 
 EntityType AEnemyBase::GetEntityType()

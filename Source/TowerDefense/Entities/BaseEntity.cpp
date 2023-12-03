@@ -35,10 +35,5 @@ void ABaseEntity::OnDestroy()
 	entityManager->UnRegisterEntity(this);
 }
 
-AActor* IEntity::GetActor()
-{
-	return dynamic_cast<AActor*>(this);
-}
-
 void ABaseEntity::OnUpdate_Implementation() { }
 void ABaseEntity::OnInit_Implementation() { }
