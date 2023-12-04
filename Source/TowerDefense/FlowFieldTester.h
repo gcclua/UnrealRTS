@@ -19,6 +19,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TArray<TEnumAsByte<EObjectTypeQuery>> WallCollision;
+
+	UPROPERTY(EditAnywhere)
+	FVector StartPoint = FVector(0, 0, 0);
 	
 	// Sets default values for this actor's properties
 	AFlowFieldTester();

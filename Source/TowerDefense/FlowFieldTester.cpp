@@ -32,7 +32,7 @@ void AFlowFieldTester::Setup()
 void AFlowFieldTester::CreateFlowField()
 {
 	flowField = MakeShared<FlowField>();
-	flowField->Init(50, FVector2i(30, 30), GetWorld(), WallCollision);
+	flowField->Init(StartPoint, 50, FVector2i(30, 30), GetWorld(), WallCollision);
 	flowFieldActive = true;
 }
 
@@ -51,12 +51,22 @@ void AFlowFieldTester::Tick(float DeltaTime)
 
 		const FVector mouseWorldPos = mouseInteraction->GetMousePosInWorld();
 		const TSharedPtr<Cell> destinationCell = flowField->GetCellFromWorldPos(mouseWorldPos);
-		
-		flowField->CreateIntegrationField(destinationCell);
-		flowField->CreateFlowField();
 
-		flowField->SetDebugType(FlowFieldDebugType::CostField);
-		flowField->DrawDebug();
+		if (destinationCell == nullptr)
+		{
+			flowField = nullptr;
+			flowFieldActive = false;
+
+			UE_LOG(LogTemp, Warning, TEXT("FlowField: Destination Cell is null"));
+		}
+		else
+		{
+			flowField->CreateIntegrationField(destinationCell);
+			flowField->CreateFlowField();
+
+			flowField->SetDebugType(FlowFieldDebugType::CostField);
+			flowField->DrawDebug();	
+		}
 	}
 	
 	mouseButtonDown = isLeftClickDownThisFrame;

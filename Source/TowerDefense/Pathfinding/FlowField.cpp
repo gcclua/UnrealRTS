@@ -3,11 +3,11 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
 
-FlowField::FlowField() : cellRadius(0)
+FlowField::FlowField() : cellRadius(0), cellDiameter(0)
 {
 }
 
-void FlowField::Init(float _cellRadius, FVector2i _gridSize, UWorld* _world, const TArray<TEnumAsByte<EObjectTypeQuery>> _wallCollision)
+void FlowField::Init(FVector _anchorPos, float _cellRadius, FVector2i _gridSize, UWorld* _world, const TArray<TEnumAsByte<EObjectTypeQuery>> _wallCollision)
 {
 	if (!_world) return;
 
@@ -18,6 +18,7 @@ void FlowField::Init(float _cellRadius, FVector2i _gridSize, UWorld* _world, con
 	world = MakeWeakObjectPtr(_world);
 	gridSize = _gridSize;
 	wallCollision = _wallCollision;
+	anchorPos = _anchorPos;
 
 	grid = MakeShared<TArray2D<TSharedPtr<Cell>>>();
 
@@ -28,7 +29,7 @@ void FlowField::Init(float _cellRadius, FVector2i _gridSize, UWorld* _world, con
 	{
 		for (int y = 0; y < gridSize.Y; y++)
 		{
-			const FVector worldPos = FVector(cellDiameter * x + cellRadius, cellDiameter * y + cellRadius, 100);
+			const FVector worldPos = anchorPos + FVector(cellDiameter * x + cellRadius, cellDiameter * y + cellRadius, 100);
 			
 			TSharedPtr<Cell> curCell = MakeShared<Cell>();
 			curCell->Setup(worldPos, FVector2i(x, y));
@@ -62,7 +63,6 @@ void FlowField::CreateFlowField()
  					curCell->bestDirection = GridDirection::GetDirectionFromV2D(curNeighbour->gridIndex - curCell->gridIndex);
  				}
  			}
- 			
  		}
  	}
  }
@@ -85,9 +85,6 @@ void FlowField::CreateCostField()
 			{
 				cell->IncreaseCost(BYTE_MAX);
 			}
-
-			//DrawDebugCircle(world.Get(), cell->worldPos, cellRadius, 32, hasHitWall ? FColor::Red : FColor::Blue,true,
-			//	-1,0,2.0f,FVector(0, 1, 0),FVector(1, 0, 0));
 		}
 	}
 }
@@ -125,13 +122,43 @@ void FlowField::CreateIntegrationField(const TSharedPtr<Cell>& _destinationCell)
 
 TSharedPtr<Cell> FlowField::GetCellFromWorldPos(FVector worldPos) const
 {
-	const double percentX = FMath::Clamp(worldPos.X / (gridSize.X * cellDiameter), 0.0, 1.0);
-	const double percentY = FMath::Clamp(worldPos.Y / (gridSize.Y * cellDiameter), 0.0, 1.0);
+	const FVector adjustedPos = worldPos - anchorPos;
+
+	// out of bounds check
+	if (adjustedPos.X < 0 || adjustedPos.Y < 0 || adjustedPos.X >= gridSize.X * cellDiameter || adjustedPos.Y >= gridSize.Y * cellDiameter)
+	{
+		return nullptr;
+	}
+	
+	const double percentX = FMath::Clamp(adjustedPos.X / (gridSize.X * cellDiameter), 0.0, 1.0);
+	const double percentY = FMath::Clamp(adjustedPos.Y / (gridSize.Y * cellDiameter), 0.0, 1.0);
 
 	const int x = FMath::Clamp(FMath::FloorToInt(gridSize.X * percentX), 0, gridSize.X - 1);
 	const int y = FMath::Clamp(FMath::FloorToInt(gridSize.Y * percentY), 0, gridSize.Y - 1);
 
 	return grid->GetElement(x, y);
+}
+
+bool FlowField::GetDirectionFromWorldPos(const FVector worldPos, FVector& direction) const
+{
+	const FVector adjustedPos = worldPos - anchorPos;
+
+	// out of bounds check
+	if (adjustedPos.X < 0 || adjustedPos.Y < 0 || adjustedPos.X >= gridSize.X * cellDiameter || adjustedPos.Y >= gridSize.Y * cellDiameter)
+	{
+		return false;
+	}
+	
+	const double percentX = FMath::Clamp(adjustedPos.X / (gridSize.X * cellDiameter), 0.0, 1.0);
+	const double percentY = FMath::Clamp(adjustedPos.Y / (gridSize.Y * cellDiameter), 0.0, 1.0);
+
+	const int x = FMath::Clamp(FMath::FloorToInt(gridSize.X * percentX), 0, gridSize.X - 1);
+	const int y = FMath::Clamp(FMath::FloorToInt(gridSize.Y * percentY), 0, gridSize.Y - 1);
+
+	const TSharedPtr<Cell> cell = grid->GetElement(x, y);
+	direction = FVector(cell->bestDirection.Vector.X, cell->bestDirection.Vector.Y, 0);
+
+	return true;
 }
 
 TArray<TSharedPtr<Cell>> FlowField::GetNeighboringCells_Cardinals(const TSharedPtr<Cell>& cell) const

@@ -16,13 +16,14 @@ public:
 	FVector2i gridSize;
 	float cellRadius;
 	float cellDiameter;
+	FVector anchorPos;
 	TArray<TEnumAsByte<EObjectTypeQuery>> wallCollision;
 	FlowFieldDebugType debugType = FlowFieldDebugType::None;
 
 	TSharedPtr<Cell> destinationCell; // must set this to nullptr if clearing the grid otherwise this will keep one of the cells alive
 
 	FlowField();
-	void Init(float _cellRadius, FVector2i _gridSize, UWorld* _world, const TArray<TEnumAsByte<EObjectTypeQuery>> _wallCollision);
+	void Init(FVector _anchorPos, float _cellRadius, FVector2i _gridSize, UWorld* _world, const TArray<TEnumAsByte<EObjectTypeQuery>> _wallCollision);
 
 	~FlowField();
 
@@ -33,6 +34,7 @@ public:
 	void SetDebugType(FlowFieldDebugType type);
 
 	TSharedPtr<Cell> GetCellFromWorldPos(FVector worldPos) const;
+	bool GetDirectionFromWorldPos(FVector worldPos, FVector& direction) const;
 
 private:
 	TArray<TSharedPtr<Cell>> GetNeighboringCells_All(const TSharedPtr<Cell>& cell) const;
