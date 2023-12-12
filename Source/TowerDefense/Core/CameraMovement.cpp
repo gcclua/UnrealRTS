@@ -19,21 +19,22 @@ void ACameraMovement::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ACameraMovement::Setup(UInputComponent* _inputComponent, UMouseInteractionBase* _mouseInteraction)
+void ACameraMovement::Setup(APlayerController* _playerController, UMouseInteractionBase* _mouseInteraction)
 {
-	_inputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &ACameraMovement::OnRightClick);
-	_inputComponent->BindKey(EKeys::RightMouseButton, IE_Released, this, &ACameraMovement::ReleaseRightClick);
-	_inputComponent->BindKey(EKeys::W, IE_Pressed, this, &ACameraMovement::OnPanUp);
-	_inputComponent->BindKey(EKeys::A, IE_Pressed, this, &ACameraMovement::OnPanLeft);
-	_inputComponent->BindKey(EKeys::S, IE_Pressed, this, &ACameraMovement::OnPanDown);
-	_inputComponent->BindKey(EKeys::D, IE_Pressed, this, &ACameraMovement::OnPanRight);
-	_inputComponent->BindKey(EKeys::W, IE_Released, this, &ACameraMovement::ReleasePanUp);
-	_inputComponent->BindKey(EKeys::A, IE_Released, this, &ACameraMovement::ReleasePanLeft);
-	_inputComponent->BindKey(EKeys::S, IE_Released, this, &ACameraMovement::ReleasePanDown);
-	_inputComponent->BindKey(EKeys::D, IE_Released, this, &ACameraMovement::ReleasePanRight);
-	_inputComponent->BindAxis("ScrollWheel", this, &ACameraMovement::OnScroll);
+	_playerController->InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &ACameraMovement::OnRightClick);
+	_playerController->InputComponent->BindKey(EKeys::RightMouseButton, IE_Released, this, &ACameraMovement::ReleaseRightClick);
+	_playerController->InputComponent->BindKey(EKeys::W, IE_Pressed, this, &ACameraMovement::OnPanUp);
+	_playerController->InputComponent->BindKey(EKeys::A, IE_Pressed, this, &ACameraMovement::OnPanLeft);
+	_playerController->InputComponent->BindKey(EKeys::S, IE_Pressed, this, &ACameraMovement::OnPanDown);
+	_playerController->InputComponent->BindKey(EKeys::D, IE_Pressed, this, &ACameraMovement::OnPanRight);
+	_playerController->InputComponent->BindKey(EKeys::W, IE_Released, this, &ACameraMovement::ReleasePanUp);
+	_playerController->InputComponent->BindKey(EKeys::A, IE_Released, this, &ACameraMovement::ReleasePanLeft);
+	_playerController->InputComponent->BindKey(EKeys::S, IE_Released, this, &ACameraMovement::ReleasePanDown);
+	_playerController->InputComponent->BindKey(EKeys::D, IE_Released, this, &ACameraMovement::ReleasePanRight);
+	_playerController->InputComponent->BindAxis("ScrollWheel", this, &ACameraMovement::OnScroll);
 
 	mouseInteraction = _mouseInteraction;
+	playerController = _playerController;
 
 	curPos = GetActorLocation();
 	curZoom = SpringArm->TargetArmLength;

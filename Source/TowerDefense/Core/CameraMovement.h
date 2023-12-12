@@ -40,6 +40,8 @@ private:
 	
 	UPROPERTY()
 	UMouseInteractionBase* mouseInteraction;
+	UPROPERTY()
+	APlayerController* playerController;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -77,7 +79,7 @@ public:
 	FVector BoundsBottomRight;
 
 	UFUNCTION(BlueprintCallable)
-	void Setup(UInputComponent* _inputComponent, UMouseInteractionBase* _mouseInteraction);
+	void Setup(APlayerController* _playerController, UMouseInteractionBase* _mouseInteraction);
 	
 	ACameraMovement();
 	virtual void Tick(float DeltaTime) override;

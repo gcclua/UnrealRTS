@@ -10,7 +10,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseEntity.generated.h"
 
-UCLASS()
+UCLASS(ABSTRACT)
 class TOWERDEFENSE_API ABaseEntity : public AActor, public IEntity
 {
 	GENERATED_BODY()
