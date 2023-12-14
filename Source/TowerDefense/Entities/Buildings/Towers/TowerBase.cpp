@@ -5,6 +5,7 @@ ATowerBase::ATowerBase()
 	CollisionObject = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere Object"));
 	RootObject = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	this->SetRootComponent(RootObject);
+	CollisionObject->SetupAttachment(RootObject);
 }
 
 void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,

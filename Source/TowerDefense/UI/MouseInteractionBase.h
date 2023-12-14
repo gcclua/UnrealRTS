@@ -24,7 +24,7 @@ public:
 	TArray<TEnumAsByte<EObjectTypeQuery>> GroundCollision;
 	
 	UFUNCTION(BlueprintCallable)
-	void Setup(APlayerController* _playerController, AEntityManager* _entityManager, AUnitManager* unitManager);
+	void Setup(APlayerController* _playerController, AEntityManager* _entityManager);
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	USizeBox* SelectionBox;
@@ -39,8 +39,6 @@ private:
 	APlayerController* playerController;
 	UPROPERTY()
 	AEntityManager* entityManager;
-	UPROPERTY()
-	AUnitManager* unitManager;
 	UPROPERTY()
 	UWorld* world;
 	

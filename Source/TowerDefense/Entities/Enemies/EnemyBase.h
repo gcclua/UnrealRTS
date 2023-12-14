@@ -25,6 +25,9 @@ protected:
 	void OnReachTarget(bool success);
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Health;
+	
 	UPROPERTY(BlueprintReadOnly)
 	USceneComponent* SceneComponent;
 
@@ -33,6 +36,9 @@ public:
 
 	void OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex);
 
+	UFUNCTION(BlueprintCallable)
+	void OnTakeDamage(float damage);
+	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void MoveToTarget(AActor* target);
 	

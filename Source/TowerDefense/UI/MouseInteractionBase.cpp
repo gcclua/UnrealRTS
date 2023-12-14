@@ -4,11 +4,10 @@
 
 #include "Blueprint/WidgetLayoutLibrary.h"
 
-void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager, AUnitManager* _unitManager)
+void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager)
 {
 	playerController = _playerController;
 	entityManager = _entityManager;
-	unitManager = _unitManager;
 	
 	selectionBoxSlot = Cast<UCanvasPanelSlot>(SelectionBox->Slot);
 	world = GetWorld();

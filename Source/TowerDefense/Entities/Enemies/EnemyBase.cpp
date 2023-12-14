@@ -34,6 +34,16 @@ void AEnemyBase::OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex)
 	OnReachTarget(true);
 }
 
+void AEnemyBase::OnTakeDamage(float damage)
+{
+	Health -= damage;
+	if (Health <= 0)
+	{
+		OnDestroy();
+		Destroy();
+	}
+}
+
 EntityType AEnemyBase::GetEntityType()
 {
 	return EntityType::Enemy;
