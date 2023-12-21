@@ -20,16 +20,18 @@ private:
 	UMouseInteractionBase* mouseInteraction;
 	UPROPERTY()
 	APlayerController* playerController;
-
+	
 	double mouseDownTime;
 
 	void OnLeftClickDown();
 	void OnLeftClickUp();
+
+	AUnitManager();
 	
 public:
 	UFUNCTION(BlueprintCallable)
 	void Setup(UHUDBase* _hud, UMouseInteractionBase* _mouseInteraction, APlayerController* _playerController);
-	
+
 	void AddCurrentlySelectedUnit(IUnit* _unit);
-	void ClearCurrentlySelectedUnits();
+	void RemoveCurrentlySelectedUnit(IUnit* _unit);
 };

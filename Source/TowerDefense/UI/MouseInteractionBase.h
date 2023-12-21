@@ -31,7 +31,7 @@ public:
 
 	void OnUpdate();
 
-	FVector GetMousePosInWorld() const;
+	FVector GetMousePosInWorld(bool debug = false) const;
 	FVector GetWorldPos(FVector2d screenPos) const;
 
 private:

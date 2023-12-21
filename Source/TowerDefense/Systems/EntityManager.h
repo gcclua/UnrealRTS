@@ -20,6 +20,8 @@ class TOWERDEFENSE_API AEntityManager : public AActor
 	
 private: // vars
 	TArray<IEntity*> entities;
+	TSet<IEntity*> selectedEntities;
+	
 	UPROPERTY() UMiniMap* minimap;
 	UPROPERTY() UMouseInteractionBase* mouseInteraction;
 	UPROPERTY() AUnitManager* unitManager;

@@ -50,7 +50,7 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 {
 	for (int i = 0; i < entities.Num(); i++)
 	{
-		IEntity* entity = entities[i];
+		IEntity* entity = Cast<IEntity>(entities[i]);
 		if (entity == nullptr || !entity->IsSelectable())
 			continue;
 
@@ -68,32 +68,55 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 								       FVector2d(bottomLeft.X, bottomLeft.Y),
 									  FVector2d(bottomRight.X, bottomRight.Y));
 		
-		if (shouldBeSelected)
+		bool isSelected = selectedEntities.Contains(entity);
+		bool meshVisible = selectionMesh->IsVisible();
+		if (isSelected != meshVisible)
+			isSelected = !isSelected;
+
+		if (shouldBeSelected != isSelected)
 		{
-			if (entity->GetEntityType() == EntityType::Unit)
+			if (shouldBeSelected)
 			{
-				IUnit* unit = Cast<IUnit>(entity);
-				if (unit != nullptr)
-					unitManager->AddCurrentlySelectedUnit(unit);
+				selectedEntities.Add(entity);
+				if (meshVisible == false)
+					selectionMesh->SetVisibility(true);
+
+				if (entity->GetEntityType() == EntityType::Unit)
+				{
+					IUnit* unit = Cast<IUnit>(entity);
+					if (unit != nullptr)
+						unitManager->AddCurrentlySelectedUnit(unit);
+				}
+			}
+			else
+			{
+				selectedEntities.Remove(entity);
+				if (meshVisible == true)
+					selectionMesh->SetVisibility(false);
+
+				if (entity->GetEntityType() == EntityType::Unit)
+				{
+					IUnit* unit = Cast<IUnit>(entity);
+					if (unit != nullptr)
+						unitManager->AddCurrentlySelectedUnit(unit);
+				}
 			}
 		}
-		
-		if (shouldBeSelected != selectionMesh->IsVisible())
-			selectionMesh->SetVisibility(shouldBeSelected);
 	}
 }
 
 void AEntityManager::DeselectAllEntities()
 {
-	unitManager->ClearCurrentlySelectedUnits();
 	for (int i = 0; i < entities.Num(); i++)
 	{
 		IEntity* entity = entities[i];
-		if (!entity || !entity->IsSelectable())
+		if (entity == nullptr)
+			continue;
+		if (entity->IsSelectable() == false)
 			continue;
 
 		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(Cast<AActor>(entity));
-		if (!selectionMesh)
+		if (selectionMesh == nullptr)
 			continue;
 		
 		selectionMesh->SetVisibility(false);

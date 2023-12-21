@@ -1,16 +1,33 @@
 ﻿#include "UnitBase.h"
 
+#include "AIController.h"
+#include "NavigationSystem.h"
+
 AUnitBase::AUnitBase()
 {
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Component"));
 }
 
-void AUnitBase::MoveToDestination(TSharedPtr<FlowField> _flowField, FVector _destination)
+void AUnitBase::MoveToLocation(FVector _location)
 {
-	flowField = _flowField;
-	destination = _destination;
+	destination = _location;
 
+	AAIController* AIController = Cast<AAIController>(GetController());
 	
+	if (AIController != nullptr)
+	{
+		float acceptanceRadius = 0;
+		bool stopOnOverlap = true;
+		bool usePathfinding = true;
+		bool canStrafe = false;
+		bool projectDestinationToNavigation = true;      
+		TSubclassOf<UNavigationQueryFilter> filterClass = nullptr;
+		bool allowPartialPath = true;
+		
+		AIController->MoveToLocation(destination, acceptanceRadius, stopOnOverlap,
+									 usePathfinding, canStrafe,
+							 projectDestinationToNavigation, filterClass, allowPartialPath);
+	}
 }
 
 bool AUnitBase::IsSelectable()

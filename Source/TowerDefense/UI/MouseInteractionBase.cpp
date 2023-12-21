@@ -78,13 +78,11 @@ void UMouseInteractionBase::OnUpdate()
 		selectionBoxSlot->SetSize(FVector2d(0, 0));
 		curDragAnchors = selectionBoxSlot->GetAnchors();
 
-		entityManager->DeselectAllEntities();
-
 		isDragging = true;
 	}
 }
 
-FVector UMouseInteractionBase::GetMousePosInWorld() const
+FVector UMouseInteractionBase::GetMousePosInWorld(bool debug) const
 {
 	return GetWorldPos(UWidgetLayoutLibrary::GetMousePositionOnViewport(world));
 }

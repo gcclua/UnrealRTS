@@ -16,13 +16,13 @@ private:
 
 	UnitState state;
 	FVector destination;
-	TSharedPtr<FlowField> flowField;
 
 public:
 	UPROPERTY(BlueprintReadOnly)
 	USceneComponent* SceneComponent;
 	
-	void MoveToDestination(TSharedPtr<FlowField> _flowField, FVector _destination);
+	virtual void MoveToLocation(FVector _location) override; 
+
 	virtual bool IsSelectable() override;
 
 	virtual EntityType GetEntityType() override;

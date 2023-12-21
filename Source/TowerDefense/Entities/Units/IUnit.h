@@ -14,6 +14,11 @@ class IUnit : public IInterface
 	GENERATED_BODY()
 
 public:
+	virtual void MoveToLocation(FVector _location)
+	{
+		
+	}
+	
 	virtual UCharacterMovementComponent* GetCharMovement()
 	{
 		return nullptr;
