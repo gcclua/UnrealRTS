@@ -4,7 +4,7 @@
 #include "BulletBase.h"
 #include "StandardBulletBase.generated.h"
 
-UCLASS()
+UCLASS(ABSTRACT)
 class TOWERDEFENSE_API AStandardBulletBase : public ABulletBase
 {
 	GENERATED_BODY()

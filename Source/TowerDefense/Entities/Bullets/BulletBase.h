@@ -13,12 +13,12 @@ class TOWERDEFENSE_API ABulletBase : public ABaseEntity
 
 protected:
 	float GetDamage() const;
-	void DestroyBullet();
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 public:
 	ABulletBase();
+	void DestroyBullet();
 
 	UPROPERTY(BlueprintReadWrite, Category = "Bullet")
 	BulletType BulletType;
@@ -26,10 +26,10 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Bullet")
 	USceneComponent* RootObject;
 	
-	UPROPERTY(BlueprintReadWrite, Category = "Bullet")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
 	USphereComponent* Collider;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Bullet")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullet")
 	UProjectileMovementComponent* ProjectileMovement;
 
 	UFUNCTION(BlueprintCallable)

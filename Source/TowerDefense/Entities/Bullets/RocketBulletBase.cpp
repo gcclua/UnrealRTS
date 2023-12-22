@@ -12,5 +12,5 @@ void ARocketBulletBase::Fire(AActor* target)
 
 	constexpr float destroyTime = 10;
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ARocketBulletBase::DestroyBullet, destroyTime, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABulletBase::DestroyBullet, destroyTime, false);
 }

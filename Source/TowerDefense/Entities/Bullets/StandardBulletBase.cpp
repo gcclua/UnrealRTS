@@ -12,7 +12,7 @@ void AStandardBulletBase::Fire(AActor* target)
 		if (travelTime > 0)
 		{
 			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AStandardBulletBase::DestroyBullet, travelTime, false);
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABulletBase::DestroyBullet, travelTime, false);
 		}
 	}
 	
