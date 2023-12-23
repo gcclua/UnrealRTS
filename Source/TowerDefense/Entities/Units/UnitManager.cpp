@@ -30,10 +30,11 @@ void AUnitManager::RemoveCurrentlySelectedUnit(IUnit* _unit)
 
 void AUnitManager::OnLeftClickDown()
 {
+	pendingUnits = selectedUnits;
 	mouseDownTime = FPlatformTime::Seconds();
 }
 
-TArray<FVector> AUnitManager::GenerateHoneycombDestinations(const FVector& center, int32 unitCount, float hexSize)
+TArray<FVector> AUnitManager::GenerateHoneycombDestinations(const FVector& center, int32 unitCount, float hexSize) const
 {
 	TArray<FVector> destinations;
 	destinations.Add(center);  // First destination is the center
@@ -41,13 +42,13 @@ TArray<FVector> AUnitManager::GenerateHoneycombDestinations(const FVector& cente
 	int ring = 1;  // Start with the first ring
 	while (destinations.Num() < unitCount)
 	{
-		int unitsInThisRing = 6 * ring;
-		float angleIncrement = 2.0f * PI / unitsInThisRing;
+		const int unitsInThisRing = 6 * ring;
+		const float angleIncrement = 2.0f * PI / unitsInThisRing;
 
 		for (int i = 0; i < unitsInThisRing && destinations.Num() < unitCount; ++i)
 		{
-			float angle = angleIncrement * i;
-			FVector offset = FVector(FMath::Cos(angle), FMath::Sin(angle), 0.0f) * hexSize * ring;
+			const float angle = angleIncrement * i;
+			const FVector offset = FVector(FMath::Cos(angle), FMath::Sin(angle), 0.0f) * hexSize * ring;
 			destinations.Add(center + offset);
 		}
 
@@ -59,23 +60,23 @@ TArray<FVector> AUnitManager::GenerateHoneycombDestinations(const FVector& cente
 
 void AUnitManager::OnLeftClickUp()
 {
-    constexpr double clickDeltaTime = 0.2;
+	constexpr double clickDeltaTime = 0.2;
     const double curTime = FPlatformTime::Seconds();
 
     const float clickTime = curTime - mouseDownTime;
-    if (clickTime < clickDeltaTime && hud->CurrentCommand != UnitCommand::None && selectedUnits.Num() > 0)
+    if (clickTime < clickDeltaTime && hud->CurrentCommand != UnitCommand::None && pendingUnits.Num() > 0)
     {
         const FVector location = mouseInteraction->GetMousePosInWorld(true);
-        TArray<FVector> destinations = GenerateHoneycombDestinations(location, selectedUnits.Num(), 250.0f);
+        TArray<FVector> destinations = GenerateHoneycombDestinations(location, pendingUnits.Num(), 250.0f);
 
         // Sort units based on their distance to the center location
-    	selectedUnits.Sort([location](IUnit& A, IUnit& B) {
-			AActor* actorA = Cast<AActor>(&A);
-			AActor* actorB = Cast<AActor>(&B);
+    	pendingUnits.Sort([location](IUnit& A, IUnit& B) {
+			const AActor* actorA = Cast<AActor>(&A);
+			const AActor* actorB = Cast<AActor>(&B);
 			return FVector::DistSquared(actorA->GetActorLocation(), location) < FVector::DistSquared(actorB->GetActorLocation(), location);
 		});
     	
-        for (IUnit* unit : selectedUnits)
+        for (IUnit* unit : pendingUnits)
         {
             AActor* actor = Cast<AActor>(unit);
             FVector currentUnitLocation = actor->GetActorLocation();
@@ -101,8 +102,10 @@ void AUnitManager::OnLeftClickUp()
                 destinations.RemoveAt(furthestIndex);  // Remove the assigned destination
 
                 // Debug drawing
-                DrawDebugSphere(GetWorld(), furthestDestination, 10.0f, 12, FColor::Red, false, 5.0f);
+                //DrawDebugSphere(GetWorld(), furthestDestination, 10.0f, 12, FColor::Red, false, 2.0f);
             }
         }
+
+    	pendingUnits.Empty();
     }
 }

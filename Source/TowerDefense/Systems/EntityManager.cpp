@@ -98,7 +98,7 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 				{
 					IUnit* unit = Cast<IUnit>(entity);
 					if (unit != nullptr)
-						unitManager->AddCurrentlySelectedUnit(unit);
+						unitManager->RemoveCurrentlySelectedUnit(unit);
 				}
 			}
 		}

@@ -15,6 +15,9 @@ private:
 	TArray<IUnit*> selectedUnits;
 
 	UPROPERTY()
+	TArray<IUnit*> pendingUnits;
+
+	UPROPERTY()
 	UHUDBase* hud;
 	UPROPERTY()
 	UMouseInteractionBase* mouseInteraction;
@@ -28,7 +31,7 @@ private:
 
 	AUnitManager();
 
-	TArray<FVector> GenerateHoneycombDestinations(const FVector& center, int32 unitCount, float hexSize);
+	TArray<FVector> GenerateHoneycombDestinations(const FVector& center, int32 unitCount, float hexSize) const;
 	
 public:
 	UFUNCTION(BlueprintCallable)
