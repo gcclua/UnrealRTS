@@ -27,6 +27,8 @@ private:
 	void OnLeftClickUp();
 
 	AUnitManager();
+
+	TArray<FVector> GenerateHoneycombDestinations(const FVector& center, int32 unitCount, float hexSize);
 	
 public:
 	UFUNCTION(BlueprintCallable)
