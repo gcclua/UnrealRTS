@@ -64,6 +64,9 @@ void UMiniMap::RegisterActor(AActor* actor)
 
 void UMiniMap::UnRegisterActor(AActor* actor)
 {
+	if (markers.Contains(actor) == false)
+		return;
+		
 	const FWidgetSlot widgetSlot = markers[actor];
 	widgetSlot.widget->RemoveFromParent();
 

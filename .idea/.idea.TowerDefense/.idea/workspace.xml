@@ -8,39 +8,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51193640-dbbe-43a7-8528-21601341b437" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TowerDefense/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Core/PlayerVitals.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Core/PlayerVitals.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TowerDefense/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TowerDefense/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/MachineGunTowerBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/MachineGunTowerBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/MachineGunTowerBP_Construction.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/MachineGunTowerBP_Construction.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/RocketTowerBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/RocketTowerBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/TowerBaseBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Entities/Buildings/Towers/TowerBaseBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Entities/Units/UnitBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Entities/Units/UnitBP.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Scenes/Game.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Scenes/Game.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/BaseEntity.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Enemies/EnemyBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Enemies/EnemyBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Interfaces/IEntity.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Interfaces/IEntity.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Pathfinding/FlowField.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Pathfinding/FlowField.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Pathfinding/FlowField.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Pathfinding/FlowField.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Entities/Units/UnitManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Systems/EntityManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Systems/EntityManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/Systems/EntityManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/Systems/EntityManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/UI/MouseInteractionBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/UI/MouseInteractionBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/UI/MouseInteractionBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/UI/MouseInteractionBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TowerDefense.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TowerDefense.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TowerDefense/UI/MiniMap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TowerDefense/UI/MiniMap.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://C:/Program Files (x86)/Windows Kits/10/Include/10.0.18362.0/ucrt/float.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/TowerDefense/UHT/TowerBase.gen.cpp" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2YhHfxAAS0egWovq2JxZxOW85yQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Rider.SolutionAnalysis.ShowPreview&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.90163934&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ReSpellerSettingsId&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -310,6 +323,25 @@
       <workItem from="1701499981267" duration="6559000" />
       <workItem from="1701559279371" duration="6756000" />
       <workItem from="1701606866545" duration="1029000" />
+      <workItem from="1702458425329" duration="8867000" />
+      <workItem from="1702546146560" duration="4737000" />
+      <workItem from="1702707210212" duration="6301000" />
+      <workItem from="1702770404988" duration="8279000" />
+      <workItem from="1702824440330" duration="1166000" />
+      <workItem from="1702864638907" duration="1803000" />
+      <workItem from="1702869756262" duration="3365000" />
+      <workItem from="1702973676933" duration="11525000" />
+      <workItem from="1703059636669" duration="3690000" />
+      <workItem from="1703129140227" duration="1956000" />
+      <workItem from="1703155290313" duration="910000" />
+      <workItem from="1703199022684" duration="5095000" />
+      <workItem from="1703207818171" duration="5204000" />
+      <workItem from="1703306171787" duration="9611000" />
+      <workItem from="1703352392179" duration="3947000" />
+      <workItem from="1703356473290" duration="1098000" />
+      <workItem from="1703418867813" duration="3815000" />
+      <workItem from="1703484450275" duration="1145000" />
+      <workItem from="1703843665660" duration="5507000" />
     </task>
     <servers />
   </component>
@@ -331,5 +363,21 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.cpp</url>
+          <line>85</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/TowerDefense/Entities/Buildings/Towers/TowerBase.cpp</url>
+          <line>53</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

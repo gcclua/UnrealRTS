@@ -7,6 +7,7 @@
 #include "TowerDefense/Entities/Bullets/BulletBase.h"
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
 #include "TowerDefense/Pathfinding/FlowField.h"
+#include "TowerDefense/Utils/TargetMonitor.h"
 #include "UnitBase.generated.h"
 
 UCLASS()
@@ -20,14 +21,7 @@ protected:
 	
 	UnitState state = UnitState::Idle;
 	FVector destination;
-	bool hasTarget = false;
-	bool targetsInRange = false;
-
-	UPROPERTY()
-	TMap<FGuid, AEnemyBase*> enemiesInRange;
-
-	UPROPERTY()
-	AEnemyBase* currentTarget;
+	TSharedPtr<TargetMonitor> targetMonitor;
 	
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
@@ -51,17 +45,20 @@ public:
 private:
 	AUnitBase();
 
+	bool CanFire() const;
+
 	UFUNCTION()
 	void OnProximityOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnProximityExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	bool GetTarget();
-	void Fire();
+	void Fire() const;
 public:
 	virtual void MoveToLocation(FVector _location) override; 
 
 	virtual bool IsSelectable() override;
+
+	virtual void BeginPlay() override;
 
 	virtual EntityType GetEntityType() override;
 

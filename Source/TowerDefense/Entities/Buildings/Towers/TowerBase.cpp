@@ -2,44 +2,11 @@
 
 ATowerBase::ATowerBase()
 {
-	CollisionObject = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere Object"));
 	RootObject = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	this->SetRootComponent(RootObject);
+
+	CollisionObject = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere Object"));
 	CollisionObject->SetupAttachment(RootObject);
-}
-
-void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (IsConstruction) return;
-	
-	AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
-	if (enemy == nullptr)
-		return;
-
-	const FGuid guid = OtherActor->GetActorGuid();
-	if (EnemiesInRange.Contains(guid))
-		return;
-
-	EnemiesInRange.Add(guid, enemy);
-}
-
-void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (IsConstruction) return;
-	
-	const AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
-	if (enemy == nullptr)
-		return;
-
-	const FGuid guid = enemy->GetActorGuid();
-	if (!EnemiesInRange.Contains(guid))
-		return;
-
-	EnemiesInRange.Remove(guid);
-	if (EnemiesInRange.Num() == 0 || (CurrentTarget != nullptr && CurrentTarget->GetActorGuid() == guid))
-		hasTarget = false;
 }
 
 void ATowerBase::BeginPlay()
@@ -51,50 +18,91 @@ void ATowerBase::BeginPlay()
 		CollisionObject->SetHiddenInGame(true);
 		CollisionObject->OnComponentBeginOverlap.AddDynamic(this, &ATowerBase::OnOverlapBegin);
 		CollisionObject->OnComponentEndOverlap.AddDynamic(this, &ATowerBase::OnOverlapEnd);
-
-		//UKismetSystemLibrary::SphereOverlapActors(CollisionObject, CollisionObject->GetComponentLocation(), Range, )
 		CollisionObject->UpdateOverlaps();
+
+		targetMonitor = MakeShared<TargetMonitor>(this);
 	}
 
 	Super::BeginPlay();
 }
 
-bool ATowerBase::HasTarget()
+void ATowerBase::Tick(float DeltaSeconds)
 {
-	if (hasTarget)
-		return true;
+	Super::Tick(DeltaSeconds);
 
-	return FindClosestEnemy();
+	if (IsConstruction || targetMonitor == nullptr)
+		return;
+
+	if (!targetMonitor->HasTarget)
+		return;
+	
+	const FVector targetLocation = targetMonitor->GetTarget()->GetActorLocation();
+	const FRotator targetRotation = FRotationMatrix::MakeFromX(targetLocation - GetActorLocation()).Rotator();
+				
+	const FRotator newRotation = FMath::RInterpTo(GetActorRotation(), targetRotation, DeltaSeconds, TurnSpeed);
+	SetActorRotation(FRotator(0.0f, newRotation.Yaw, 0.0f));
+
+	const double time = FPlatformTime::Seconds();
+
+	if (debugTime < 0)
+		debugTime = time;
+
+	float debugTimeNow = time - debugTime;
+	float debugNextFireTime = nextFireTime - debugTime;
+	
+	const bool canFire = CanFire();
+	const bool canTime = time > nextFireTime;
+	if (canTime && canFire)
+	{
+		Fire();
+		nextFireTime = time + FireRate;
+	}
 }
 
-bool ATowerBase::FindClosestEnemy()
+void ATowerBase::FireFromPoint(USceneComponent* point)
 {
-	if (EnemiesInRange.Num() == 0)
-		return false;
+	UWorld* world = GetWorld();
+	if (!world)
+		return;
 
-	FGuid minGuid;
-	double minDist = 999999;
-	const FVector thisPos = this->GetActorLocation();
+	FActorSpawnParameters spawnParams;
+	const FVector spawnLocation = point->GetComponentLocation();
+	const FRotator spawnRotation = point->GetComponentRotation();
+    
+	ABulletBase* bullet = world->SpawnActor<ABulletBase>(BulletClass, spawnLocation, spawnRotation, spawnParams);
+	bullet->SetActorScale3D(BulletScale);
+	bullet->Fire(targetMonitor->GetTarget());
+}
+
+bool ATowerBase::CanFire() const
+{
+	const FVector toTarget = (targetMonitor->GetTarget()->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	const FVector forwardVector = GetActorForwardVector();
+	const float dotProduct = FVector::DotProduct(forwardVector, toTarget);
 	
-	for (const TTuple<FGuid, AEnemyBase*> keyVal : EnemiesInRange)
-	{
-		FVector location = keyVal.Value->GetActorLocation();
-		const double dist = UE::Geometry::Distance(thisPos, location);
+	const float aimThresholdDegrees = 45.0f;
+	const float aimThreshold = FMath::Cos(FMath::DegreesToRadians(aimThresholdDegrees));
 
-		if (dist < minDist)
-		{
-			minDist = dist;
-			minGuid = keyVal.Key;
-		}
-	}
+	return dotProduct >= aimThreshold;
+}
 
-	CurrentTarget = EnemiesInRange[minGuid];
-	hasTarget = true;
-	
-	return true;
+void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                                int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (!IsConstruction && targetMonitor != nullptr)
+		targetMonitor->OnOverlapBegin(OtherActor);
+}
+
+void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (!IsConstruction && targetMonitor != nullptr)
+		targetMonitor->OnOverlapEnd(OtherActor);
 }
 
 EntityType ATowerBase::GetEntityType()
 {
 	return EntityType::Tower;
 }
+
+void ATowerBase::Fire_Implementation() { }

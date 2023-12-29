@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "TowerDefense/Entities/Buildings/BuildingBase.h"
 #include "VectorTypes.h"
+#include "TowerDefense/Entities/Bullets/BulletBase.h"
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
+#include "TowerDefense/Utils/TargetMonitor.h"
 #include "TowerBase.generated.h"
 
 UCLASS()
@@ -23,40 +25,51 @@ private:
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	bool CanFire() const;
 	virtual EntityType GetEntityType() override;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	double TurnSpeed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	double FireRate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	double Range;
 
-	UFUNCTION(BlueprintCallable)
-	bool HasTarget();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
+	FVector BulletScale;
 
-	UFUNCTION(BlueprintCallable)
-	bool FindClosestEnemy();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Tower")
+	TSubclassOf<ABulletBase> BulletClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	AEnemyBase* CurrentTarget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	USphereComponent* CollisionObject;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	USceneComponent* RootObject;
 
+	UFUNCTION(BlueprintNativeEvent)
+	void Fire();
+
+	UFUNCTION(BlueprintCallable)
+	void FireFromPoint(USceneComponent* point);
+
 private:
+	float debugTime = -1;
+	
 	UPROPERTY()
 	TMap<FGuid, AEnemyBase*> EnemiesInRange;
-	
+
+	TSharedPtr<TargetMonitor> targetMonitor;
 	TowerState state = TowerState::Idle;
-	bool hasTarget = false;
+	float nextFireTime = -1;
 };

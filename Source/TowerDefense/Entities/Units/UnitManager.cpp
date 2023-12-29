@@ -78,8 +78,8 @@ void AUnitManager::OnLeftClickUp()
     	
         for (IUnit* unit : pendingUnits)
         {
-            AActor* actor = Cast<AActor>(unit);
-            FVector currentUnitLocation = actor->GetActorLocation();
+            const AActor* actor = Cast<AActor>(unit);
+            const FVector currentUnitLocation = actor->GetActorLocation();
 
             // Find the furthest destination from the current unit's position
             int32 furthestIndex = -1;
@@ -97,12 +97,12 @@ void AUnitManager::OnLeftClickUp()
             if (furthestIndex != -1)
             {
                 // Assign the unit to this destination
-                FVector furthestDestination = destinations[furthestIndex];
+                const FVector furthestDestination = destinations[furthestIndex];
                 unit->MoveToLocation(furthestDestination);
                 destinations.RemoveAt(furthestIndex);  // Remove the assigned destination
 
                 // Debug drawing
-                //DrawDebugSphere(GetWorld(), furthestDestination, 10.0f, 12, FColor::Red, false, 2.0f);
+                DrawDebugSphere(GetWorld(), furthestDestination, 10.0f, 12, FColor::Red, false, 2.0f);
             }
         }
 
