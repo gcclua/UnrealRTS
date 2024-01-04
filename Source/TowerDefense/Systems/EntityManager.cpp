@@ -26,7 +26,10 @@ void AEntityManager::RegisterEntity(IEntity* entity)
 	if (!entities.Contains(entity))
 	{
 		entities.Add(entity);
-		minimap->RegisterActor(Cast<AActor>(entity));
+
+		AActor* actor = Cast<AActor>(entity);
+		UTexture2D* texture = entity->Execute_GetIcon(actor);
+		minimap->RegisterActor(actor, texture);
 	}
 }
 

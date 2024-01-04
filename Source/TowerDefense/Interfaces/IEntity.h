@@ -28,4 +28,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	UStaticMeshComponent* GetSelectionMesh();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	UTexture2D* GetIcon();
 };

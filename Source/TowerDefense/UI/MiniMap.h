@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MinimapEntityBase.h"
 #include "../Interfaces/IEntity.h"
 #include "WidgetSlot.h"
 #include "Blueprint/UserWidget.h"
@@ -30,7 +31,7 @@ public: // variables/properties
 	UCanvasPanel* MinimapCanvas;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> markerClass;
+	TSubclassOf<UMinimapEntityBase> markerClass;
 
 	UPROPERTY(EditAnywhere)
 	float MinimapRadius;
@@ -44,7 +45,7 @@ public: // variables/properties
 public: // methods
 	void OnUpdate();
 	
-	void RegisterActor(AActor* actor);
+	void RegisterActor(AActor* actor, UTexture2D* texture);
 	void UnRegisterActor(AActor* actor);
 
 	UFUNCTION(BlueprintCallable)

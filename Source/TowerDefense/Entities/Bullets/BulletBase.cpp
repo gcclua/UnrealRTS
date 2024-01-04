@@ -26,6 +26,7 @@ void ABulletBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	if (enemy != nullptr)
 	{
 		enemy->OnTakeDamage(Damage);
+		DestroyBullet();
 	}
 }
 
@@ -33,13 +34,14 @@ void ABulletBase::DestroyBullet()
 {
 	if (IsValid(this))
 	{
+		UnRegister();
 		Destroy();
 	}
 }
 
 void ABulletBase::Fire(AActor* target)
 {
-	// base fire functionality
+	Register();
 }
 
 EntityType ABulletBase::GetEntityType()

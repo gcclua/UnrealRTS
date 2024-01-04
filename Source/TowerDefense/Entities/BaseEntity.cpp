@@ -9,8 +9,22 @@ ABaseEntity::ABaseEntity()
 
 void ABaseEntity::Register()
 {
-	const auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	if (registered)
+		return;
+	
+	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
 	entityManager->RegisterEntity(this);
+	registered = true;
+}
+
+void ABaseEntity::UnRegister()
+{
+	if (unRegistered)
+		return;
+	
+	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	entityManager->UnRegisterEntity(this);
+	unRegistered = true;
 }
 
 void ABaseEntity::BeginPlay()
@@ -31,8 +45,7 @@ void ABaseEntity::Tick(float DeltaTime)
 
 void ABaseEntity::OnDestroy()
 {
-	const auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
-	entityManager->UnRegisterEntity(this);
+	UnRegister();
 }
 
 void ABaseEntity::OnUpdate_Implementation() { }

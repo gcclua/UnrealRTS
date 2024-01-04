@@ -16,11 +16,14 @@ class TOWERDEFENSE_API ACharacterEntityBase : public ACharacter, public IEntity
 	GENERATED_BODY()
 
 private:
-	void Register();
+	bool registered = false;
+	bool unRegistered = false;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void Register();
+	void UnRegister();
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

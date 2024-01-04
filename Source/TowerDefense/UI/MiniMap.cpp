@@ -44,12 +44,12 @@ void UMiniMap::OnUpdate()
 	}
 }
 
-void UMiniMap::RegisterActor(AActor* actor)
+void UMiniMap::RegisterActor(AActor* actor, UTexture2D* texture)
 {
-	const auto iconWidget = CreateWidget<UUserWidget>(playerController, markerClass);
+	UMinimapEntityBase* iconWidget = CreateWidget<UMinimapEntityBase>(playerController, markerClass);
 	if (!iconWidget)
 		return;
-
+	
 	UCanvasPanelSlot* iconSlot = MinimapCanvas->AddChildToCanvas(iconWidget);
 	
 	FAnchors anchors = iconSlot->GetAnchors();
@@ -57,6 +57,9 @@ void UMiniMap::RegisterActor(AActor* actor)
 	anchors.Minimum = FVector2d(1, 1);
 	iconSlot->SetAnchors(anchors);
 	iconWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	if (texture != nullptr)
+		iconWidget->SetIconTexture(texture);
 
 	actors.Add(actor);
 	markers.Add(actor, FWidgetSlot(iconWidget, iconSlot));

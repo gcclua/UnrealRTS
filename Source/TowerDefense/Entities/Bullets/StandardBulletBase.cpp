@@ -2,6 +2,8 @@
 
 void AStandardBulletBase::Fire(AActor* target)
 {
+	Super::Fire(target);
+	
 	// destroy this bullet in the case that it doesnt hit anything
 	if (target != nullptr && ProjectileMovement != nullptr)
 	{
@@ -15,6 +17,4 @@ void AStandardBulletBase::Fire(AActor* target)
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABulletBase::DestroyBullet, travelTime, false);
 		}
 	}
-	
-	Super::Fire(target);
 }

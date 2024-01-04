@@ -9,8 +9,22 @@ ACharacterEntityBase::ACharacterEntityBase()
 
 void ACharacterEntityBase::Register()
 {
-	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	if (registered)
+		return;
+	
+	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
 	entityManager->RegisterEntity(this);
+	registered = true;
+}
+
+void ACharacterEntityBase::UnRegister()
+{
+	if (unRegistered)
+		return;
+	
+	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
+	entityManager->UnRegisterEntity(this);
+	unRegistered = true;
 }
 
 void ACharacterEntityBase::BeginPlay()
@@ -25,8 +39,7 @@ void ACharacterEntityBase::BeginPlay()
 
 void ACharacterEntityBase::OnDestroy()
 {
-	auto entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
-	entityManager->UnRegisterEntity(this);
+	UnRegister();
 }
 
 void ACharacterEntityBase::Tick(float DeltaTime)

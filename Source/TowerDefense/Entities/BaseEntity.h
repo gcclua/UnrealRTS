@@ -15,8 +15,15 @@ class TOWERDEFENSE_API ABaseEntity : public AActor, public IEntity
 {
 	GENERATED_BODY()
 
-private:
+protected:
+	virtual void BeginPlay() override;
+	
 	void Register();
+	void UnRegister();
+	
+	bool registered = false;
+	bool unRegistered = false;
+	
 public:	
 	ABaseEntity();
 	virtual void Tick(float DeltaTime) override;
@@ -29,7 +36,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintCallable)
 	void OnDestroy();
-
-protected:
-	virtual void BeginPlay() override;
 };
