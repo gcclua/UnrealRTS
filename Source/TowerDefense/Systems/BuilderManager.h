@@ -17,19 +17,19 @@ private:
 	bool TrySendOutBuilder();
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuilderManager")
 	int NumBuilders;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuilderManager")
 	FVector BuilderSpawnOffset;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuilderManager")
 	TSubclassOf<ABuilderBase> BuilderClass;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BuilderManager")
 	TArray<ABuilderBase*> Builders;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuilderManager")
 	AActor* SpawnTransform;
 	
 public:

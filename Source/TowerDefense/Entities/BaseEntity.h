@@ -29,9 +29,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintCallable)
 	void OnDestroy();
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Health;
 
 protected:
 	virtual void BeginPlay() override;

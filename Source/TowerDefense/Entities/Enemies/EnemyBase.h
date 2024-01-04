@@ -25,13 +25,13 @@ protected:
 	void OnReachTarget(bool success);
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
 	int Health;
 	
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "EnemyBase")
 	USceneComponent* SceneComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
 	EnemyType enemyType;
 
 	void OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex);

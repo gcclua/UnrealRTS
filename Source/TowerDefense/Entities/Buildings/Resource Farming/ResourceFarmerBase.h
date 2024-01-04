@@ -26,10 +26,10 @@ private:
 	UPROPERTY() APlayerVitalsBase* playerVitals;
 
 public:	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ResourceFarmer")
 	ResourceType ResourceType;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ResourceFarmer")
 	float GenerateTime = 5;
 	
 public:

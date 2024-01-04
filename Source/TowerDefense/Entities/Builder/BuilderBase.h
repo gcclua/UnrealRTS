@@ -11,10 +11,10 @@ class TOWERDEFENSE_API ABuilderBase : public ACharacterEntityBase
     GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Builder")
 	BuilderState CurrentState = BuilderState::Idle;
 	
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Builder")
 	ABuildingBase* CurrentBuilding;
 	
 public:

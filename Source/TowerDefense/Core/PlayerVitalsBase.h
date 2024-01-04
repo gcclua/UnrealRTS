@@ -18,7 +18,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerVitals")
 	UInputComponent* myInputComponent;
 	
 	APlayerVitalsBase();

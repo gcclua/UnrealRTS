@@ -23,10 +23,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemySpawner")
 	TArray<FEnemyStruct> EnemyPrefabs;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemySpawner")
 	TArray<FEnemyPathRow> EnemySpawns;
 	
 	// mono

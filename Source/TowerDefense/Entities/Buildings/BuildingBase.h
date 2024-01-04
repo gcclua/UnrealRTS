@@ -9,13 +9,13 @@ class ABuildingBase : public ABaseEntity
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingBase")
 	float BuildTime = 3;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingBase")
 	bool IsConstruction = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingBase")
 	TSubclassOf<ABuildingBase> RealBuildingClass;
 	
 	UFUNCTION(BlueprintCallable)

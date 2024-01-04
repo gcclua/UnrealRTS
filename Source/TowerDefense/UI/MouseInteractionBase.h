@@ -20,7 +20,7 @@ class TOWERDEFENSE_API UMouseInteractionBase : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MouseInteraction")
 	TArray<TEnumAsByte<EObjectTypeQuery>> GroundCollision;
 	
 	UFUNCTION(BlueprintCallable)
