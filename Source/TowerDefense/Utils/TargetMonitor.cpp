@@ -11,6 +11,10 @@ void TargetMonitor::OnOverlapBegin(AActor* other)
 	if (enemy)
 	{
 		const FGuid guid = enemy->GetActorGuid();
+
+		if (targetsInRange.Contains(guid))
+			return;
+		
 		targetsInRange.Add(guid, enemy);
 		hasTargetInRange = true;
 
@@ -28,8 +32,11 @@ void TargetMonitor::OnOverlapEnd(AActor* other)
 	if (enemy)
 	{
 		const FGuid guid = enemy->GetActorGuid();
-		targetsInRange.Remove(guid);
 
+		if (!targetsInRange.Contains(guid))
+			return;
+		
+		targetsInRange.Remove(guid);
 		hasTargetInRange = targetsInRange.Num() > 0;
 
 		if (currentTarget == enemy || !currentTarget.IsValid())

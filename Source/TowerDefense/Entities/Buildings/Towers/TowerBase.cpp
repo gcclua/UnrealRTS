@@ -44,12 +44,6 @@ void ATowerBase::Tick(float DeltaSeconds)
 
 	const double time = FPlatformTime::Seconds();
 
-	if (debugTime < 0)
-		debugTime = time;
-
-	float debugTimeNow = time - debugTime;
-	float debugNextFireTime = nextFireTime - debugTime;
-	
 	const bool canFire = CanFire();
 	const bool canTime = time > nextFireTime;
 	if (canTime && canFire)
@@ -79,11 +73,8 @@ bool ATowerBase::CanFire() const
 	const FVector toTarget = (targetMonitor->GetTarget()->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 	const FVector forwardVector = GetActorForwardVector();
 	const float dotProduct = FVector::DotProduct(forwardVector, toTarget);
-	
-	const float aimThresholdDegrees = 45.0f;
-	const float aimThreshold = FMath::Cos(FMath::DegreesToRadians(aimThresholdDegrees));
 
-	return dotProduct >= aimThreshold;
+	return dotProduct >= 0.94;
 }
 
 void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,

@@ -25,17 +25,7 @@ void ABulletBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
 	if (enemy != nullptr)
 	{
-		enemy->OnTakeDamage(GetDamage());
-	}
-}
-
-float ABulletBase::GetDamage() const
-{
-	switch (BulletType)
-	{
-		case BulletType::Basic: return 1;
-		case BulletType::Rocket: return 5;
-		default: return 1;
+		enemy->OnTakeDamage(Damage);
 	}
 }
 

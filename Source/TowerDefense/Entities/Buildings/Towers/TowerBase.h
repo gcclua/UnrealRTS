@@ -64,12 +64,10 @@ public:
 	void FireFromPoint(USceneComponent* point);
 
 private:
-	float debugTime = -1;
-	
 	UPROPERTY()
 	TMap<FGuid, AEnemyBase*> EnemiesInRange;
 
 	TSharedPtr<TargetMonitor> targetMonitor;
 	TowerState state = TowerState::Idle;
-	float nextFireTime = -1;
+	double nextFireTime = -1;
 };
