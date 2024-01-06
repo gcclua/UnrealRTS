@@ -4,6 +4,8 @@
 
 #include "TowerDefense/UI/MouseInteractionBase.h"
 
+AEntityManager* AEntityManager::Instance = nullptr;
+
 AEntityManager::AEntityManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -12,6 +14,8 @@ AEntityManager::AEntityManager()
 void AEntityManager::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	Instance = this;
 }
 
 void AEntityManager::Tick(float DeltaTime)
@@ -161,6 +165,17 @@ double AEntityManager::AreaOfTriangle(const FVector2d point0, const FVector2d po
 	const double determinant = (point0.X * t1) + (-point0.Y * t2) + t3;
 
 	return FMath::Abs(determinant) * 0.5;
+}
+
+AEntityManager* AEntityManager::GetInstance()
+{
+	return Instance;
+}
+
+void AEntityManager::Destroyed()
+{
+	Instance = nullptr;
+	Super::Destroyed();
 }
 
 

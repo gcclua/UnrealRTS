@@ -19,6 +19,8 @@ class TOWERDEFENSE_API AEntityManager : public AActor
 	GENERATED_BODY()
 	
 private: // vars
+	static AEntityManager* Instance;
+	
 	TArray<IEntity*> entities;
 	TSet<IEntity*> selectedEntities;
 	
@@ -32,9 +34,12 @@ protected:
 public: // methods
 	AEntityManager();
 	virtual void Tick(float DeltaTime) override;
+	virtual void Destroyed() override;
 	
 	virtual void RegisterEntity(IEntity* entity);
 	virtual void UnRegisterEntity(IEntity* entity);
+
+	static AEntityManager* GetInstance();
 
 	UFUNCTION(BlueprintCallable)
 	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction, AUnitManager* _unitManager);

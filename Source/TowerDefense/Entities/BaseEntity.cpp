@@ -12,8 +12,9 @@ void ABaseEntity::Register()
 	if (registered)
 		return;
 	
-	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
-	entityManager->RegisterEntity(this);
+	AEntityManager* entityManager = AEntityManager::GetInstance();
+	if (entityManager != nullptr)
+		entityManager->RegisterEntity(this);
 	registered = true;
 }
 
@@ -22,8 +23,9 @@ void ABaseEntity::UnRegister()
 	if (unRegistered)
 		return;
 	
-	AEntityManager* entityManager = Cast<AEntityManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AEntityManager::StaticClass()));
-	entityManager->UnRegisterEntity(this);
+	AEntityManager* entityManager = AEntityManager::GetInstance();
+	if (entityManager != nullptr)
+		entityManager->UnRegisterEntity(this);
 	unRegistered = true;
 }
 
