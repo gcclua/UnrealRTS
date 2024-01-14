@@ -84,7 +84,7 @@ bool ATowerBase::CanFire() const
 	const FVector forwardVector = GetActorForwardVector();
 	const float dotProduct = FVector::DotProduct(forwardVector, toTarget);
 
-	return dotProduct >= 0.94;
+	return dotProduct >= 0.90;
 }
 
 void ATowerBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,

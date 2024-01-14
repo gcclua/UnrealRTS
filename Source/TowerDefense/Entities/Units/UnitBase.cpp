@@ -94,6 +94,9 @@ void AUnitBase::Fire() const
 	const FRotator spawnRotation = FirePositionComponent->GetComponentRotation();
     
 	ABulletBase* bullet = world->SpawnActor<ABulletBase>(BulletClass, spawnLocation, spawnRotation, spawnParams);
+	if (bullet == nullptr)
+		return;
+	
 	bullet->SetActorScale3D(FVector(0.25f, 0.25f, 0.25f));
 	bullet->Fire(targetMonitor->GetTarget());
 }

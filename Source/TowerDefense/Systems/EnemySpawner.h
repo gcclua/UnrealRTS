@@ -24,6 +24,9 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, Category = "EnemySpawner")
+	bool KeepOnStraightLine;
+	
+	UPROPERTY(EditAnywhere, Category = "EnemySpawner")
 	TArray<FEnemyStruct> EnemyPrefabs;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemySpawner")

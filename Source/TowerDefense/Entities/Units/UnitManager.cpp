@@ -69,6 +69,8 @@ void AUnitManager::OnLeftClickUp()
         const FVector location = mouseInteraction->GetMousePosInWorld(true);
         TArray<FVector> destinations = GenerateHoneycombDestinations(location, pendingUnits.Num(), 250.0f);
 
+    	DrawDebugSphere(GetWorld(), location, 10.0f, 12, FColor::Red, false, 2.0f);
+
         // Sort units based on their distance to the center location
     	pendingUnits.Sort([location](IUnit& A, IUnit& B) {
 			const AActor* actorA = Cast<AActor>(&A);
@@ -100,9 +102,6 @@ void AUnitManager::OnLeftClickUp()
                 const FVector furthestDestination = destinations[furthestIndex];
                 unit->MoveToLocation(furthestDestination);
                 destinations.RemoveAt(furthestIndex);  // Remove the assigned destination
-
-                // Debug drawing
-                DrawDebugSphere(GetWorld(), furthestDestination, 10.0f, 12, FColor::Red, false, 2.0f);
             }
         }
 

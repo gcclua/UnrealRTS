@@ -16,7 +16,7 @@ void AEnemyBase::OnReachTarget(bool success)
 	{
 		// do damage to player
 		const auto playerVitals = Cast<APlayerVitalsBase>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerVitalsBase::StaticClass()));
-		playerVitals->OnEnemyReachEnd(this, enemyType, 5);
+		playerVitals->OnEnemyReachEnd(this, enemyType, Damage);
 
 		return;
 	}
@@ -34,9 +34,9 @@ void AEnemyBase::OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex)
 	OnReachTarget(true);
 }
 
-void AEnemyBase::OnTakeDamage(float damage)
+void AEnemyBase::OnTakeDamage(float _damage)
 {
-	Health -= damage;
+	Health -= _damage;
 	if (Health <= 0)
 	{
 		OnDestroy();

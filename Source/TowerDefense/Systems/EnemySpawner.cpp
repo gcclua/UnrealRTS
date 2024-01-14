@@ -30,6 +30,14 @@ AActor* AEnemySpawner::GetSpawn(int index, int& innerIndex)
 	
 	TArray<AActor*> row = EnemySpawns[index].Points;
 	const int rowLen = row.Num();
+
+	if (KeepOnStraightLine)
+	{
+		if (index == 0)
+			innerIndex = FMath::RandRange(0, rowLen - 1);
+		if (innerIndex < rowLen)
+			return row[innerIndex];
+	}
 	
 	// pick a row either in front or to the left/right by 1
 	if (index == 0)

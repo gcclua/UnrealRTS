@@ -27,6 +27,9 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
 	int Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
+	double Damage;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EnemyBase")
 	USceneComponent* SceneComponent;
@@ -37,7 +40,7 @@ public:
 	void OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex);
 
 	UFUNCTION(BlueprintCallable)
-	void OnTakeDamage(float damage);
+	void OnTakeDamage(float _damage);
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void MoveToTarget(AActor* target);
