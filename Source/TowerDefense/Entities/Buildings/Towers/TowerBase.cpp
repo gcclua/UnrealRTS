@@ -21,6 +21,13 @@ void ATowerBase::BeginPlay()
 		CollisionObject->UpdateOverlaps();
 
 		targetMonitor = MakeShared<TargetMonitor>(this);
+
+		// initial overlaps
+		TArray<AActor*> OverlappingActors;
+		CollisionObject->GetOverlappingActors(OverlappingActors);
+		
+		for (AActor* Actor : OverlappingActors)
+			OnOverlapBegin(CollisionObject, Actor, nullptr, -1, false, FHitResult());
 	}
 
 	Super::BeginPlay();
@@ -56,7 +63,7 @@ void ATowerBase::Tick(float DeltaSeconds)
 void ATowerBase::FireFromPoint(USceneComponent* point)
 {
 	UWorld* world = GetWorld();
-	if (!world)
+	if (world == nullptr || point == nullptr || IsConstruction)
 		return;
 
 	FActorSpawnParameters spawnParams;
@@ -64,6 +71,9 @@ void ATowerBase::FireFromPoint(USceneComponent* point)
 	const FRotator spawnRotation = point->GetComponentRotation();
     
 	ABulletBase* bullet = world->SpawnActor<ABulletBase>(BulletClass, spawnLocation, spawnRotation, spawnParams);
+	if (bullet == nullptr)
+		return;
+	
 	bullet->SetActorScale3D(BulletScale);
 	bullet->Fire(targetMonitor->GetTarget());
 }

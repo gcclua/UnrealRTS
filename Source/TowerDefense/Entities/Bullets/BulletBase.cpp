@@ -25,6 +25,7 @@ void ABulletBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	AEnemyBase* enemy = Cast<AEnemyBase>(OtherActor);
 	if (enemy != nullptr)
 	{
+		OnHit(OtherActor->GetActorLocation());
 		enemy->OnTakeDamage(Damage);
 		DestroyBullet();
 	}
@@ -47,4 +48,9 @@ void ABulletBase::Fire(AActor* target)
 EntityType ABulletBase::GetEntityType()
 {
 	return EntityType::Bullet;
+}
+
+bool ABulletBase::IsSelectable() const
+{
+	return false;
 }

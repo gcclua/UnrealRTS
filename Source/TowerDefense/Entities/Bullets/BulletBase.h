@@ -35,6 +35,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void Fire(AActor* target);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHit(FVector hitLocation);
 
 	virtual EntityType GetEntityType() override;
+
+	virtual bool IsSelectable() const override;
 };
