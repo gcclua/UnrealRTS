@@ -17,13 +17,14 @@ This project is a Real-Time Strategy (RTS) game developed using Unreal Engine 5.
 - [x] Towers and Units that will target and shoot at nearby enemies
 - [x] Click and Drag unit selection
 - [x] Sending a group of selected units to a location
+- [x] Play around with niagra
 - [ ] Full gameplay loop
 - [ ] More sophisticated AI for enemies
 - [ ] Buildings cost resources
 - [ ] Different types of units
 - [ ] More towers
-- [ ] Art Pass
-- [ ] Niagra Effects
+- [ ] Art Pass (models/FX)
+
 - [ ] Ability to load and start a game from a menu
 
 ## Getting Started
