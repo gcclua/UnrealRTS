@@ -45,9 +45,13 @@ void ABaseEntity::Tick(float DeltaTime)
 	OnUpdate();
 }
 
-void ABaseEntity::OnDestroy()
+void ABaseEntity::UnregisterAndDestroy()
 {
-	UnRegister();
+	if (IsValid(this))
+	{
+		UnRegister();
+		Destroy();
+	}
 }
 
 void ABaseEntity::OnUpdate_Implementation() { }

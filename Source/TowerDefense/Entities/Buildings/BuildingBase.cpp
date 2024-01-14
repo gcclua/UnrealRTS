@@ -24,8 +24,8 @@ void ABuildingBase::OnDoneConstructing()
 
 	ABuildingBase* building = GetWorld()->SpawnActor<ABuildingBase>(RealBuildingClass, GetActorTransform().GetLocation(), GetActorTransform().GetRotation().Rotator(), spawnParams);
 	building->OnPlace();
-	
-	GetWorld()->DestroyActor(this);
+
+	UnregisterAndDestroy();
 }
 
 bool ABuildingBase::IsSelectable()

@@ -33,11 +33,7 @@ void ABulletBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 void ABulletBase::DestroyBullet()
 {
-	if (IsValid(this))
-	{
-		UnRegister();
-		Destroy();
-	}
+	UnregisterAndDestroy();
 }
 
 void ABulletBase::Fire(AActor* target)

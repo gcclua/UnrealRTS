@@ -35,5 +35,5 @@ public:
 	void OnUpdate();
 
 	UFUNCTION(BlueprintCallable, BlueprintCallable)
-	void OnDestroy();
+	void UnregisterAndDestroy();
 };
