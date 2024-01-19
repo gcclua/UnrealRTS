@@ -13,13 +13,14 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TowerDefense/Interfaces/IMinimap.h"
 #include "MiniMap.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract)
-class TOWERDEFENSE_API UMiniMap : public UUserWidget
+class TOWERDEFENSE_API UMiniMap : public UUserWidget, public IMinimapInterface
 {
 	GENERATED_BODY()
 
@@ -43,10 +44,10 @@ public: // variables/properties
 	UPROPERTY() APlayerController* playerController;
 	
 public: // methods
-	void OnUpdate();
+	virtual void OnUpdate() override;
 	
-	void RegisterActor(AActor* actor, UTexture2D* texture);
-	void UnRegisterActor(AActor* actor);
+	virtual void RegisterActor(AActor* actor, UTexture2D* texture) override;
+	virtual void UnRegisterActor(AActor* actor) override;
 
 	UFUNCTION(BlueprintCallable)
 	void Setup(APlayerController* player, AActor* _centerActor);

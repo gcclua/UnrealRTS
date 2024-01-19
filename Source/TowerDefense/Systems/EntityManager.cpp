@@ -46,7 +46,7 @@ void AEntityManager::UnRegisterEntity(IEntity* entity)
 	}
 }
 
-void AEntityManager::Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction, AUnitManager* _unitManager)
+void AEntityManager::Setup(TScriptInterface<IMinimapInterface> _minimap, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, AUnitManager* _unitManager)
 {
 	minimap = _minimap;
 	mouseInteraction = _mouseInteraction;

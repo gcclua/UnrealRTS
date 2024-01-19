@@ -4,7 +4,7 @@
 
 #include "Blueprint/WidgetLayoutLibrary.h"
 
-void UMouseInteractionBase::Setup(APlayerController* _playerController, AEntityManager* _entityManager)
+void UMouseInteractionBase::Setup(APlayerController* _playerController, TScriptInterface<IEntityManagerInterface> _entityManager)
 {
 	playerController = _playerController;
 	entityManager = _entityManager;
@@ -82,7 +82,7 @@ void UMouseInteractionBase::OnUpdate()
 	}
 }
 
-FVector UMouseInteractionBase::GetMousePosInWorld(bool debug) const
+FVector UMouseInteractionBase::GetMousePosInWorld() const
 {
 	return GetWorldPos(UWidgetLayoutLibrary::GetMousePositionOnViewport(world));
 }

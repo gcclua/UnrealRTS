@@ -3,18 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Interfaces/IEntity.h"
-#include "../UI/MiniMap.h"
+#include "TowerDefense/Interfaces/IEntity.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "TowerDefense/Entities/Units/IUnit.h"
 #include "TowerDefense/Entities/Units/UnitManager.h"
+#include "TowerDefense/Interfaces/IEntityManager.h"
+#include "TowerDefense/Interfaces/IMinimap.h"
+#include "TowerDefense/Interfaces/IMouseInteraction.h"
 #include "EntityManager.generated.h"
 
-class UMouseInteractionBase;
-
 UCLASS()
-class TOWERDEFENSE_API AEntityManager : public AActor
+class TOWERDEFENSE_API AEntityManager : public AActor, public IEntityManagerInterface
 {
 	GENERATED_BODY()
 	
@@ -24,8 +24,8 @@ private: // vars
 	TArray<IEntity*> entities;
 	TSet<IEntity*> selectedEntities;
 	
-	UPROPERTY() UMiniMap* minimap;
-	UPROPERTY() UMouseInteractionBase* mouseInteraction;
+	TScriptInterface<IMinimapInterface> minimap;
+	TScriptInterface<IMouseInteractionInterface> mouseInteraction;
 	UPROPERTY() AUnitManager* unitManager;
 	
 protected:
@@ -42,10 +42,10 @@ public: // methods
 	static AEntityManager* GetInstance();
 
 	UFUNCTION(BlueprintCallable)
-	void Setup(UMiniMap* _minimap, UMouseInteractionBase* _mouseInteraction, AUnitManager* _unitManager);
+	void Setup(TScriptInterface<IMinimapInterface> _minimap, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, AUnitManager* _unitManager);
 
-	void UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight);
-	void DeselectAllEntities();
+	virtual void UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight) override;
+	virtual void DeselectAllEntities() override;
 	
 	static bool PointInsideQuadrilateral(const FVector2d point, const FVector2d topLeft, const FVector2d topRight, const FVector2d bottomLeft, const FVector2d bottomRight);
 	static double AreaOfTriangle(const FVector2d point0, const FVector2d point1, const FVector2d point2);

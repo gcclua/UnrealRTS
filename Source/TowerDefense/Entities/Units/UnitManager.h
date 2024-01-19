@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "IUnit.h"
+#include "TowerDefense/Interfaces/IMouseInteraction.h"
 #include "TowerDefense/UI/HUDBase.h"
 #include "UnitManager.generated.h"
-
-class UMouseInteractionBase;
 
 UCLASS()
 class AUnitManager : public AActor
@@ -19,8 +18,7 @@ private:
 
 	UPROPERTY()
 	UHUDBase* hud;
-	UPROPERTY()
-	UMouseInteractionBase* mouseInteraction;
+	TScriptInterface<IMouseInteractionInterface> mouseInteraction;
 	UPROPERTY()
 	APlayerController* playerController;
 	
@@ -35,7 +33,7 @@ private:
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void Setup(UHUDBase* _hud, UMouseInteractionBase* _mouseInteraction, APlayerController* _playerController);
+	void Setup(UHUDBase* _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController);
 
 	void AddCurrentlySelectedUnit(IUnit* _unit);
 	void RemoveCurrentlySelectedUnit(IUnit* _unit);

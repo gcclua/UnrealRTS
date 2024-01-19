@@ -7,7 +7,7 @@ AUnitManager::AUnitManager()
 
 }
 
-void AUnitManager::Setup(UHUDBase* _hud, UMouseInteractionBase* _mouseInteraction, APlayerController* _playerController)
+void AUnitManager::Setup(UHUDBase* _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController)
 {
 	hud = _hud;
 	mouseInteraction = _mouseInteraction;
@@ -66,7 +66,7 @@ void AUnitManager::OnLeftClickUp()
     const float clickTime = curTime - mouseDownTime;
     if (clickTime < clickDeltaTime && hud->CurrentCommand != UnitCommand::None && pendingUnits.Num() > 0)
     {
-        const FVector location = mouseInteraction->GetMousePosInWorld(true);
+        const FVector location = mouseInteraction->GetMousePosInWorld();
         TArray<FVector> destinations = GenerateHoneycombDestinations(location, pendingUnits.Num(), 250.0f);
 
     	DrawDebugSphere(GetWorld(), location, 10.0f, 12, FColor::Red, false, 2.0f);

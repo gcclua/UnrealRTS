@@ -6,16 +6,15 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/SizeBox.h"
-#include "TowerDefense/Systems/EntityManager.h"
+#include "TowerDefense/Interfaces/IEntityManager.h"
+#include "TowerDefense/Interfaces/IMouseInteraction.h"
 #include "MouseInteractionBase.generated.h"
-
-class AEntityManager;
 
 /**
  * 
  */
 UCLASS()
-class TOWERDEFENSE_API UMouseInteractionBase : public UUserWidget
+class TOWERDEFENSE_API UMouseInteractionBase : public UUserWidget, public IMouseInteractionInterface
 {
 	GENERATED_BODY()
 
@@ -24,23 +23,20 @@ public:
 	TArray<TEnumAsByte<EObjectTypeQuery>> GroundCollision;
 	
 	UFUNCTION(BlueprintCallable)
-	void Setup(APlayerController* _playerController, AEntityManager* _entityManager);
+	void Setup(APlayerController* _playerController, TScriptInterface<IEntityManagerInterface> _entityManager);
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	USizeBox* SelectionBox;
 
-	void OnUpdate();
+	virtual void OnUpdate() override;
 
-	FVector GetMousePosInWorld(bool debug = false) const;
+	virtual FVector GetMousePosInWorld() const override;
 	FVector GetWorldPos(FVector2d screenPos) const;
 
 private:
-	UPROPERTY()
-	APlayerController* playerController;
-	UPROPERTY()
-	AEntityManager* entityManager;
-	UPROPERTY()
-	UWorld* world;
+	UPROPERTY() APlayerController* playerController;
+	UPROPERTY() UWorld* world;
+	TScriptInterface<IEntityManagerInterface> entityManager;
 	
 	UPROPERTY() UCanvasPanelSlot* selectionBoxSlot;
 	FVector2d startDragPos;
