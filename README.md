@@ -40,6 +40,3 @@ This project is a Real-Time Strategy (RTS) game developed using Unreal Engine 5.
 3. Open TowerDefense.sln in Visual Studio 2022/Rider and build the solution
 4. Open TowerDefense.uproject in Unreal Engine 5.3.2
 
-### Controls
-Currently to send units to a location you have to press either the "E" or "R" keys which will show an icon at the bottom of the hud to enable you to send units to wherever you click. (q to cancel)
-

@@ -1,5 +1,6 @@
 ﻿#include "UnitManager.h"
 
+#include "TowerDefense/Enums/HUDPanelType.h"
 #include "TowerDefense/UI/MouseInteractionBase.h"
 
 AUnitManager::AUnitManager()
@@ -7,7 +8,7 @@ AUnitManager::AUnitManager()
 
 }
 
-void AUnitManager::Setup(UHUDBase* _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController)
+void AUnitManager::Setup(TScriptInterface<IHUDInterface> _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController)
 {
 	hud = _hud;
 	mouseInteraction = _mouseInteraction;
@@ -19,13 +20,29 @@ void AUnitManager::Setup(UHUDBase* _hud, TScriptInterface<IMouseInteractionInter
 void AUnitManager::AddCurrentlySelectedUnit(IUnit* _unit)
 {
 	if (!selectedUnits.Contains(_unit))
+	{
 		selectedUnits.Add(_unit);
+
+		if (!hudPanelEnabled)
+		{
+			hud->SetHUDPanelVisibility(HUDPanelType::Unit, true);
+			hudPanelEnabled = true;
+		}
+	}
 }
 
 void AUnitManager::RemoveCurrentlySelectedUnit(IUnit* _unit)
 {
 	if (selectedUnits.Contains(_unit))
+	{
 		selectedUnits.Remove(_unit);
+
+		if (selectedUnits.Num() == 0 && hudPanelEnabled)
+		{
+			hud->SetHUDPanelVisibility(HUDPanelType::Unit, false);
+			hudPanelEnabled = false;
+		}
+	}
 }
 
 void AUnitManager::OnLeftClickDown()
@@ -64,7 +81,7 @@ void AUnitManager::OnLeftClickUp()
     const double curTime = FPlatformTime::Seconds();
 
     const float clickTime = curTime - mouseDownTime;
-    if (clickTime < clickDeltaTime && hud->CurrentCommand != UnitCommand::None && pendingUnits.Num() > 0)
+    if (clickTime < clickDeltaTime && hud->CurrentCommand() != UnitCommand::None && pendingUnits.Num() > 0)
     {
         const FVector location = mouseInteraction->GetMousePosInWorld();
         TArray<FVector> destinations = GenerateHoneycombDestinations(location, pendingUnits.Num(), 250.0f);

@@ -5,44 +5,77 @@
 void UHUDBase::Setup(APlayerController* _playerController)
 {
 	playerController = _playerController;
-	OnPressQ();
-
-	_playerController->InputComponent->BindKey(EKeys::R, IE_Pressed, this, &UHUDBase::OnPressAttack);
-	_playerController->InputComponent->BindKey(EKeys::E, IE_Pressed, this, &UHUDBase::OnPressWalk);
-	_playerController->InputComponent->BindKey(EKeys::Q, IE_Pressed, this, &UHUDBase::OnPressQ);
+	curCommand = UnitCommand::None;
+	SetupSubPanels();
 }
 
-void UHUDBase::OnPressAttack()
+// quick and dirty, this can definitely be optimised
+void UHUDBase::SetHUDPanelVisibility(HUDPanelType panelType, bool state)
 {
-	if (CurrentCommand == UnitCommand::Attack)
-	{
-		OnPressQ();
+	if (!hudPanelStates.Contains(panelType))
 		return;
-	}
 
-	if (CurrentCommand == UnitCommand::Walk)
-		walkImage->SetVisibility(ESlateVisibility::Hidden);
-	attackImage->SetVisibility(ESlateVisibility::Visible);
-	CurrentCommand = UnitCommand::Attack;
-}
+	hudPanelStates[panelType] = state;
 
-void UHUDBase::OnPressWalk()
-{
-	if (CurrentCommand == UnitCommand::Walk)
-	{
-		OnPressQ();
-		return;
-	}
+	TWeakObjectPtr<UHUDPanelBase> highestPriorityPanel = nullptr;
+	int highestPriority = INT_MIN;
 	
-	if (CurrentCommand == UnitCommand::Attack)
-		attackImage->SetVisibility(ESlateVisibility::Hidden);
-	walkImage->SetVisibility(ESlateVisibility::Visible);
-	CurrentCommand = UnitCommand::Walk;
+	for (TWeakObjectPtr<UHUDPanelBase> panel : subPanelInstances)
+	{
+		if (!panel.IsValid())
+			continue;
+		
+		if (hudPanelStates[panel->PanelType])
+		{
+			if (panel->PanelPriority > highestPriority)
+			{
+				highestPriority = panel->PanelPriority;
+				highestPriorityPanel = panel;
+			}
+		}
+	}
+
+	for (TWeakObjectPtr<UHUDPanelBase> panel : subPanelInstances)
+	{
+		if (!panel.IsValid())
+			continue;
+
+		panel->SetVisibility(panel == highestPriorityPanel ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	}
 }
 
-void UHUDBase::OnPressQ()
+void UHUDBase::SetupSubPanels()
 {
-	attackImage->SetVisibility(ESlateVisibility::Hidden);
-	walkImage->SetVisibility(ESlateVisibility::Hidden);
-	CurrentCommand = UnitCommand::None;
+	for (TSubclassOf<UHUDPanelBase> panelClass : HUDPanelClasses)
+	{
+		if (panelClass == nullptr)
+			continue;
+		
+		UHUDPanelBase* panelWidget = CreateWidget<UHUDPanelBase>(this, panelClass);
+		if (panelWidget == nullptr)
+			continue;
+		
+		UCanvasPanelSlot* panelSlot = SubPanelCanvas->AddChildToCanvas(panelWidget);
+		if (panelSlot == nullptr)
+			continue;
+		
+		panelSlot->SetAnchors(FAnchors(0, 1, 0, 1));
+		panelSlot->SetPosition(FVector2D(32, -32));
+		panelSlot->SetAlignment(FVector2D(0, 1));
+		panelWidget->SetVisibility(panelWidget->ShowOnStart ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+		panelWidget->Setup(this);
+		
+		subPanelInstances.Add(panelWidget);
+		hudPanelStates.Add(panelWidget->PanelType, panelWidget->ShowOnStart);
+	}
+}
+
+void UHUDBase::SetCommand(UnitCommand command)
+{
+	curCommand = command;
+}
+
+UnitCommand UHUDBase::CurrentCommand()
+{
+	return curCommand;
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "IUnit.h"
+#include "TowerDefense/Interfaces/IHUD.h"
 #include "TowerDefense/Interfaces/IMouseInteraction.h"
-#include "TowerDefense/UI/HUDBase.h"
 #include "UnitManager.generated.h"
 
 UCLASS()
@@ -15,13 +15,13 @@ private:
 
 	UPROPERTY()
 	TArray<IUnit*> pendingUnits;
-
-	UPROPERTY()
-	UHUDBase* hud;
+	
+	TScriptInterface<IHUDInterface> hud;
 	TScriptInterface<IMouseInteractionInterface> mouseInteraction;
 	UPROPERTY()
 	APlayerController* playerController;
-	
+
+	bool hudPanelEnabled = false;
 	double mouseDownTime;
 
 	void OnLeftClickDown();
@@ -33,7 +33,7 @@ private:
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void Setup(UHUDBase* _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController);
+	void Setup(TScriptInterface<IHUDInterface> _hud, TScriptInterface<IMouseInteractionInterface> _mouseInteraction, APlayerController* _playerController);
 
 	void AddCurrentlySelectedUnit(IUnit* _unit);
 	void RemoveCurrentlySelectedUnit(IUnit* _unit);
