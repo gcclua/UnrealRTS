@@ -46,6 +46,9 @@ public: // methods
 
 	virtual void UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight) override;
 	virtual void DeselectAllEntities() override;
+	virtual void SelectEntity(IEntity* entity) override;
+	virtual void DeselectEntity(IEntity* entity) override;
+	virtual bool IsEntitySelected(IEntity* entity) const override;
 	
 	static bool PointInsideQuadrilateral(const FVector2d point, const FVector2d topLeft, const FVector2d topRight, const FVector2d bottomLeft, const FVector2d bottomRight);
 	static double AreaOfTriangle(const FVector2d point0, const FVector2d point1, const FVector2d point2);

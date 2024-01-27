@@ -36,11 +36,6 @@ void AResourceFarmerBase::StartFarming()
 	nextFarmTime = GetWorld()->GetTimeSeconds() + GenerateTime;
 }
 
-bool AResourceFarmerBase::IsSelectable()
-{
-	return true;
-}
-
 EntityType AResourceFarmerBase::GetEntityType()
 {
 	return EntityType::ResourceFarmer;

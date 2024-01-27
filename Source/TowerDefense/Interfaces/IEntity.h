@@ -15,7 +15,7 @@ class IEntity : public IInterface
 
 public:
 	UFUNCTION()
-	virtual bool IsSelectable()
+	virtual bool IsMultiSelectable()
 	{
 		return false;
 	}

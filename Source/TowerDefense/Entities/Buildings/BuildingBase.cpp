@@ -28,7 +28,7 @@ void ABuildingBase::OnDoneConstructing()
 	UnregisterAndDestroy();
 }
 
-bool ABuildingBase::IsSelectable()
+bool ABuildingBase::IsMultiSelectable()
 {
-	return true;
+	return false;
 }

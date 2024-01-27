@@ -128,7 +128,7 @@ void AUnitBase::OnProximityExit(UPrimitiveComponent* OverlappedComponent, AActor
 #pragma endregion 
 
 #pragma region crap 
-bool AUnitBase::IsSelectable()
+bool AUnitBase::IsMultiSelectable()
 {
 	return true;
 }

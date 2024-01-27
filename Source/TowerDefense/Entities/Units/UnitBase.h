@@ -56,7 +56,7 @@ private:
 public:
 	virtual void MoveToLocation(FVector _location) override; 
 
-	virtual bool IsSelectable() override;
+	virtual bool IsMultiSelectable() override;
 
 	virtual void BeginPlay() override;
 

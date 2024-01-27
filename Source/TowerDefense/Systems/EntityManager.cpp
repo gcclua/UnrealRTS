@@ -58,7 +58,7 @@ void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const 
 	for (int i = 0; i < entities.Num(); i++)
 	{
 		IEntity* entity = Cast<IEntity>(entities[i]);
-		if (entity == nullptr || !entity->IsSelectable())
+		if (entity == nullptr || !entity->IsMultiSelectable())
 			continue;
 
 		AActor* actor = Cast<AActor>(entity);
@@ -119,7 +119,7 @@ void AEntityManager::DeselectAllEntities()
 		IEntity* entity = entities[i];
 		if (entity == nullptr)
 			continue;
-		if (entity->IsSelectable() == false)
+		if (entity->IsMultiSelectable() == false)
 			continue;
 
 		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(Cast<AActor>(entity));
@@ -128,6 +128,41 @@ void AEntityManager::DeselectAllEntities()
 		
 		selectionMesh->SetVisibility(false);
 	}
+}
+
+void AEntityManager::SelectEntity(IEntity* entity)
+{
+	if (!selectedEntities.Contains(entity))
+	{
+		selectedEntities.Add(entity);
+	
+		AActor* actor = Cast<AActor>(entity);
+		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(actor);
+		if (selectionMesh == nullptr)
+			return;
+
+		selectionMesh->SetVisibility(true);
+	}
+}
+
+void AEntityManager::DeselectEntity(IEntity* entity)
+{
+	if (selectedEntities.Contains(entity))
+	{
+		selectedEntities.Remove(entity);
+	
+		AActor* actor = Cast<AActor>(entity);
+		UStaticMeshComponent* selectionMesh = entity->Execute_GetSelectionMesh(actor);
+		if (selectionMesh == nullptr)
+			return;
+
+		selectionMesh->SetVisibility(false);
+	}
+}
+
+bool AEntityManager::IsEntitySelected(IEntity* entity) const
+{
+	return selectedEntities.Contains(entity);
 }
 
 // https://stackoverflow.com/a/16260220
