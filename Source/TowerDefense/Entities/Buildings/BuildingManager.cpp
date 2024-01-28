@@ -18,6 +18,7 @@ void ABuildingManager::Setup(TScriptInterface<IHUDInterface> _hud, TScriptInterf
 
 void ABuildingManager::OnLeftClickDown()
 {
+	TWeakObjectPtr<ABuildingBase> prevSelectedBuilding = selectedBuilding;
 	if (selectedBuilding != nullptr)
 	{
 		entityManager->DeselectEntity(selectedBuilding.Get());
@@ -38,12 +39,28 @@ void ABuildingManager::OnLeftClickDown()
 		ABuildingBase* building = Cast<ABuildingBase>(hitActor);
 		if (building == nullptr || building->IsConstruction)
 			return;
+
+		buildingSelected = true;
+		selectedBuilding = building;
 		
-		const bool selected = entityManager->IsEntitySelected(building);
-		if (!selected)
-		{
+		if (!entityManager->IsEntitySelected(building))
 			entityManager->SelectEntity(building);
-			selectedBuilding = building;
+
+		if (!hudPanelEnabled)
+		{
+			// somehow tell the hud to display info about the selectedBuilding
+			hud->SetHUDPanelVisibility(HUDPanelType::Building, true);
+			hudPanelEnabled = true;
 		}
+		else if (prevSelectedBuilding != selectedBuilding)
+		{
+			// somehow tell the hud to display info about the selectedBuilding
+		}
+	}
+
+	if (!buildingSelected && hudPanelEnabled)
+	{
+		hud->SetHUDPanelVisibility(HUDPanelType::Building, false);
+		hudPanelEnabled = false;
 	}
 }

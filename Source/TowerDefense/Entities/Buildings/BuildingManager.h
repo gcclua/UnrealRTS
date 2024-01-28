@@ -20,6 +20,7 @@ private:
 	TScriptInterface<IEntityManagerInterface> entityManager;
 
 	TWeakObjectPtr<ABuildingBase> selectedBuilding;
+	bool hudPanelEnabled = false;
 
 	void OnLeftClickDown();
 	
