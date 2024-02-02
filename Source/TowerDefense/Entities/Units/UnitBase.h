@@ -6,7 +6,6 @@
 #include "TowerDefense/Entities/CharacterEntityBase.h"
 #include "TowerDefense/Entities/Bullets/BulletBase.h"
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
-#include "TowerDefense/Pathfinding/FlowField.h"
 #include "TowerDefense/Utils/TargetMonitor.h"
 #include "UnitBase.generated.h"
 
