@@ -39,6 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCommand(UnitCommand command);
 
+	virtual UObject* GetPanel(HUDPanelType panelType) override;
 	virtual UnitCommand CurrentCommand() override;
 	virtual void SetHUDPanelVisibility(HUDPanelType panelType, bool state) override;
 };

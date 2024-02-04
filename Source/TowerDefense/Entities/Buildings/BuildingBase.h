@@ -1,10 +1,11 @@
 ﻿#pragma once
 
+#include "IBuilding.h"
 #include "TowerDefense/Entities/BaseEntity.h"
 #include "BuildingBase.generated.h"
 
 UCLASS(ABSTRACT)
-class ABuildingBase : public ABaseEntity
+class ABuildingBase : public ABaseEntity, public IBuilding
 {
 	GENERATED_BODY()
 	

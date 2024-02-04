@@ -14,11 +14,15 @@ void ABuildingManager::Setup(TScriptInterface<IHUDInterface> _hud, TScriptInterf
 	playerController = _playerController;
 	
 	_playerController->InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &ABuildingManager::OnLeftClickDown);
+
+	UObject* panel = hud->GetPanel(HUDPanelType::Building);
+	if (panel != nullptr)
+		buildingsHudPanel = TScriptInterface<IHUDPanelBuildingsInterface>(panel);
 }
 
 void ABuildingManager::OnLeftClickDown()
 {
-	TWeakObjectPtr<ABuildingBase> prevSelectedBuilding = selectedBuilding;
+	const TWeakObjectPtr<ABuildingBase> prevSelectedBuilding = selectedBuilding;
 	if (selectedBuilding != nullptr)
 	{
 		entityManager->DeselectEntity(selectedBuilding.Get());
@@ -48,18 +52,27 @@ void ABuildingManager::OnLeftClickDown()
 
 		if (!hudPanelEnabled)
 		{
-			// somehow tell the hud to display info about the selectedBuilding
-			hud->SetHUDPanelVisibility(HUDPanelType::Building, true);
+			if (hud != nullptr && buildingsHudPanel != nullptr)
+			{
+				hud->SetHUDPanelVisibility(HUDPanelType::Building, true);
+				buildingsHudPanel->PopulateData(selectedBuilding.Get());
+			}
+
 			hudPanelEnabled = true;
 		}
 		else if (prevSelectedBuilding != selectedBuilding)
 		{
-			// somehow tell the hud to display info about the selectedBuilding
+			if (buildingsHudPanel != nullptr)
+			{
+				hud->SetHUDPanelVisibility(HUDPanelType::Building, true);
+				buildingsHudPanel->PopulateData(selectedBuilding.Get());
+			}
 		}
 	}
 
 	if (!buildingSelected && hudPanelEnabled)
 	{
+		selectedBuilding = nullptr;
 		hud->SetHUDPanelVisibility(HUDPanelType::Building, false);
 		hudPanelEnabled = false;
 	}

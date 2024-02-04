@@ -75,6 +75,17 @@ void UHUDBase::SetCommand(UnitCommand command)
 	curCommand = command;
 }
 
+UObject* UHUDBase::GetPanel(HUDPanelType panelType)
+{
+	for (TWeakObjectPtr<UHUDPanelBase> panelInstance : subPanelInstances)
+	{
+		if (panelInstance.IsValid() && panelInstance->PanelType == panelType)
+			return panelInstance.Get();
+	}
+	
+	return nullptr;
+}
+
 UnitCommand UHUDBase::CurrentCommand()
 {
 	return curCommand;

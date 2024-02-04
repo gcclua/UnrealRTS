@@ -11,7 +11,7 @@
 #include "HUDPanelBase.generated.h"
 
 UCLASS(ABSTRACT)
-class TOWERDEFENSE_API UHUDPanelBase : public UUserWidget
+class TOWERDEFENSE_API UHUDPanelBase : public UUserWidget, public IHUDPanelBaseInterface
 {
 	GENERATED_BODY()
 

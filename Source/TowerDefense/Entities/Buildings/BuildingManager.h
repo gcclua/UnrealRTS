@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BuildingBase.h"
 #include "GameFramework/Actor.h"
+#include "TowerDefense/Interfaces/IEntityManager.h"
 #include "TowerDefense/Interfaces/IHUD.h"
-#include "TowerDefense/Entities/Buildings/BuildingBase.h"
+#include "TowerDefense/UI/HUDPanels/IHUDPanelBuildings.h"
 
 #include "BuildingManager.generated.h"
 
@@ -19,6 +21,7 @@ private:
 	TScriptInterface<IHUDInterface> hud;
 	TScriptInterface<IEntityManagerInterface> entityManager;
 
+	TScriptInterface<IHUDPanelBuildingsInterface> buildingsHudPanel;
 	TWeakObjectPtr<ABuildingBase> selectedBuilding;
 	bool hudPanelEnabled = false;
 
