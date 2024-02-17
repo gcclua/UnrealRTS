@@ -4,7 +4,7 @@
 #include "TowerDefense/Entities/BaseEntity.h"
 #include "BuildingBase.generated.h"
 
-UCLASS(ABSTRACT)
+UCLASS()
 class ABuildingBase : public ABaseEntity, public IBuilding
 {
 	GENERATED_BODY()
@@ -18,15 +18,28 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingBase")
 	TSubclassOf<ABuildingBase> RealBuildingClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingBase")
+	FString NameString;
 	
 	UFUNCTION(BlueprintCallable)
 	void OnSpawn();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	void OnPlace();
 
 	UFUNCTION(BlueprintCallable)
 	void OnDoneConstructing();
 
 	virtual bool IsMultiSelectable() override;
+
+	// IBuilding
+	virtual void UpgradeToLevel(int _level) override;
+	virtual int CurrentLevel() override;
+	virtual int MaxLevel() override;
+	virtual int NextCostMoney() override;
+	virtual FString HeaderString() override;
+
+protected:
+	int level;
 };

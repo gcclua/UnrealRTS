@@ -15,6 +15,12 @@ void ABuildingBase::OnSpawn()
 	}
 }
 
+void ABuildingBase::OnPlace_Implementation()
+{
+	level = 1;
+	UpgradeToLevel(level);
+}
+
 void ABuildingBase::OnDoneConstructing()
 {
 	if (!IsConstruction || RealBuildingClass == nullptr)
@@ -31,4 +37,29 @@ void ABuildingBase::OnDoneConstructing()
 bool ABuildingBase::IsMultiSelectable()
 {
 	return false;
+}
+
+void ABuildingBase::UpgradeToLevel(int _level)
+{
+	// base implementation
+}
+
+int ABuildingBase::CurrentLevel()
+{
+	return level;
+}
+
+int ABuildingBase::MaxLevel()
+{
+	return 1;
+}
+
+int ABuildingBase::NextCostMoney()
+{
+	return -1;
+}
+
+FString ABuildingBase::HeaderString()
+{
+	return NameString;
 }

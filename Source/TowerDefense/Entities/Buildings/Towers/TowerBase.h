@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "TowerLevelStats.h"
 #include "TowerState.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
@@ -26,6 +27,8 @@ private:
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	bool CanFire() const;
+
+	// IEntity
 	virtual EntityType GetEntityType() override;
 
 protected:
@@ -37,16 +40,13 @@ public:
 	double TurnSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
-	double FireRate;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
-	double Range;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	FVector BulletScale;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Tower")
 	TSubclassOf<ABulletBase> BulletClass;
+
+	UPROPERTY(EditAnywhere, Category = "Tower")
+	TArray<FTowerLevelStats> LevelStats;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	AEnemyBase* CurrentTarget;
@@ -63,6 +63,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FireFromPoint(USceneComponent* point);
 
+	// IBuilding
+	virtual void UpgradeToLevel(int _level) override;
+	virtual int MaxLevel() override;
+	virtual int NextCostMoney() override;
+	
 private:
 	UPROPERTY()
 	TMap<FGuid, AEnemyBase*> EnemiesInRange;
@@ -70,4 +75,7 @@ private:
 	TSharedPtr<TargetMonitor> targetMonitor;
 	TowerState state = TowerState::Idle;
 	double nextFireTime = -1;
+	double damage;
+	double fireRate;
+	double range;
 };

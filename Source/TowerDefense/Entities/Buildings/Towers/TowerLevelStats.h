@@ -3,15 +3,18 @@
 #include "TowerDefense/Entities/Buildings/BuildingLevelStatsBase.h"
 #include "TowerLevelStats.generated.h"
 
-UCLASS()
-class UTowerLevelStats : public UBuildingLevelStatsBase
+USTRUCT()
+struct FTowerLevelStats : public FBuildingLevelStatsBase
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	float FireRate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	float Damage;
+
+	UPROPERTY(EditAnywhere)
+	float Range;
 };

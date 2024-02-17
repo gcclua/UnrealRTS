@@ -15,8 +15,9 @@ void AEnemyBase::OnReachTarget(bool success)
 	if (nextTarget == nullptr)
 	{
 		// do damage to player
-		const auto playerVitals = Cast<APlayerVitalsBase>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerVitalsBase::StaticClass()));
-		playerVitals->OnEnemyReachEnd(this, enemyType, Damage);
+		APlayerVitalsBase* playerVitals = APlayerVitalsBase::GetInstance();
+		if (playerVitals != nullptr)
+			playerVitals->OnEnemyReachEnd(this, enemyType, Damage);
 
 		return;
 	}
@@ -39,6 +40,10 @@ void AEnemyBase::OnTakeDamage(float _damage)
 	Health -= _damage;
 	if (Health <= 0)
 	{
+		APlayerVitalsBase* playerVitals = APlayerVitalsBase::GetInstance();
+		if (playerVitals != nullptr)
+			playerVitals->AddMoney(MoneyKillReward);
+		
 		OnDestroy();
 		Destroy();
 	}

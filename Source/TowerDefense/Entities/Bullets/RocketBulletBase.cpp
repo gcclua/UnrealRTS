@@ -1,8 +1,8 @@
 ﻿#include "RocketBulletBase.h"
 
-void ARocketBulletBase::Fire(AActor* target)
+void ARocketBulletBase::Fire(AActor* target, float _damage)
 {
-	Super::Fire(target);
+	Super::Fire(target, _damage);
 
 	ProjectileMovement->bIsHomingProjectile = true;
 

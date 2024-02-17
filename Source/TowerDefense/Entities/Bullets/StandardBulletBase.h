@@ -10,5 +10,5 @@ class TOWERDEFENSE_API AStandardBulletBase : public ABulletBase
 	GENERATED_BODY()
 
 public:
-	virtual void Fire(AActor* target) override;
+	virtual void Fire(AActor* target, float _damage) override;
 };

@@ -8,14 +8,13 @@ AEntityManager* AEntityManager::Instance = nullptr;
 
 AEntityManager::AEntityManager()
 {
+	unitManager = nullptr;
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AEntityManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Instance = this;
 }
 
 void AEntityManager::Tick(float DeltaTime)
@@ -51,6 +50,8 @@ void AEntityManager::Setup(TScriptInterface<IMinimapInterface> _minimap, TScript
 	minimap = _minimap;
 	mouseInteraction = _mouseInteraction;
 	unitManager = _unitManager;
+
+	Instance = this;
 }
 
 void AEntityManager::UpdateSelectedEntitiesInRange(const FVector topLeft, const FVector bottomRight, const FVector bottomLeft, const FVector topRight)

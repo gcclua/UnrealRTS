@@ -98,7 +98,7 @@ void AUnitBase::Fire() const
 		return;
 	
 	bullet->SetActorScale3D(FVector(0.25f, 0.25f, 0.25f));
-	bullet->Fire(targetMonitor->GetTarget());
+	bullet->Fire(targetMonitor->GetTarget(), Damage);
 }
 
 bool AUnitBase::CanFire() const

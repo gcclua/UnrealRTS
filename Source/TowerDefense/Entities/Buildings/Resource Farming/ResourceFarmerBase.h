@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ResourceFarmerLevelStats.h"
 #include "TowerDefense/Interfaces/IEntity.h"
 #include "TowerDefense/Enums/ResourceType.h"
 #include "GameFramework/Actor.h"
@@ -19,10 +20,11 @@ class TOWERDEFENSE_API AResourceFarmerBase : public ABuildingBase
 	
 protected:
 	virtual void BeginPlay() override;
-
-private:
+	
 	ResourceFarmerState state;
 	double nextFarmTime;
+	int generateAmount;
+	float generateTime;
 	UPROPERTY() APlayerVitalsBase* playerVitals;
 
 public:	
@@ -30,8 +32,8 @@ public:
 	ResourceType ResourceType;
 
 	UPROPERTY(EditAnywhere, Category = "ResourceFarmer")
-	float GenerateTime = 5;
-	
+	TArray<FResourceFarmerLevelStats> LevelStats;
+
 public:
 	AResourceFarmerBase();
 	virtual void Tick(float DeltaTime) override;
@@ -39,5 +41,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartFarming();
 
+	// IEntity
 	virtual EntityType GetEntityType() override;
+	
+	// IBuilding
+	virtual void UpgradeToLevel(int _level) override;
+	virtual int MaxLevel() override;
+	virtual int NextCostMoney() override;
 };

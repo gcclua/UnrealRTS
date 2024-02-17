@@ -39,6 +39,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCommand(UnitCommand command);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetMetal(int numMetal);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetStone(int numStone);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetWood(int numWood);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetHealth(float numHealth);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetMoney(int numMoney);
+
 	virtual UObject* GetPanel(HUDPanelType panelType) override;
 	virtual UnitCommand CurrentCommand() override;
 	virtual void SetHUDPanelVisibility(HUDPanelType panelType, bool state) override;

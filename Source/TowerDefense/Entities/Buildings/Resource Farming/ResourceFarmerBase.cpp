@@ -24,19 +24,47 @@ void AResourceFarmerBase::Tick(float DeltaTime)
 	const double time = GetWorld()->GetTimeSeconds();
 	if (time >= nextFarmTime)
 	{
-		playerVitals->OnGatherResource(ResourceType, 1);
-		nextFarmTime = time + GenerateTime;
+		if (playerVitals != nullptr)
+			playerVitals->OnGatherResource(ResourceType, generateAmount);
+		else
+			UE_LOG(LogTemp, Error, TEXT("AResourceFarmerBase: PlayerVitals is null"));
+		
+		nextFarmTime = time + generateTime;
 	}
 }
 
 void AResourceFarmerBase::StartFarming()
 {
-	playerVitals = Cast<APlayerVitalsBase>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerVitalsBase::StaticClass()));
+	playerVitals = APlayerVitalsBase::GetInstance();
 	state = ResourceFarmerState::Farming;
-	nextFarmTime = GetWorld()->GetTimeSeconds() + GenerateTime;
+	nextFarmTime = GetWorld()->GetTimeSeconds() + generateTime;
+}
+
+void AResourceFarmerBase::UpgradeToLevel(int _level)
+{
+	if (_level > LevelStats.Num())
+		return;
+
+	level = _level;
+	
+	const FResourceFarmerLevelStats stat = LevelStats[level - 1];
+	generateAmount = stat.GenerateAmount;
+	generateTime = stat.GenerateTime;
 }
 
 EntityType AResourceFarmerBase::GetEntityType()
 {
 	return EntityType::ResourceFarmer;
+}
+
+int AResourceFarmerBase::MaxLevel()
+{
+	return LevelStats.Num();
+}
+
+int AResourceFarmerBase::NextCostMoney()
+{
+	if (level >= LevelStats.Num())
+		return -1;
+	return LevelStats[level].CostMoney;
 }

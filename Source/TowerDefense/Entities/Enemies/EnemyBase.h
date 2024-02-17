@@ -30,6 +30,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
 	double Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
+	int MoneyKillReward;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EnemyBase")
 	USceneComponent* SceneComponent;

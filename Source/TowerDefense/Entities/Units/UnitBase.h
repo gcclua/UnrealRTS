@@ -31,6 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float RotateSpeed = 20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
+	float Damage = 1;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Unit")
 	USphereComponent* ProximitySphere;

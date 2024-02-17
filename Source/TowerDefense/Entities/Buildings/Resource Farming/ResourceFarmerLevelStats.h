@@ -3,15 +3,15 @@
 #include "TowerDefense/Entities/Buildings/BuildingLevelStatsBase.h"
 #include "ResourceFarmerLevelStats.generated.h"
 
-UCLASS()
-class UResourceFarmerLevelStats : public UBuildingLevelStatsBase
+USTRUCT()
+struct FResourceFarmerLevelStats : public FBuildingLevelStatsBase
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	float GenerateTime;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	int GenerateAmount;
 };

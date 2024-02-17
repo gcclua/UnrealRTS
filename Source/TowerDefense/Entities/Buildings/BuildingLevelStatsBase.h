@@ -2,15 +2,15 @@
 
 #include "BuildingLevelStatsBase.generated.h"
 
-UCLASS()
-class UBuildingLevelStatsBase : public UObject
+USTRUCT()
+struct FBuildingLevelStatsBase
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	int Level;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	int CostMoney;
 };

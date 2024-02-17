@@ -13,7 +13,7 @@ void ATowerBase::BeginPlay()
 {
 	if (!IsConstruction)
 	{
-		CollisionObject->SetSphereRadius(Range);
+		CollisionObject->SetSphereRadius(range);
 		CollisionObject->SetGenerateOverlapEvents(true);
 		CollisionObject->SetHiddenInGame(true);
 		CollisionObject->OnComponentBeginOverlap.AddDynamic(this, &ATowerBase::OnOverlapBegin);
@@ -56,7 +56,7 @@ void ATowerBase::Tick(float DeltaSeconds)
 	if (canTime && canFire)
 	{
 		Fire();
-		nextFireTime = time + FireRate;
+		nextFireTime = time + fireRate;
 	}
 }
 
@@ -75,7 +75,23 @@ void ATowerBase::FireFromPoint(USceneComponent* point)
 		return;
 	
 	bullet->SetActorScale3D(BulletScale);
-	bullet->Fire(targetMonitor->GetTarget());
+	bullet->Fire(targetMonitor->GetTarget(), damage);
+}
+
+void ATowerBase::UpgradeToLevel(int _level)
+{
+	if (_level > LevelStats.Num())
+		return;
+
+	level = _level;
+	
+	const FTowerLevelStats stat = LevelStats[level - 1];
+	fireRate = stat.FireRate;
+	damage = stat.Damage;
+	range = stat.Range;
+
+	CollisionObject->SetSphereRadius(range);
+	CollisionObject->UpdateOverlaps();
 }
 
 bool ATowerBase::CanFire() const
@@ -104,6 +120,18 @@ void ATowerBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* 
 EntityType ATowerBase::GetEntityType()
 {
 	return EntityType::Tower;
+}
+
+int ATowerBase::MaxLevel()
+{
+	return LevelStats.Num();
+}
+
+int ATowerBase::NextCostMoney()
+{
+	if (level >= LevelStats.Num())
+		return -1;
+	return LevelStats[level].CostMoney;
 }
 
 void ATowerBase::Fire_Implementation() { }

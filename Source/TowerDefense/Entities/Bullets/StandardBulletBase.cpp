@@ -1,8 +1,8 @@
 ﻿#include "StandardBulletBase.h"
 
-void AStandardBulletBase::Fire(AActor* target)
+void AStandardBulletBase::Fire(AActor* target, float _damage)
 {
-	Super::Fire(target);
+	Super::Fire(target, _damage);
 	
 	// destroy this bullet in the case that it doesnt hit anything
 	if (target != nullptr && ProjectileMovement != nullptr)
