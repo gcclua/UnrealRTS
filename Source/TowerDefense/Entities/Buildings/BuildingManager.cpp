@@ -15,9 +15,14 @@ void ABuildingManager::Setup(TScriptInterface<IHUDInterface> _hud, TScriptInterf
 	
 	_playerController->InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &ABuildingManager::OnLeftClickDown);
 
-	UObject* panel = hud->GetPanel(HUDPanelType::Building);
-	if (panel != nullptr)
-		buildingsHudPanel = TScriptInterface<IHUDPanelBuildingsInterface>(panel);
+	if (hud != nullptr)
+	{
+		UObject* panel = hud->GetPanel(HUDPanelType::Building);
+		if (panel != nullptr)
+			buildingsHudPanel = TScriptInterface<IHUDPanelBuildingsInterface>(panel);
+	}
+	else
+		UE_LOG(LogTemp, Error, TEXT("ABuildingManager: HUD is null"));
 }
 
 void ABuildingManager::OnLeftClickDown()
