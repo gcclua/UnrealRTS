@@ -32,6 +32,7 @@ void AEnemyBase::OnSpawn(AEnemySpawner* enemySpawner, int spawnIndex)
 	rowIndex = 0;
 	innerRowIndex = spawnIndex;
 
+	State = EnemyState::Running;
 	OnReachTarget(true);
 }
 
@@ -40,12 +41,13 @@ void AEnemyBase::OnTakeDamage(float _damage)
 	Health -= _damage;
 	if (Health <= 0)
 	{
+		State = EnemyState::Dead;
+		
 		APlayerVitalsBase* playerVitals = APlayerVitalsBase::GetInstance();
 		if (playerVitals != nullptr)
 			playerVitals->AddMoney(MoneyKillReward);
-		
-		OnDestroy();
-		Destroy();
+
+		OnDeath();
 	}
 }
 

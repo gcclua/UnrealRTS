@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "EnemyState.h"
 #include "TowerDefense/Entities/CharacterEntityBase.h"
 #include "TowerDefense/Systems/EnemySpawner.h"
 #include "EnemyBase.generated.h"
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyBase")
 	int MoneyKillReward;
+
+	UPROPERTY(BlueprintReadWrite, Category = "EnemyBase")
+	EnemyState State;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "EnemyBase")
 	USceneComponent* SceneComponent;
@@ -47,6 +51,9 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void MoveToTarget(AActor* target);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void OnDeath();
 	
 	virtual EntityType GetEntityType() override;
 };
