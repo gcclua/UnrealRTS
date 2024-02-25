@@ -5,6 +5,8 @@
 #include "Components/SphereComponent.h"
 #include "TowerDefense/Entities/CharacterEntityBase.h"
 #include "TowerDefense/Entities/Bullets/BulletBase.h"
+#include "AIController.h"
+#include "Navigation/PathFollowingComponent.h"
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
 #include "TowerDefense/Utils/TargetMonitor.h"
 #include "UnitBase.generated.h"
@@ -17,8 +19,6 @@ class TOWERDEFENSE_API AUnitBase : public ACharacterEntityBase, public IUnit
 protected:
 
 	double nextFireTime = 0;
-	
-	UnitState state = UnitState::Idle;
 	FVector destination;
 	TSharedPtr<TargetMonitor> targetMonitor;
 	
@@ -43,6 +43,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Unit")
 	TSubclassOf<ABulletBase> BulletClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Unit")
+	UnitState state = UnitState::Idle;
 	
 private:
 	AUnitBase();
@@ -53,6 +56,7 @@ private:
 	void OnProximityOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnProximityExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result);
 
 	void Fire() const;
 public:

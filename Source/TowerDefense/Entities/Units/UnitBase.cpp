@@ -1,7 +1,5 @@
 ﻿#include "UnitBase.h"
 
-#include "AIController.h"
-#include "NavigationSystem.h"
 #include "TowerDefense/Entities/Enemies/EnemyBase.h"
 
 AUnitBase::AUnitBase()
@@ -14,7 +12,13 @@ AUnitBase::AUnitBase()
 	ProximitySphere->OnComponentEndOverlap.AddDynamic(this, &AUnitBase::OnProximityExit);
 
 	FirePositionComponent = CreateDefaultSubobject<USceneComponent>(TEXT("FirePositionComponent"));
-	FirePositionComponent->SetupAttachment(RootComponent); 
+	FirePositionComponent->SetupAttachment(RootComponent);
+
+	AAIController* AIController = Cast<AAIController>(GetController());
+	if (AIController != nullptr)
+	{
+		//AIController->OnMoveCompleted.AddDynamic(this, &AUnitBase::OnMoveCompleted);
+	}
 }
 
 void AUnitBase::MoveToLocation(FVector _location)
@@ -36,6 +40,8 @@ void AUnitBase::MoveToLocation(FVector _location)
 		AIController->MoveToLocation(destination, acceptanceRadius, stopOnOverlap,
 									 usePathfinding, canStrafe,
 							 projectDestinationToNavigation, filterClass, allowPartialPath);
+
+		state = UnitState::WalkingToDestination;
 	}
 }
 
@@ -124,6 +130,17 @@ void AUnitBase::OnProximityExit(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (targetMonitor != nullptr)
 		targetMonitor->OnOverlapEnd(OtherActor);
+}
+
+void AUnitBase::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	if (Result.Code == EPathFollowingResult::Type::Success)
+	{
+
+	}
+
+	if (state != UnitState::Attacking)
+		state = UnitState::Idle;
 }
 #pragma endregion 
 
